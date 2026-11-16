@@ -110,6 +110,7 @@
       ['#skills', 'Skills', route === 'skills'],
       ['#connectors', 'Connectors', route === 'connectors'],
       ['#repos', 'Repos', route === 'repos'],
+      ['#install', 'Setup', route === 'install'],
       ['#guide', 'How it works', route === 'guide'],
       ['#case-study', 'Case study', route === 'case-study'],
       ['#studio', 'Editing App', route === 'studio'],    ];
@@ -587,7 +588,7 @@
   }
 
   // ---------- hosted site: the studio runs on the user's own computer, so the hosted hub explains how to get it ----------
-  function getApp() {
+  function getApp(install) {
     const steps = [
       ['Get BOSS Studio', '<p>It is free and open on GitHub: <a href="https://github.com/vincentkmc2023/BOSS-Studio" target="_blank" rel="noopener"><b>github.com/vincentkmc2023/BOSS-Studio</b></a></p><ul><li>With Git: open a terminal in your Documents folder and run <code>git clone https://github.com/vincentkmc2023/BOSS-Studio.git</code></li><li>Without Git: on the GitHub page press <b>Code</b>, then <b>Download ZIP</b>, and unzip it into your Documents folder.</li></ul>'],
       ['Open the folder in Claude Code and type start', '<ul><li>Open the <b>BOSS-Studio</b> folder in Claude Code: run <code>claude</code> inside that folder, or in the Claude desktop app open the <b>Code</b> tab, pick <b>Local</b> and choose the folder.</li><li>Type <code>start</code>. It checks your computer and installs anything missing (it asks you first), helps you set up free transcription (a Groq key, or the on-computer model with Python), renders a test video, and asks a few questions about your style.</li></ul><p class="gnote">Using Codex, Cursor or another agent? They can edit from the chat. The Editing App in step 3 runs on Claude Code.</p>'],
@@ -606,8 +607,7 @@
       'Nothing is posted or uploaded for you.',
     ];
     return `
-    <div class="band hero-band cs-hero"><div class="eyebrow">The Editing App</div><h1>It runs on <i>your</i> computer</h1>
-      <p class="lede">The Editing App edits your raw footage with your own AI agent, so your videos stay private. Here is how to get it running in three steps.</p></div>
+    <div class="band hero-band cs-hero">${install ? '<div class="eyebrow">Installation and setup</div><h1>Install and <i>set up</i> BOSS Studio</h1><p class="lede">BOSS Studio runs on your own computer, so your videos stay private. What you need, and the three steps to get it running.</p>' : '<div class="eyebrow">The Editing App</div><h1>It runs on <i>your</i> computer</h1><p class="lede">The Editing App edits your raw footage with your own AI agent, so your videos stay private. Here is how to get it running in three steps.</p>'}</div>
     <section class="cs g">
       <div class="eyebrow">Before you start</div><h2>What you <i>need</i></h2>
       <div class="kc"><div class="panel"><h3>On your computer</h3><ul>${needs.map((r) => '<li>' + r + '</li>').join('')}</ul></div></div>
@@ -627,6 +627,7 @@
   const pages = {
     guide,
     'case-study': caseStudy,
+    install: () => getApp(true),
     studio: () => window.HUB_HOSTED ? getApp() : '<iframe id="studio" title="BOSS Studio" allowfullscreen style="width:100%;border:0;min-height:80vh;display:block" ' + (window.HUB_STUDIO_DOC ? 'srcdoc="' + window.HUB_STUDIO_DOC.replace(/&/g, '&amp;').replace(/"/g, '&quot;') + '"' : 'src="studio/index.html"') + '></iframe>',
     skills: () => `<div class="band hero-band"><div class="eyebrow">Skills</div><h1>All <i>skills</i></h1><p class="lede">Agent Skills the editor and the sessions rely on. "Used" means a session actually used it.</p></div><section>${skillTable(false)}</section>`,
     connectors: () => `<div class="band hero-band"><div class="eyebrow">Connectors and tools</div><h1>Connectors <i>and tools</i></h1><p class="lede">What is plugged in, what it did, and how it is set up. Keys are never shown here.</p></div><section>${connTable(false)}</section>`,

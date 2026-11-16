@@ -87,7 +87,6 @@ window.HUB = {
     // ------------------------------------------------------------------ BOSS 02
     {
       id: 'boss02',
-      family: 'Carousel',
       group: 'Motion-graphics reels',
       faceless: true, // cards and step numbers only, no presenter
       short: 'Pastel Punch',
@@ -214,7 +213,7 @@ window.HUB = {
       id: 'clean',
       group: 'YouTube explainers',
       faceless: false, // circle presenter bottom-right
-      short: 'Clean Explainer',
+      short: 'Light Explainer',
       name: 'Light Explainer',
       titleHtml: 'Light <i>Explainer</i>',
       status: 'Default in my-style.md',
@@ -251,7 +250,6 @@ window.HUB = {
     // ------------------------------------------------------------------ Reel recreate
     {
       id: 'recreate',
-      family: 'Carousel',
       group: 'Motion-graphics reels',
       faceless: true, // screenshots, highlight boxes and caption pills, no presenter
       short: 'Skill Score',
@@ -518,7 +516,7 @@ window.HUB = {
     {name: 'Robust Video Matting + PyTorch', status: 'used', used: 'Cuts a speaker out of a video for the head pop-out. Runs locally on the CPU.', setup: '`tools/.venv-matte` + model in `tools/matte/` (git-ignored).'},
     {name: 'Google Slides / Drive / Docs', status: 'used', used: 'Read a slide deck for a 5-minute video, and read and renamed the Boss Video Editing SOP.', setup: 'Claude connectors.'},
     {name: 'Claude in-app browser', status: 'used', used: 'Opened HeyGen, Groq and the BOSS app for reference.', setup: 'Built into the Claude desktop app.'},
-    {name: 'Artifacts', status: 'used', used: 'A private "Editing styles" viewer page from the Clean Explainer session.', setup: 'https://claude.ai/artifact/Q1UaWDUbZv4oSg3ydNH8V5'},
+    {name: 'Artifacts', status: 'used', used: 'A private "Editing styles" viewer page from the Light Explainer session.', setup: 'https://claude.ai/artifact/Q1UaWDUbZv4oSg3ydNH8V5'},
     {name: 'Premiere Pro MCP', status: 'tried', used: 'Bridge never connected, so no timeline was read.', setup: 'Needs the MCP Bridge panel in Premiere.'},
   ],
 
@@ -538,7 +536,7 @@ window.HUB = {
     {f: 'first-ai-team-v1…v4.mp4', d: 'First AI Team in the pink carousel look', s: 'Pastel Punch', w: 'outbox/'},
     {f: 'first-ai-team-voiceover.mp3', d: 'Final voiceover, Krista Mashore, 2:04', s: '—', w: 'outbox/'},
     {f: 'why-reviews-matter-remotion-reels-…-v6-sfx-draft.mp4', d: 'Why Reviews Matter Reels with sound design, 50 s', s: 'Kinetic Type', w: 'outbox/'},
-    {f: 'why-reviews-matter-2026-11-11-final.mp4', d: '16:9 final, 1920×1080, 50 s', s: 'Clean Explainer', w: 'outbox/'},
+    {f: 'why-reviews-matter-2026-11-11-final.mp4', d: '16:9 final, 1920×1080, 50 s', s: 'Light Explainer', w: 'outbox/'},
     {f: 'why-reviews-matter-voiceover-2026-11-11.mp3 / .wav', d: 'Voiceover and the separate takes', s: '—', w: 'outbox/ · voiceover-takes/'},
     {f: 'reel-recreate-2026-11-11-v1…v3.mp4', d: 'Facebook reel recreated, 37.7 s', s: 'Skill Score', w: 'outbox/'},
     {f: 'BOSS-Entrepreneur-Short-Final.mp4', d: '1:27.5 narrated short with music and effects', s: 'Dark Terminal', w: 'TeamOS/video-output/'},

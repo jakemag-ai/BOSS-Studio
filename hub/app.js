@@ -130,7 +130,7 @@
     } else { sub.innerHTML = ''; sub.hidden = true; }
     const links = [
       ['#overview', 'Overview', route === 'overview'],
-      ['__styles__', 'Editing Style', D.styles.some((x) => route === 'style-' + x.id)],
+      ['__styles__', 'Editing Styles', D.styles.some((x) => route === 'style-' + x.id)],
       ['#skills', 'Skills', route === 'skills'],
       ['#connectors', 'Connectors', route === 'connectors'],
       ['#repos', 'Repos', route === 'repos'],
@@ -142,7 +142,7 @@
     links.forEach(([href, label, on], i) => {
       if (i === 1 || label === 'Skills' || label === 'Editing App') html += '<span class="sep"></span>';
       if (href === '__styles__') {
-        html += '<div class="dd"><button class="ddbtn' + (on ? ' on' : '') + '" type="button" aria-haspopup="true" aria-expanded="false">Editing Style <span aria-hidden="true">&#9662;</span></button><div class="ddmenu" role="menu" hidden>' +
+        html += '<div class="dd"><button class="ddbtn' + (on ? ' on' : '') + '" type="button" aria-haspopup="true" aria-expanded="false">Editing Styles <span aria-hidden="true">&#9662;</span></button><div class="ddmenu" role="menu" hidden>' +
           D.styles.map((s) => '<a role="menuitem" href="#style-' + s.id + '"' + (route === 'style-' + s.id ? ' aria-current="page"' : '') + '>' + esc(s.short || s.name) + '</a>').join('') + '</div></div>';
         return;
       }
@@ -396,7 +396,6 @@
       </div>
       <div>${heroArt(s)}</div>
     </div>
-    ${s.origin ? `<div class="note"><b>Where it came from.</b> ${md(s.origin)}</div>` : ''}
     </div>
 
     <section><div class="eyebrow">Samples</div><h2>Finished <i>outputs</i></h2>${videos(s.samples)}</section>
@@ -408,7 +407,6 @@
 
     <section><div class="eyebrow">Guidelines</div><h2>The <i>rules</i> of this style</h2>
       <div class="cols">${(s.sections || []).map((sec) => `<div class="panel"><h3>${esc(sec.t)}</h3>${list(sec.p)}</div>`).join('')}</div>
-      ${s.notes ? s.notes.map((n) => `<div class="note">${md(n)}</div>`).join('') : ''}
     </section>
 
     ${s.build && s.build.length ? `<section><div class="eyebrow">Build it</div><h2>How to make a <i>new one</i></h2><div class="steps">${s.build.map((b) => `<div class="step"><p>${md(b)}</p></div>`).join('')}</div></section>` : ''}
@@ -417,7 +415,6 @@
 
     ${guidesHtml(s.guides)}
 
-    ${s.session ? `<section><p class="note" style="margin:0"><b>Built in:</b> ${esc(s.session)}</p></section>` : ''}
 
     <section style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap">
       ${prev ? `<a class="btn" href="#style-${prev.id}">← ${esc(prev.short || prev.name)}</a>` : '<span></span>'}

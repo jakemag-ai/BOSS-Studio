@@ -198,7 +198,12 @@ body.annot .ws{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);wi
 body.annot .ws>section.c:first-child{padding:0;border:0;background:none;box-shadow:none}
 body.annot .stage canvas{max-width:calc(100vw - 520px) !important}
 body.annot .ws>#editmid,body.annot .ws .scrub,body.annot .ws .col>section:not(:has(#tools)){display:none}
-body.annot .stage canvas,body.annot .stage .cv{max-height:820px !important}
+body.annot .pctl{display:none}
+.cvw{display:flex;flex-direction:column;align-items:center;max-width:100%}
+.annbar{display:flex;align-items:center;gap:8px;margin-top:12px;width:100%;min-width:300px}
+.annbar input[type=range]{flex:1;min-width:120px;accent-color:var(--accent)}
+.annbar .tm{font:700 .78rem 'JetBrains Mono',monospace;color:var(--muted);min-width:54px;text-align:right}
+body.annot .stage canvas,body.annot .stage .cv{max-height:min(820px,calc(100vh - 190px)) !important}
 @media(max-width:900px){body.annot .ws{grid-template-columns:1fr !important;width:calc(100vw - 24px)}body.annot .stage canvas{max-width:100% !important}}
 /* subtle drifting grid behind the projects list and new-project page */
 body.gridbg::before{content:'';position:fixed;inset:0;z-index:-1;pointer-events:none;background-image:linear-gradient(color-mix(in srgb,var(--line) 70%,transparent) 1px,transparent 1px),linear-gradient(90deg,color-mix(in srgb,var(--line) 70%,transparent) 1px,transparent 1px);background-size:42px 42px;animation:gridshift 70s linear infinite}
@@ -335,7 +340,7 @@ function toast(m) { const t = $('#toast'); t.textContent = m; t.hidden = false; 
 const pushStep = () => history.pushState({view, pid: cur && cur.id, phase: cur && (cur.phase || 'brief'), annot: !!snap}, '');
 function go(v, p, pop) { pendingRefs = []; clearInterval(poller); poller = null; runSt = null; runLabel = ''; view = v; cur = p || null; snap = null; $('#crumb').textContent = p ? p.name : ''; render(); window.scrollTo(0, 0); if (!pop) pushStep(); }
 let notesDirty = false; // notes were added while the floating canvas stayed open: re-render once it closes so buttons and counts catch up
-function finishAnnot() { snap = null; stage(); if (notesDirty) { notesDirty = false; project(); } }
+function finishAnnot() { snap = null; gv = null; seekWant = null; stage(); if (notesDirty) { notesDirty = false; project(); } }
 function closeAnnot() { annotating = false; if (history.state && history.state.annot) history.back(); else finishAnnot(); }
 addEventListener('keydown', (e) => { if (e.key === 'Escape' && snap && annotating && !/INPUT|TEXTAREA|SELECT/.test(e.target.tagName) && !document.querySelector('.modal:not([hidden])')) closeAnnot(); });
 window.addEventListener('popstate', async (e) => {
@@ -447,7 +452,7 @@ function project() {
   const styCard = '<div class="stybar">' + '<div><small>Project style</small><b>' + esc(styName(p.styleId)) + '</b></div>' + (ph !== 'brief' ? '' : '<select id="psty" title="Change the project style"' + (briefLocked ? ' disabled' : '') + '><option value=""' + (p.styleId ? '' : ' selected') + '>Custom</option>' + STY.map((s) => '<option value="' + s.id + '"' + (s.id === p.styleId ? ' selected' : '') + '>' + esc(s.name) + '</option>').join('') + '</select>') + '</div>';
   const video = '<p class="h"><i class="ti ti-movie"></i><span id="vname">' + esc(ph === 'approved' && API && viewLabel ? viewLabel : (p.rawName || p.voiceoverFile || 'No media attached')) + '</span></p><div class="stage" id="stage"></div>' +
     '<div class="scrub" id="scrub"><div class="tr"></div><div class="fl" id="fl"></div><div class="ph" id="ph" style="left:0"></div>' + p.notes.map((n) => '<div class="mk" data-t="' + n.t + '" style="left:' + (n.t / (p.dur || 1)) * 100 + '%"></div>').join('') + '</div>' +
-    '<div class="r" style="justify-content:space-between"><div class="r"><button data-act="seek" data-d="-0.0334"><i class="ti ti-player-track-prev"></i>1 frame</button><button class="i" data-act="seek" data-d="-5" title="Back 5 seconds"><i class="ti ti-rewind-backward-5"></i></button><button class="p i" data-act="play" title="Play or pause"><i class="ti ti-player-play" id="pi"></i></button><button class="i" data-act="seek" data-d="5" title="Forward 5 seconds"><i class="ti ti-rewind-forward-5"></i></button><button data-act="seek" data-d="0.0334"><i class="ti ti-player-track-next"></i>1 frame</button><button class="i" data-act="fs" title="Full screen"><i class="ti ti-arrows-maximize"></i></button></div><span class="mut" style="margin:0" id="tm">0:00 / 0:00</span></div>';
+    '<div class="r pctl" style="justify-content:space-between"><div class="r"><button data-act="seek" data-d="-0.0334"><i class="ti ti-player-track-prev"></i>1 frame</button><button class="i" data-act="seek" data-d="-5" title="Back 5 seconds"><i class="ti ti-rewind-backward-5"></i></button><button class="p i" data-act="play" title="Play or pause"><i class="ti ti-player-play" id="pi"></i></button><button class="i" data-act="seek" data-d="5" title="Forward 5 seconds"><i class="ti ti-rewind-forward-5"></i></button><button data-act="seek" data-d="0.0334"><i class="ti ti-player-track-next"></i>1 frame</button><button class="i" data-act="fs" title="Full screen"><i class="ti ti-arrows-maximize"></i></button></div><span class="mut" style="margin:0" id="tm">0:00 / 0:00</span></div>';
   const frames_ = '<p class="h"><i class="ti ti-layout-grid"></i>Frame preview · still images, not a full render</p><div class="stage" id="stage" style="min-height:240px"></div><p class="mut">Click a frame to annotate it. Frames with a note have an orange edge. The full video is only rendered after you approve the frames.</p>';
   const styleRange = '<label class="l" style="margin-top:16px"><i class="ti ti-palette" style="vertical-align:-2px;margin-right:4px"></i>Use a style here</label><div class="r" style="margin:0 0 6px"><select id="nsty" style="flex:1;min-width:160px"><option value="">Keep the project style (' + esc(styName(p.styleId)) + ')</option>' + STY.map((s) => '<option value="' + s.id + '">' + esc(s.name) + '</option>').join('') + '<option value="__link">Copy a style from a link…</option></select><select id="nrange" style="width:170px">' + RANGES.map((r) => '<option>' + r + '</option>').join('') + '</select></div>' +
     '<div id="nlinkrow" hidden><input type="text" id="nlink" placeholder="Paste a YouTube, TikTok or Instagram link" style="margin:0 0 4px"><p class="mut" style="margin:0 0 6px">Say what to copy in the note, like "the zoom on each key word". Leave it empty to copy the whole look.</p></div>' +
@@ -520,8 +525,11 @@ function stage() {
   const ws = document.querySelector('.ws'), x = document.querySelector('.annx');
   if (on && ws && !x) ws.insertAdjacentHTML('beforeend', '<button class="annx i" data-act="cancelsnap" title="Close (Esc)" aria-label="Close"><i class="ti ti-x"></i></button>'); else if (!on && x) x.remove();
   if (snap) {
-    st.innerHTML = '<div class="cv"><canvas id="base" width="' + snap.w + '" height="' + snap.h + '"></canvas><canvas class="ink" id="ink" width="' + snap.w + '" height="' + snap.h + '"></canvas></div>';
+    // inside the floating canvas, a scrub bar lets you move to another moment without closing it (needs a video to grab frames from)
+    const bar = annotating && vurl ? '<div class="annbar"><button class="i" data-act="sstep" data-d="-5" title="Back 5 seconds"><i class="ti ti-rewind-backward-5"></i></button><button data-act="sstep" data-d="-0.0334" title="Back 1 frame"><i class="ti ti-player-track-prev"></i>1 frame</button><input type="range" id="annr" min="0" max="' + (cur.dur || Math.ceil(snap.t) + 1) + '" step="0.01" value="' + snap.t + '" aria-label="Move to another moment"><button data-act="sstep" data-d="0.0334" title="Forward 1 frame">1 frame<i class="ti ti-player-track-next"></i></button><button class="i" data-act="sstep" data-d="5" title="Forward 5 seconds"><i class="ti ti-rewind-forward-5"></i></button><span class="tm" id="annt">' + fmtp(snap.t) + '</span></div>' : '';
+    st.innerHTML = '<div class="cvw"><div class="cv"><canvas id="base" width="' + snap.w + '" height="' + snap.h + '"></canvas><canvas class="ink" id="ink" width="' + snap.w + '" height="' + snap.h + '"></canvas></div>' + bar + '</div>';
     $('#base').getContext('2d').drawImage(snap.c, 0, 0); draw(); $('#nt') && ($('#nt').textContent = fmt(snap.t));
+    if (bar) bindScrub();
     // a frame click only previews a still (no draw tools) until Snapshot is pressed; takeSnap()/the
     // "already previewing, just start drawing" path in the snap action both set annotating themselves
     if (annotating) { inkEvents(); $('#tools').style.display = 'flex'; } else { const tl = $('#tools'); if (tl) tl.style.display = 'none'; }
@@ -729,6 +737,38 @@ function askText(label) {
     document.body.appendChild(m); inp.focus();
   });
 }
+// ---- move to another moment from inside the floating canvas: a hidden copy of the video is seeked and the frame re-grabbed
+let gv = null, seekBusy = false, seekWant = null, resetZoom = () => {};
+async function guardDrawing() { // moving on discards the current drawing, so ask first (notes already added are untouched)
+  if (!shapes.length) return true;
+  if (!(await askConfirm('Move to another moment? The drawing on this frame will be cleared. Notes you already added are kept.', 'Move on', 'Stay here'))) return false;
+  shapes = []; draw(); return true;
+}
+async function regrab(t) {
+  seekWant = t; if (seekBusy) return; seekBusy = true;
+  try {
+    gv = gv || await hiddenVideo(); const r = $('#annr'); if (r && gv.duration) r.max = gv.duration;
+    while (seekWant !== null && snap) {
+      const w = Math.min(Math.max(0, seekWant), gv.duration || seekWant); seekWant = null;
+      await seekTo(gv, w);
+      const k = Math.min(1, 1280 / gv.videoWidth), c = document.createElement('canvas'); c.width = Math.round(gv.videoWidth * k); c.height = Math.round(gv.videoHeight * k);
+      c.getContext('2d').drawImage(gv, 0, 0, c.width, c.height);
+      if (!snap) return;
+      snap = {c, w: c.width, h: c.height, t: w}; shapes = [];
+      const b = $('#base'), ik = $('#ink'); // a frame picked from the grid can be a different size than a fresh grab: resize both layers
+      if (b && ik && (b.width !== c.width || b.height !== c.height)) { b.width = ik.width = c.width; b.height = ik.height = c.height; }
+      if (b) b.getContext('2d').drawImage(c, 0, 0); draw(); resetZoom();
+      const rr = $('#annr'), tt = $('#annt'); if (rr && document.activeElement !== rr) rr.value = w; if (tt) tt.textContent = fmtp(w);
+      ['#nt', '#ct'].forEach((s) => $(s) && ($(s).textContent = fmt(w)));
+    }
+  } catch { toast('Could not move to that moment'); } finally { seekBusy = false; }
+}
+function bindScrub() {
+  const r = $('#annr'); if (!r) return;
+  r.onpointerdown = (e) => { if (shapes.length) { e.preventDefault(); guardDrawing(); } }; // first try asks; once cleared, drag again
+  r.oninput = () => { if (!shapes.length) regrab(+r.value); };
+}
+async function stepTo(d) { if (!snap || !(await guardDrawing())) return; regrab(snap.t + d); }
 function inkEvents() {
   const ink = $('#ink'); let cs = null, drag = null;
   const pt = (e) => { const r = ink.getBoundingClientRect(); return [(e.clientX - r.left) * ink.width / r.width, (e.clientY - r.top) * ink.height / r.height]; };
@@ -746,6 +786,7 @@ function inkEvents() {
   // scroll = zoom toward the cursor (1x to 6x); middle-mouse drag = pan. pt() reads the transformed
   // bounding box, so drawing stays exact while zoomed. Applied to .cv, so merged()/mergedFull() are unaffected.
   const cv = ink.parentElement; let z = 1, tx = 0, ty = 0, pan = null;
+  resetZoom = () => { z = 1; tx = ty = 0; applyZ(); };
   const applyZ = () => { cv.style.transformOrigin = '0 0'; cv.style.transform = z === 1 ? '' : 'translate(' + tx + 'px,' + ty + 'px) scale(' + z + ')'; };
   cv.onwheel = (e) => {
     e.preventDefault(); const r = cv.getBoundingClientRect(), z2 = Math.min(6, Math.max(1, z * (e.deltaY < 0 ? 1.15 : 1 / 1.15)));
@@ -1204,6 +1245,7 @@ document.addEventListener('click', async (e) => {
   if (a === 'play' && v) return v.paused ? v.play() : v.pause();
   if (a === 'seek' && v) { v.pause(); v.currentTime = Math.max(0, v.currentTime + +x.dataset.d); return; }
   if (a === 'snap') return takeSnap();
+  if (a === 'sstep') return stepTo(+x.dataset.d);
   if (a === 'undo') { shapes.pop(); return draw(); }
   if (a === 'clear') { shapes = []; return draw(); }
   if (API && a === 'renderdraft') {

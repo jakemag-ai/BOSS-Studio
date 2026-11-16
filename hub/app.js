@@ -590,7 +590,7 @@
   // ---------- hosted site: the studio runs on the user's own computer, so the hosted hub explains how to get it ----------
   function getApp(install) {
     const steps = [
-      ['Get BOSS Studio', '<p>It is free and open on GitHub: <a href="https://github.com/vincentkmc2023/BOSS-Studio" target="_blank" rel="noopener"><b>github.com/vincentkmc2023/BOSS-Studio</b></a></p><ul><li>With Git: open a terminal in your Documents folder and run <code>git clone https://github.com/vincentkmc2023/BOSS-Studio.git</code></li><li>Without Git: on the GitHub page press <b>Code</b>, then <b>Download ZIP</b>, and unzip it into your Documents folder.</li></ul>'],
+      ['Get BOSS Studio', '<p>BOSS Studio is part of the BOSS program. Get it from the BOSS Studio page on GitHub: <a href="https://github.com/vincentkmc2023/BOSS-Studio" target="_blank" rel="noopener"><b>github.com/vincentkmc2023/BOSS-Studio</b></a></p><ul><li>With Git: open a terminal in your Documents folder and run <code>git clone https://github.com/vincentkmc2023/BOSS-Studio.git</code></li><li>Without Git: on the GitHub page press <b>Code</b>, then <b>Download ZIP</b>, and unzip it into your Documents folder.</li></ul>'],
       ['Open the folder in Claude Code and type start', '<ul><li>Open the <b>BOSS-Studio</b> folder in Claude Code: run <code>claude</code> inside that folder, or in the Claude desktop app open the <b>Code</b> tab, pick <b>Local</b> and choose the folder.</li><li>Type <code>start</code>. It checks your computer and installs anything missing (it asks you first), helps you set up free transcription (a Groq key, or the on-computer model with Python), renders a test video, and asks a few questions about your style.</li></ul><p class="gnote">Using Codex, Cursor or another agent? They can edit from the chat. The Editing App in step 3 runs on Claude Code.</p>'],
       ['Open the Editing App', '<ul><li>Double-click <code>hub/open-studio.bat</code> (Windows). A window stays open while the studio runs. Close it to stop.</li><li>The hub opens on your computer at <code>localhost:1988</code>. Click <b>Editing App</b> and start your first project.</li></ul>'],
     ];
@@ -602,7 +602,7 @@
     ];
     const why = [
       'Your footage never leaves your computer.',
-      'It is free and open source. You use your own AI agent.',
+      'It is part of the BOSS program by Krista Mashore Coaching. You use your own AI agent.',
       'Every project is a folder you can open, copy or back up.',
       'Nothing is posted or uploaded for you.',
     ];

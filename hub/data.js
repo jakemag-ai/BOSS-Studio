@@ -503,7 +503,6 @@ window.HUB = {
     {name: 'hyperframes (+ cli, registry, video-beats)', what: 'HTML-based video compositions, CLI, registry blocks, and beat planning.', where: 'kit/.agents/skills', used: false},
     {name: 'gsap · style-library · motion-showreel · video-storytelling', what: 'Animation reference, reusable card styles, showreel design, persistent-world storytelling.', where: 'kit/.agents/skills', used: false},
     {name: 'watch', what: 'Pulls frames and captions from a video (used on the Duncan Rogoff and Short references).', where: 'Claude plugin', used: true},
-    {name: 'lemo-opuscar', what: '66 film styles Claude makes in code, tuned for Opus 5.5. Installed, not run yet.', where: 'Plugin lemolab · ~/lemo-opuscar', used: false},
     {name: 'video-qa · ffmpeg-analyse-video', what: 'Review a finished video like an editor, or analyse one frame by frame.', where: 'Claude skills', used: false},
     {name: 'podcast-hook-clipper', what: 'Pulls verbatim hook moments from a transcript.', where: '~/.claude/skills', used: false},
   ],
@@ -526,7 +525,6 @@ window.HUB = {
   repos: [
     {name: 'vincentkmc2023/BOSS-Studio', what: 'BOSS Studio by Krista Mashore: this folder, the styles, the hub and the editing app.', url: 'https://github.com/vincentkmc2023/BOSS-Studio'},
     {name: 'nateherkai/herk-edit-kit', what: 'The editing engine installed into `kit/` (HyperFrames based).', url: 'https://github.com/nateherkai/herk-edit-kit'},
-    {name: 'lemomo-ai/lemo-opuscar', what: 'Plugin with 66 film styles for Opus 5.5.', url: 'https://github.com/lemomo-ai/lemo-opuscar'},
     {name: 'PeterL1n/RobustVideoMatting', what: 'The speaker cut-out model (mobilenetv3).', url: 'https://github.com/PeterL1n/RobustVideoMatting'},
     {name: 'elevenlabs/elevenlabs-mcp', what: 'The ElevenLabs MCP server (`uvx elevenlabs-mcp`).', url: 'https://github.com/elevenlabs/elevenlabs-mcp'},
     {name: 'heygen-com/hyperframes', what: 'HyperFrames, the HTML video framework the kit builds on.', url: 'https://github.com/heygen-com/hyperframes'},

@@ -524,13 +524,12 @@ window.HUB = {
 
   repos: [
     {name: 'vincentkmc2023/BOSSStudio', what: 'BOSS Studio by Krista Mashore: this folder, the styles, the hub and the editing app.', url: 'https://github.com/vincentkmc2023/BOSSStudio'},
-    {name: 'riecodes/free247editor', what: 'The original MIT-licensed editor BOSS Studio is built on.', url: 'https://github.com/riecodes/free247editor'},
     {name: 'nateherkai/herk-edit-kit', what: 'The editing engine installed into `kit/` (HyperFrames based).', url: 'https://github.com/nateherkai/herk-edit-kit'},
     {name: 'lemomo-ai/lemo-opuscar', what: 'Plugin with 66 film styles for Opus 5.5.', url: 'https://github.com/lemomo-ai/lemo-opuscar'},
     {name: 'PeterL1n/RobustVideoMatting', what: 'The speaker cut-out model (mobilenetv3).', url: 'https://github.com/PeterL1n/RobustVideoMatting'},
     {name: 'elevenlabs/elevenlabs-mcp', what: 'The ElevenLabs MCP server (`uvx elevenlabs-mcp`).', url: 'https://github.com/elevenlabs/elevenlabs-mcp'},
     {name: 'heygen-com/hyperframes', what: 'HyperFrames, the HTML video framework the kit builds on.', url: 'https://github.com/heygen-com/hyperframes'},
-    {name: 'bossstudio/remotion', what: 'Local Remotion project with every composition built.', local: 'Documents/BOSSStudio/remotion'},
+    {name: 'BOSSStudio/remotion', what: 'Local Remotion project with every composition built.', local: 'Documents/BOSSStudio/remotion'},
   ],
 
   outputs: [

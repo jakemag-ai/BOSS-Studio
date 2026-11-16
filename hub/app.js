@@ -288,9 +288,8 @@
         <div class="step"><h3>Open the folder in your agent</h3><p>In a terminal: <code>cd BOSSStudio</code> then <code>claude</code>. In the Claude desktop app, open the Code tab, pick Local and the folder.</p></div>
         <div class="step"><h3>Type <code>start</code></h3><p>The agent checks your computer, installs what is missing (with your OK), renders a test video and asks a few questions about your style.</p></div>
         <div class="step"><h3>Add transcription</h3><p>Free either way: a Groq key in <code>.env</code> as <code>GROQ_API_KEY</code> (copy <code>.env.example</code>), or leave it blank and use local faster-whisper (<code>pip install faster-whisper</code>).</p></div>
-        <div class="step"><h3>Start the studio</h3><p>Double-click <code>hub/open-studio.bat</code>. It opens <b>http://localhost:1988</b>. Keep that window open; close it to stop. Projects are saved as folders in <code>projects/</code>.</p></div>
+        <div class="step"><h3>Start the studio</h3><p>Double-click <code>hub/open-studio.bat</code>. It opens this hub at <b>http://localhost:1988/hub/</b>; click <b>Editing App</b> to work on your projects. Keep that window open; close it to stop. Projects are saved as folders in <code>projects/</code>.</p></div>
         <div class="step"><h3>Make your first video</h3><p>Press <b>New project</b>, drop a video or voiceover, write your first prompt, pick a style and a format, then press <b>Create project</b> (or <b>Magic Edit</b>).</p></div>
-        <div class="step"><h3>Open this hub</h3><p>Double-click <code>hub/open-hub.bat</code> for this guide at <b>http://localhost:1989</b>. It needs Python (<code>py</code>).</p></div>
       </div>
       <p class="lede" style="margin-top:22px">Voiceover, music and sound effects use ElevenLabs. BOSS asks before it calls any paid service. If the studio says it saves in this browser only, the server is not running: start it with <code>open-studio.bat</code>.</p>
     </section>

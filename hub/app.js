@@ -200,11 +200,11 @@
     <div class="ovhero">
       <div>
         <div class="eyebrow">BOSS Studio</div>
-        <h1>Your vision. <i>BOSS</i> does the editing.</h1>
+        <h1>Your vision. <i>BOSS</i> does the <span class="tw">edits</span>.</h1>
         <p class="lede">Turn your raw footage into polished videos with AI-powered editing. Upload your video, choose a style, and tell BOSS what you want. Review your edit and request changes in plain language.</p>
         <p style="margin-top:22px"><a class="btn app-cta" href="#studio">Start creating</a></p>
       </div>
-      <div class="studio mascot-wrap"><img class="mascot" src="assets/img/boss-mascot-scene.webp" width="1254" height="1254" alt="BOSS, the studio mascot: a French bulldog in a black jacket and headphones, holding a tablet with a play button, surrounded by Claude Code, AI Scripts and AI Voice icons and a video timeline" fetchpriority="high"></div>
+      <div class="studio mascot-wrap"><img class="mascot" src="assets/img/boss-hero.webp" width="1293" height="1173" alt="BOSS, the studio mascot: a French bulldog in an orange hoodie, cap and headphones, holding a video camera, surrounded by AI, clapperboard, film and timeline icons" fetchpriority="high"></div>
     </div>
     </div>
     <div class="band stats-band">
@@ -280,7 +280,7 @@
       <p class="lede">Four steps across the top of every project: Script, Instructions, Editing, Gallery. You review and send notes; BOSS (Claude) does the editing.</p>
       <div class="shots">
         <figure><img src="assets/img/app-1-new.jpg" alt="New project screen in BOSS Studio" loading="lazy"><figcaption><b>1 · Create a project.</b> Name it, drop a video or just a voiceover, write your first prompt, pick a style and a format. Add reference links to copy another video's editing, or press <b>Magic Edit</b> to let BOSS decide everything.</figcaption></figure>
-        <figure><img src="assets/img/app-2-editing.jpg" alt="Editing step in BOSS Studio with video, script or frames, and revision notes" loading="lazy"><figcaption><b>2 · Edit with notes.</b> Watch the draft, switch between <b>Script</b> and <b>Frames</b>, take a <b>Snapshot</b>, write revision notes (add an image or B-roll to any note), then press <b>Render Draft</b>.</figcaption></figure>
+        <figure><img src="assets/img/app-2-editing.jpg?v=2" alt="Editing step in BOSS Studio with video, script or frames, and revision notes" loading="lazy"><figcaption><b>2 · Edit with notes.</b> Watch the draft, switch between <b>Script</b> and <b>Frames</b>, take a <b>Snapshot</b>, write revision notes (add an image or B-roll to any note), then press <b>Render Draft</b>.</figcaption></figure>
       </div>
       <div class="steps appnotes">
         <div class="step"><h3>Script</h3><p>Click any word to jump there and cut what you don't want. Voiceover-only projects generate the voice here.</p></div>
@@ -736,6 +736,82 @@
   document.addEventListener('play', (e) => {
     if (e.target.tagName === 'VIDEO' && e.target.closest('.track')) document.querySelectorAll('.track video').forEach((v) => { if (v !== e.target) v.pause(); });
   }, true);
+  // hero headline typewriter: the last word types and deletes through the steps of an edit (the HTML keeps "edits" as the fallback)
+  if (!matchMedia('(prefers-reduced-motion:reduce)').matches) {
+    const words = ['script', 'voice', 'cutting', 'sound', 'music', 'style', 'edits', 'renders'];
+    const colors = ['#4d8dff', '#ff3fb4', '#ff6a2b', '#35d6ee', '#a874ff', '#ffc83a', '#ff6a2b', '#4d8dff']; // picked from the mascot graphic
+    let i = -1, n = 'edits'.length, erasing = true, started = false;
+    const tw = () => document.querySelector('.tw');
+    (function step() {
+      const el = tw(); if (!el) return setTimeout(step, 600);
+      const w = erasing ? el.textContent : words[i];
+      if (erasing) {
+        if (!started) { started = true; return setTimeout(step, 1800); }
+        el.textContent = w.slice(0, --n);
+        if (n <= 0) { erasing = false; i = (i + 1) % words.length; }
+        return setTimeout(step, 45);
+      }
+      el.style.color = colors[i]; el.textContent = w.slice(0, ++n);
+      if (n >= w.length) { erasing = true; return setTimeout(step, 1500); }
+      setTimeout(step, 85);
+    })();
+  }
+  // hero particles: drifting orange/white dots that link up when close, like a small neural net; pauses off-screen
+  if (!matchMedia('(prefers-reduced-motion:reduce)').matches) {
+    let cv, ctx, dots = [], W = 0, H = 0, mx = -1e4, my = -1e4;
+    const mk = () => ({ x: Math.random() * W, y: Math.random() * H, vx: (Math.random() - 0.5) * 0.35, vy: (Math.random() - 0.5) * 0.35, r: 1 + Math.random() * 1.6, o: Math.random() < 0.6 });
+    const frame = () => {
+      requestAnimationFrame(frame);
+      const hero = document.querySelector('.hero-grid');
+      if (!hero || document.hidden) return;
+      if (!cv || cv.parentNode !== hero) {
+        cv = document.createElement('canvas'); cv.className = 'hero-fx'; hero.appendChild(cv); ctx = cv.getContext('2d'); W = 0;
+      }
+      const r = hero.getBoundingClientRect();
+      if (r.bottom < 0 || r.top > innerHeight) return;
+      if (cv.clientWidth !== W || cv.clientHeight !== H) {
+        W = cv.clientWidth; H = cv.clientHeight; const d = devicePixelRatio || 1;
+        cv.width = W * d; cv.height = H * d; ctx.setTransform(d, 0, 0, d, 0, 0);
+        dots = Array.from({ length: Math.round(W * H / 11000) }, mk);
+      }
+      ctx.clearRect(0, 0, W, H);
+      for (const p of dots) {
+        p.x += p.vx; p.y += p.vy;
+        if (p.x < 0 || p.x > W) p.vx *= -1;
+        if (p.y < 0 || p.y > H) p.vy *= -1;
+      }
+      for (let i = 0; i < dots.length; i++) {
+        const p = dots[i];
+        for (let j = i + 1; j < dots.length; j++) {
+          const q = dots[j], d = Math.hypot(p.x - q.x, p.y - q.y);
+          if (d < 120) { ctx.strokeStyle = 'rgba(255,120,70,' + (0.22 * (1 - d / 120)).toFixed(3) + ')'; ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(q.x, q.y); ctx.stroke(); }
+        }
+        const near = Math.hypot(p.x - mx, p.y - my) < 140;
+        ctx.fillStyle = p.o ? (near ? '#ff9a6b' : '#ff5a2e') : (near ? '#fff' : 'rgba(246,243,236,.7)');
+        ctx.beginPath(); ctx.arc(p.x, p.y, p.r + (near ? 1 : 0), 0, 6.283); ctx.fill();
+      }
+    };
+    document.addEventListener('pointermove', (e) => { if (cv) { const b = cv.getBoundingClientRect(); mx = e.clientX - b.left; my = e.clientY - b.top; } });
+    requestAnimationFrame(frame);
+  }
+  // hero parallax: the pointer position (eased) moves the background layers by different amounts
+  if (!matchMedia('(prefers-reduced-motion:reduce)').matches) {
+    let tx = 0, ty = 0, x = 0, y = 0, on = false;
+    const tick = () => {
+      x += (tx - x) * 0.08; y += (ty - y) * 0.08;
+      const h = document.querySelector('.hero-grid');
+      if (h) { h.style.setProperty('--px', x.toFixed(3)); h.style.setProperty('--py', y.toFixed(3)); }
+      on = Math.abs(tx - x) + Math.abs(ty - y) > 0.002;
+      if (on) requestAnimationFrame(tick);
+    };
+    document.addEventListener('pointermove', (e) => {
+      const h = document.querySelector('.hero-grid'); if (!h) return;
+      const r = h.getBoundingClientRect();
+      tx = Math.max(-1, Math.min(1, ((e.clientX - r.left) / r.width - 0.5) * 2));
+      ty = Math.max(-1, Math.min(1, ((e.clientY - r.top) / r.height - 0.5) * 2));
+      if (!on) { on = true; requestAnimationFrame(tick); }
+    });
+  }
   route();
   document.querySelectorAll('.track').forEach(carState);
 })();

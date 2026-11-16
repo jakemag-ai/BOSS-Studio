@@ -312,15 +312,15 @@ main.wide>.hero-band{background:var(--hero-bg);color:var(--hero-fg);padding-top:
 .hero-grid{position:relative;overflow-x:clip;overflow-y:visible;isolation:isolate;z-index:2}
 .hero-grid::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
   background-image:linear-gradient(rgba(246,243,236,.12) 1px,transparent 1px),linear-gradient(90deg,rgba(246,243,236,.12) 1px,transparent 1px);
-  background-size:56px 56px;background-position:center top;
+  background-size:56px 56px;background-position:calc(50% + var(--px,0)*-18px) calc(var(--gy,0px) + var(--py,0)*-18px);animation:gridDrift 14s linear infinite;
   -webkit-mask-image:radial-gradient(ellipse 100% 115% at 60% 48%,#000 25%,transparent 85%);mask-image:radial-gradient(ellipse 100% 115% at 60% 48%,#000 25%,transparent 85%)}
-.hero-grid::after{content:"";position:absolute;z-index:-1;pointer-events:none;width:640px;height:640px;right:max(-160px,calc((100vw - 1180px)/-2));top:-170px;background:radial-gradient(circle,rgba(220,46,10,.20),transparent 66%)}
+.hero-grid::after{content:"";position:absolute;z-index:-1;pointer-events:none;width:640px;height:640px;right:max(-160px,calc((100vw - 1180px)/-2));top:-170px;background:radial-gradient(circle,rgba(220,46,10,.20),transparent 66%);translate:calc(var(--px,0)*-36px) calc(var(--py,0)*-24px);animation:glowFloat 9s ease-in-out infinite}
 
 /* mascot on the Overview hero: a warm orange glow behind it, soft shadow under it */
-.mascot-wrap{position:relative;align-self:stretch;min-height:400px;margin-left:-80px}
-.mascot-wrap::before{content:"";position:absolute;left:50%;top:52%;width:min(440px,92%);aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle,rgba(220,46,10,.42),rgba(220,46,10,0) 68%);pointer-events:none}
+.mascot-wrap{position:relative;align-self:stretch;min-height:400px;margin-left:0}
+.mascot-wrap::before{content:"";position:absolute;left:50%;top:52%;width:min(440px,92%);aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle,rgba(220,46,10,.42),rgba(220,46,10,0) 68%);pointer-events:none;animation:glowPulse 5s ease-in-out infinite}
 /* fills the hero height and runs 100px past the bottom edge, over the next band, for depth */
-.mascot{position:absolute;left:0;bottom:-100px;width:100%;height:calc(100% + 140px);object-fit:contain;object-position:left bottom;pointer-events:none;filter:drop-shadow(0 18px 22px rgba(0,0,0,.45))}
+.mascot{position:absolute;left:-6%;bottom:-100px;width:140%;max-width:none;height:calc(100% + 140px);object-fit:contain;object-position:left bottom;pointer-events:none;filter:drop-shadow(0 18px 22px rgba(0,0,0,.45));translate:calc(var(--px,0)*14px) calc(var(--py,0)*10px);animation:mascotBob 6s ease-in-out infinite}
 @media(max-width:860px){.mascot-wrap{min-height:0;margin-left:0}.mascot{position:relative;left:auto;bottom:auto;width:auto;height:auto;max-height:380px;max-width:100%}}
 
 /* chips and stats sit on their own lighter band under the slider */
@@ -431,3 +431,19 @@ main.wide>.stats-band{background:#E7E3DA;padding-top:34px;padding-bottom:42px;bo
 @media(max-width:900px){.vs{grid-template-columns:1fr}}
 .cs-hero{text-align:center}
 .cs-hero .lede{margin-left:auto;margin-right:auto}
+
+/* hero motion: the grid drifts, the glows breathe, the mascot bobs; the pointer adds parallax (see app.js) */
+@property --gy{syntax:"<length>";inherits:true;initial-value:0px}
+@keyframes gridDrift{to{--gy:56px}}
+@keyframes glowFloat{50%{transform:translate(-30px,26px) scale(1.12)}}
+@keyframes glowPulse{50%{transform:translate(-50%,-50%) scale(1.18);opacity:.75}}
+@keyframes mascotBob{50%{transform:translateY(-10px)}}
+@media(prefers-reduced-motion:reduce){.hero-grid::before,.hero-grid::after,.mascot,.mascot-wrap::before{animation:none}}
+
+/* headline typewriter word: nowrap so it never splits across lines, blinking caret after it */
+.tw{white-space:nowrap;color:var(--hero-accent)}
+.tw::after{content:"";display:inline-block;width:.07em;height:.85em;margin-left:.06em;vertical-align:-.06em;background:currentColor;animation:twBlink 1s steps(1) infinite}
+@keyframes twBlink{50%{opacity:0}}
+@media(prefers-reduced-motion:reduce){.tw::after{display:none}}
+
+.hero-fx{position:absolute;inset:0;width:100%;height:100%;z-index:-1;pointer-events:none}

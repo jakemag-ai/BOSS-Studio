@@ -3,7 +3,8 @@
 // It inlines the styles, data and script into one page, adds dark-mode and phone-edge handling,
 // and copies the sample images, videos and style guides next to it.
 // To update the hosted hub: edit hub/data.js (and hub/assets/), run this, then ask Claude to republish hub/online/.
-import { readFileSync, writeFileSync, mkdirSync, rmSync, cpSync, readdirSync, statSync, existsSync } from 'node:fs';
+import { readFileSync, writeFileSync, mkdirSync, rmSync, cpSync, readdirSync, statSync, existsSync, renameSync } from 'node:fs';
+import { execFileSync } from 'node:child_process';
 import { join, dirname, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -52,7 +53,7 @@ ${hosted}
 <div id="lightbox" class="lightbox" hidden><button class="lb-x" aria-label="Close">×</button><img alt=""><p></p></div>
 <div id="reader" class="reader" hidden><div class="rd-box"><div class="rd-bar"><b class="rd-title"></b><button class="rd-x" aria-label="Close">Close</button></div><pre></pre></div></div>
 <script>window.HUB_BASE = '';</script>
-<script>window.HUB_HOSTED = true;</script>
+<script>window.HUB_HOSTED = true;${process.env.NOEMBED ? ' window.HUB_NOEMBED = true;' : ''}</script>
 <script>
 ${safe(data)}
 </script>
@@ -70,6 +71,18 @@ writeFileSync(join(out, '_headers'), '/*\n  X-Robots-Tag: noindex, nofollow, noa
 
 // sample images and videos
 cpSync(join(hub, 'assets'), join(out, 'assets'), { recursive: true, filter: (s) => !/[\\/]mine([\\/]|$)/.test(s) }); // assets/mine = personal styles, never published
+
+// the Artifact host accepts files up to 15 MB: shrink any bigger sample video in the published copy only (needs ffmpeg)
+if (process.env.NOEMBED) {
+  const vids = join(out, 'assets', 'video');
+  for (const n of existsSync(vids) ? readdirSync(vids) : []) {
+    const f = join(vids, n);
+    if (/\.mp4$/i.test(n) && statSync(f).size > 14.5e6) {
+      execFileSync('ffmpeg', ['-v', 'error', '-y', '-i', f, '-vf', 'scale=1280:-2', '-c:v', 'libx264', '-crf', '28', '-c:a', 'aac', '-b:a', '112k', '-movflags', '+faststart', f + '.tmp.mp4']);
+      renameSync(f + '.tmp.mp4', f);
+    }
+  }
+}
 
 // style guides (every .md/.html under my-style-presets, not the code snapshots)
 const lib = join(root, 'my-style-presets');

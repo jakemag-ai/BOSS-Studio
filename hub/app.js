@@ -81,6 +81,30 @@
       [0, 1, 2].map((i) => '<circle cx="226" cy="' + (172 + i * 34) + '" r="7" fill="#E3A82B"/>' + bar(240, 168 + i * 34, 60 - i * 8, 8, '#F4EFE6')).join('') +
       '<path d="M222 286h20l5 7h31a6 6 0 0 1 6 6v14a6 6 0 0 1-6 6h-56a6 6 0 0 1-6-6v-21a6 6 0 0 1 6-6z" fill="#E3A82B"/>' +
       '<path d="M120 62l5 11 11 5-11 5-5 11-5-11-11-5 11-5z" fill="#E3A82B"/><path d="M410 48l4 9 9 4-9 4-4 9-4-9-9-4 9-4z" fill="#E3A82B" opacity=".8"/>'),
+
+    // Cobalt Captions: navy stage with word-by-word headline on the left, presenter pushed right, a pale-blue UI stage cutting in
+    'custom-1794781635123': () => svg('Illustration of a horizontal talking-head video: a navy stage with a word-by-word headline on the left, the presenter pushed to the right, and a pale-blue stage with a white UI card cutting in',
+      '<defs><clipPath id="cc1"><rect x="60" y="72" width="400" height="216" rx="10"/></clipPath></defs>' +
+      '<rect x="46" y="58" width="428" height="244" rx="18" fill="var(--ink)"/><rect x="60" y="72" width="400" height="216" rx="10" fill="#0A1150"/>' +
+      '<g clip-path="url(#cc1)"><circle cx="400" cy="130" r="120" fill="#4A5CF0" opacity=".42"/><circle cx="400" cy="130" r="70" fill="#4A5CF0" opacity=".35"/>' + person(396, 206, 1.7, '#121A4A', '#3a2a1c') + '</g>' +
+      bar(84, 104, 168, 18, '#FFFFFF') + bar(84, 132, 118, 18, '#A9B8FF') + bar(84, 160, 144, 18, '#FFFFFF') + '<rect x="236" y="160" width="4" height="18" rx="2" fill="#A9B8FF"/>' +
+      '<rect x="84" y="232" width="96" height="26" rx="13" fill="#2FBF71"/><path d="M99 245l5 5 9-10" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>' + bar(120, 241, 46, 8, '#fff') +
+      '<g transform="rotate(4 400 330)"><rect x="296" y="262" width="178" height="112" rx="14" fill="#E3E8FA" stroke="#fff" stroke-width="4"/><rect x="312" y="278" width="108" height="66" rx="9" fill="#fff" stroke="#C9D3F5" stroke-width="2"/>' +
+      bar(324, 292, 56, 9, '#3346D3') + bar(324, 308, 78, 6, '#C9D3F5') + bar(324, 322, 64, 6, '#C9D3F5') + '<circle cx="446" cy="312" r="14" fill="#2FBF71"/><path d="M439 312l5 5 9-10" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></g>' +
+      '<path d="M64 336l5 11 11 5-11 5-5 11-5-11-11-5 11-5z" fill="#3346D3" opacity=".7"/>'),
+
+    // Neon Explainer: glowing navy stage with a gradient headline, robot tiles and a counter, light stage cutting in
+    'explainer-video': () => svg('Illustration of a horizontal faceless explainer: a glowing navy stage with a gradient headline, three robot tiles and a counter, and a light blue-grey stage with a white card cutting in',
+      '<defs><linearGradient id="ng" x1="0" x2="1"><stop offset="0" stop-color="#6FF0D9"/><stop offset="1" stop-color="#8FA2FF"/></linearGradient><clipPath id="nc1"><rect x="60" y="72" width="400" height="216" rx="10"/></clipPath></defs>' +
+      '<rect x="46" y="58" width="428" height="244" rx="18" fill="var(--ink)"/><rect x="60" y="72" width="400" height="216" rx="10" fill="#070C3A"/>' +
+      '<g clip-path="url(#nc1)"><circle cx="260" cy="190" r="150" fill="#2D52E0" opacity=".34"/><circle cx="260" cy="190" r="86" fill="#2D52E0" opacity=".3"/></g>' +
+      bar(150, 92, 220, 18, 'url(#ng)') + bar(196, 118, 128, 11, '#fff') +
+      [0, 1, 2].map((i) => { const x = 100 + i * 110; return '<rect x="' + x + '" y="150" width="96" height="84" rx="14" fill="#0F1648" stroke="#2D52E0" stroke-width="2"/><rect x="' + (x + 30) + '" y="170" width="36" height="28" rx="9" fill="#6FF0D9"/><circle cx="' + (x + 40) + '" cy="183" r="4" fill="#070C3A"/><circle cx="' + (x + 56) + '" cy="183" r="4" fill="#070C3A"/><path d="M' + (x + 48) + ' 170v-9" stroke="#8FA2FF" stroke-width="3" stroke-linecap="round"/><circle cx="' + (x + 48) + '" cy="158" r="4" fill="#8FA2FF"/>' + bar(x + 24, 210, 48, 8, '#8FA2FF'); }).join('') +
+      '<rect x="190" y="250" width="140" height="26" rx="13" fill="none" stroke="#6FF0D9" stroke-width="2"/>' + bar(206, 259, 56, 8, '#6FF0D9') + bar(272, 259, 42, 8, '#8FA2FF') +
+      bar(76, 262, 88, 10, '#fff') +
+      '<g transform="rotate(-4 410 330)"><rect x="318" y="266" width="164" height="108" rx="14" fill="#E9EDF7" stroke="#fff" stroke-width="4"/><rect x="334" y="282" width="98" height="62" rx="9" fill="#fff" stroke="#D3DAF0" stroke-width="2"/>' +
+      bar(346, 296, 52, 9, '#3B5BF0') + bar(346, 312, 70, 6, '#D3DAF0') + bar(346, 326, 56, 6, '#D3DAF0') + '<circle cx="452" cy="314" r="14" fill="#3B5BF0"/><path d="M446 314h12M452 308v12" stroke="#fff" stroke-width="2.6" stroke-linecap="round"/></g>' +
+      '<path d="M436 90l4 9 9 4-9 4-4 9-4-9-9-4 9-4z" fill="#6FF0D9"/>'),
   };
   const heroArt = (s) => (ART[s.id] ? ART[s.id]() : s.cover ? '<img src="' + s.cover + '" alt="" style="width:100%;border-radius:22px;box-shadow:var(--shadow);max-height:420px;object-fit:cover">' : '');
 
@@ -180,39 +204,7 @@
         <p class="lede">Turn your raw footage into polished videos with AI-powered editing. Upload your video, choose a style, and tell BOSS what you want. Review your edit and request changes in plain language.</p>
         <p style="margin-top:22px"><a class="btn app-cta" href="#studio">Start creating</a></p>
       </div>
-      <div class="studio"><svg class="app-art" viewBox="0 0 780 600" role="img" aria-label="The Editing App: four steps, a video player beside capture, style, notes and final-version modules" xmlns="http://www.w3.org/2000/svg">
-        <rect x="10" y="10" width="760" height="580" rx="34" fill="#EDE6D9"/>
-        <g font-family="Montserrat,sans-serif" font-weight="800" font-size="13" text-anchor="middle">
-          <rect x="70" y="36" width="150" height="30" rx="15" fill="#1E9E5A"/><text x="145" y="56" fill="#fff">1 · SCRIPT</text>
-          <rect x="230" y="36" width="160" height="30" rx="15" fill="#1E9E5A"/><text x="310" y="56" fill="#fff">2 · INSTRUCTIONS</text>
-          <rect class="a-p3" x="400" y="36" width="120" height="30" rx="15" fill="#14110F"/><text x="460" y="56" fill="#fff">3 · EDITING</text>
-          <rect class="a-p4" x="530" y="36" width="120" height="30" rx="15" fill="#F6F3EC" stroke="#E1DACD"/><text class="a-t4" x="590" y="56" fill="#6B645C">4 · GALLERY</text>
-        </g>
-        <rect x="40" y="86" width="330" height="480" rx="22" fill="#fff" stroke="#E1DACD"/>
-        <rect x="58" y="104" width="294" height="360" rx="14" fill="#F6F3EC"/>
-        <rect x="140" y="116" width="130" height="336" rx="12" fill="#14110F"/>
-        <rect x="152" y="146" width="80" height="9" rx="4" fill="#F6F3EC"/><rect x="152" y="162" width="52" height="9" rx="4" fill="#DC2E0A"/>
-        <rect x="152" y="196" width="106" height="62" rx="9" fill="#fff"/><ellipse class="a-ann" cx="205" cy="228" rx="64" ry="38" fill="none" stroke="#E24B4A" stroke-width="4" stroke-linecap="round" pathLength="1"/>
-        <circle cx="205" cy="320" r="26" fill="#6B645C"/><ellipse cx="205" cy="402" rx="44" ry="22" fill="#6B645C"/>
-        <path d="M185 232l36 20-36 20z" fill="#DC2E0A" transform="translate(-12 -30)"/>
-        <rect x="58" y="484" width="294" height="7" rx="3.5" fill="#E1DACD"/><rect class="a-prog" x="58" y="484" width="294" height="7" rx="3.5" fill="#DC2E0A"/>
-        <circle cx="86" cy="526" r="17" fill="#14110F"/><path d="M81 518l12 8-12 8z" fill="#F6F3EC"/>
-        <rect x="112" y="512" width="34" height="28" rx="14" fill="#fff" stroke="#E1DACD"/><rect x="152" y="512" width="34" height="28" rx="14" fill="#fff" stroke="#E1DACD"/><rect x="192" y="512" width="34" height="28" rx="14" fill="#fff" stroke="#E1DACD"/>
-        <rect x="390" y="86" width="350" height="88" rx="18" fill="#fff" stroke="#E1DACD"/>
-        <rect x="408" y="104" width="120" height="9" rx="4" fill="#6B645C"/>
-        <rect x="408" y="126" width="112" height="32" rx="16" fill="#DC2E0A"/><rect x="530" y="126" width="132" height="32" rx="16" fill="#fff" stroke="#E1DACD"/>
-        <rect x="390" y="186" width="350" height="96" rx="18" fill="#fff" stroke="#E1DACD"/>
-        <rect x="408" y="204" width="130" height="9" rx="4" fill="#6B645C"/>
-        <rect x="408" y="226" width="200" height="34" rx="12" fill="#fff" stroke="#E1DACD"/><rect x="618" y="226" width="106" height="34" rx="12" fill="#fff" stroke="#E1DACD"/>
-        <rect x="390" y="294" width="350" height="166" rx="18" fill="#fff" stroke="#E1DACD"/>
-        <rect x="408" y="312" width="110" height="9" rx="4" fill="#6B645C"/>
-        <rect x="408" y="334" width="314" height="40" rx="12" fill="#fff" stroke="#E1DACD"/>
-        <g class="a-n1"><rect x="408" y="386" width="296" height="26" rx="10" fill="#EDE6D9"/><rect x="414" y="392" width="30" height="14" rx="5" fill="#14110F"/></g>
-        <g class="a-n2"><rect x="408" y="418" width="296" height="26" rx="10" fill="#EDE6D9"/><rect x="414" y="424" width="30" height="14" rx="5" fill="#14110F"/></g>
-        <rect x="390" y="472" width="350" height="94" rx="18" fill="#fff" stroke="#1E9E5A" stroke-width="3"/>
-        <rect x="408" y="490" width="120" height="9" rx="4" fill="#1E9E5A"/>
-        <rect class="a-final" x="408" y="512" width="220" height="38" rx="19" fill="#DC2E0A"/>
-      </svg></div>
+      <div class="studio mascot-wrap"><img class="mascot" src="assets/img/boss-mascot-scene.webp" width="1254" height="1254" alt="BOSS, the studio mascot: a French bulldog in a black jacket and headphones, holding a tablet with a play button, surrounded by Claude Code, AI Scripts and AI Voice icons and a video timeline" fetchpriority="high"></div>
     </div>
     </div>
     <div class="band stats-band">

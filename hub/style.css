@@ -309,12 +309,19 @@ main.wide>.hero-band{background:var(--hero-bg);color:var(--hero-fg);padding-top:
 @media(max-width:900px){.hero-band button.hb{width:34px;height:34px;font-size:1.4rem;top:34%}.hb-prev{left:-10px}.hb-next{right:-10px}}
 
 /* Overview hero: a fine blueprint grid that fades out toward the edges, with a soft orange glow behind the graphic */
-.hero-grid{position:relative;overflow:hidden;isolation:isolate}
+.hero-grid{position:relative;overflow-x:clip;overflow-y:visible;isolation:isolate;z-index:2}
 .hero-grid::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
   background-image:linear-gradient(rgba(246,243,236,.12) 1px,transparent 1px),linear-gradient(90deg,rgba(246,243,236,.12) 1px,transparent 1px);
   background-size:56px 56px;background-position:center top;
   -webkit-mask-image:radial-gradient(ellipse 100% 115% at 60% 48%,#000 25%,transparent 85%);mask-image:radial-gradient(ellipse 100% 115% at 60% 48%,#000 25%,transparent 85%)}
 .hero-grid::after{content:"";position:absolute;z-index:-1;pointer-events:none;width:640px;height:640px;right:max(-160px,calc((100vw - 1180px)/-2));top:-170px;background:radial-gradient(circle,rgba(220,46,10,.20),transparent 66%)}
+
+/* mascot on the Overview hero: a warm orange glow behind it, soft shadow under it */
+.mascot-wrap{position:relative;align-self:stretch;min-height:400px;margin-left:-80px}
+.mascot-wrap::before{content:"";position:absolute;left:50%;top:52%;width:min(440px,92%);aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle,rgba(220,46,10,.42),rgba(220,46,10,0) 68%);pointer-events:none}
+/* fills the hero height and runs 100px past the bottom edge, over the next band, for depth */
+.mascot{position:absolute;left:0;bottom:-100px;width:100%;height:calc(100% + 140px);object-fit:contain;object-position:left bottom;pointer-events:none;filter:drop-shadow(0 18px 22px rgba(0,0,0,.45))}
+@media(max-width:860px){.mascot-wrap{min-height:0;margin-left:0}.mascot{position:relative;left:auto;bottom:auto;width:auto;height:auto;max-height:380px;max-width:100%}}
 
 /* chips and stats sit on their own lighter band under the slider */
 main.wide>.stats-band{background:#E7E3DA;padding-top:34px;padding-bottom:42px;border-bottom:1px solid var(--line)}

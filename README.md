@@ -117,7 +117,7 @@ bossstudio/
   tools/             free transcription
   inbox/<project>/   your raw videos, one folder per video or conversation
   outbox/<project>/  drafts and finals, same folder name as in inbox
-  my-style.md        your style (created at setup, stays private)
+  my-style.md        your Boss Style (created at setup)
   my-rules.md        rules learned from your notes (stays private)
   my-sounds/         your music and sound effects
   kit/               the editing engine (installed by setup)

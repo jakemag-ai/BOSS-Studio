@@ -53,3 +53,11 @@ remotion/public/
 # A different, unrelated project that happens to live in this folder
 ai-agents-before-after/
 check02/
+
+# Personal additions (each person's own saved styles and rules). The repo never edits these,
+# so pulling updates never conflicts with them. .maintainer marks the repo owner's machine.
+.maintainer
+hub/my-styles.js
+hub/assets/mine/
+my-personal-rules.md
+my-style-presets/_mine/

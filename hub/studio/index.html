@@ -213,10 +213,12 @@ body.darknew .c,body.darknew .sty,body.darknew .sty b{color:var(--ink)}
 <div id="modal" class="modal" hidden><div class="c"><p class="h"><i class="ti ti-send"></i><span id="mtitle">Revision request</span></p><pre id="prompt"></pre><div class="r"><button class="a" data-act="copyprompt"><i class="ti ti-copy"></i>Copy prompt</button><button data-act="closemodal">Close</button></div><p class="mut">Draft prototype: this window only gives you the prompt. Copy it into a BOSS chat in this workspace. The raw video and snapshots are not saved to a project folder yet, so tell BOSS where your video file is.</p></div></div>
 <div id="stymodal" class="modal" hidden><div class="c" id="stymodalbody"></div></div>
 <script src="../data.js"></script>
+<script src="../my-styles.js"></script>
 <script>
 const $ = (s, r = document) => r.querySelector(s);
 const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;'}[c]));
 const FR = parent !== window; // framed inside the hub page
+let MAINTAINER = false; // true only on the repo owner's copy (a .maintainer file): their saved styles go into the shared set
 const HUBD = window.HUB || parent.HUB; // the hub data: loaded by ../data.js, or the parent page's
 const P = location.protocol === 'about:' ? '' : '../'; // asset prefix: the hosted copy is a srcdoc next to assets/
 const STY = HUBD.styles;
@@ -1011,6 +1013,12 @@ function addStylePrompt(slug) {
     '\n\nDo not touch hub/data.js or any live (non-_pending) style folder — this is only a proposal, waiting for my review.';
 }
 function approveStylePrompt(prop) {
+  if (!MAINTAINER) { // a teammate's copy: keep their style in personal files so pulling updates never conflicts
+    return 'I approved the pending style proposal at my-style-presets/_pending/' + prop.id + '/. This is MY OWN style on this computer, so keep it out of the shared files. Move that folder to my-style-presets/_mine/<group>/' + prop.id + '/ (create _mine; pick a short group name), renaming STYLE-GUIDE.md to match the naming of other style guides.' +
+      '\n\nCopy its media to hub/assets/mine/: cover.jpg to hub/assets/mine/' + prop.id + '-cover.jpg, each shots/shot-NN.jpg to hub/assets/mine/' + prop.id + '-N.jpg in order, and sample.mp4 to hub/assets/mine/' + prop.id + '-sample.mp4.' +
+      '\n\nThen add the style to hub/my-styles.js (create it if missing) as window.HUB.styles.push({...}), using my-style-presets/_pending/' + prop.id + '/meta.json for id, name, tagline and formats. Use the same fields as the entries in hub/data.js, but write plain paths instead of IMG()/VID(): cover "assets/mine/' + prop.id + '-cover.jpg", shots {src: "assets/mine/' + prop.id + '-N.jpg", cap: "..."}, samples {title, src: "assets/mine/' + prop.id + '-sample.mp4", at, note}, and group: "My styles".' +
+      '\n\nDo NOT edit hub/data.js, my-rules.md, my-style-presets/INDEX.md or any shipped style folder. Tell me the final path you used when done.';
+  }
   return 'I approved the pending style proposal at my-style-presets/_pending/' + prop.id + '/. Move that folder into my-style-presets/ proper (pick whichever existing group subfolder fits best, e.g. motion-graphics-reels or talking-head-edits, or make a new one if none fit), renaming STYLE-GUIDE.md to match this repo\'s existing naming convention for other style guides.' +
     '\n\nThen copy its media into hub/assets/ the same way the other hub/data.js entries do: cover.jpg to hub/assets/img/' + prop.id + '-cover.jpg, each shots/shot-NN.jpg to hub/assets/img/' + prop.id + '-N.jpg in order, and sample.mp4 to hub/assets/video/' + prop.id + '-sample.mp4.' +
     '\n\nThen add a matching entry to hub/data.js\'s STY array using my-style-presets/_pending/' + prop.id + '/meta.json for its id, name, tagline and formats; IMG(\'' + prop.id + '-cover\') for cover; each shots entry from meta.json as {src: IMG(\'' + prop.id + '-N\'), cap: "<its caption>"}; and each samples entry from meta.json as {title: "<its title>", src: VID(\'' + prop.id + '-sample\'), at: <its at value>, note: "<its note>"} — following the exact shape of the other entries already there (see the IMG()/VID() helpers at the top of hub/data.js). Tell me the final path you used when done.';
@@ -1297,7 +1305,7 @@ if (FR) { // inside the hub: use its header, size to the content, send style cli
   document.addEventListener('click', (e) => { const a = e.target.closest('[data-hubstyle]'); if (a) { e.preventDefault(); parent.location.hash = '#style-' + a.dataset.hubstyle; } });
 }
 (async () => {
-  try { API = (await fetch('/api/ping', {headers: H})).ok; } catch {}
+  try { const pr = await fetch('/api/ping', {headers: H}); API = pr.ok; MAINTAINER = !!(await pr.json()).maintainer; } catch {}
   if (API) { try { projects = await jf('GET', '/api/projects'); } catch { projects = []; } }
   $('.badge').textContent = API ? 'Saving to projects/ folder' : 'Draft · saves in this browser only';
   document.addEventListener('fullscreenchange', () => { const v = $('#v'); if (v) v.controls = !!document.fullscreenElement; });

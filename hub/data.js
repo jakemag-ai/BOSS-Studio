@@ -216,7 +216,7 @@ window.HUB = {
       short: 'Light Explainer',
       name: 'Light Explainer',
       titleHtml: 'Light <i>Explainer</i>',
-      status: 'Default in my-style.md',
+      status: 'Default · Boss Style',
       kind: 'Video · horizontal',
       cover: IMG('clean-3'),
       tagline: 'A warm off-white field, near-black type and one loud orange-red accent. A circle presenter bottom-right, one idea per screen, full-bleed orange slates between sections.',
@@ -238,7 +238,7 @@ window.HUB = {
       ],
       notes: ['Hex values are eyeballed from frames. No music or sound rules yet: the reference audio was not analysed.'],
       files: [
-        ['my-style.md', 'The LIVE style file the editor reads (must keep this name)'],
+        ['my-style.md', 'Boss Style: the LIVE default style the editor reads (the file must keep this name)'],
         ['my-style-presets/youtube-explainers/clean-motion-explainer/Clean-Motion-Explainer_style-guide.md', 'Reference copy of the style'],
         ['my-style-presets/youtube-explainers/clean-motion-explainer/Clean-Motion-Explainer_reference-analysis.md', 'Longer analysis with a beat map of the reference'],
         ['Artifact: Editing styles viewer', 'https://claude.ai/artifact/Q1UaWDUbZv4oSg3ydNH8V5 (private page made in the "Style guide and beat map" session)'],
@@ -469,7 +469,7 @@ window.HUB = {
 
   cheat: [
     ['start', 'Sets up the editor and your style (first time only).'],
-    ['edit this', 'Cuts a video dropped in `inbox/` using `my-style.md` and renders a draft to `outbox/`.'],
+    ['edit this', 'Cuts a video dropped in `inbox/` using your Boss Style (`my-style.md`) and renders a draft to `outbox/`.'],
     ['use Kinetic Type', 'Builds in the orange-red typewriter + iris-wipe style (vertical).'],
     ['use Kinetic Type + Head Pop-Out', 'Same, with the presenter in a rounded box and her head popping out in some scenes.'],
     ['use Pastel Punch', 'The beige, navy and hot-pink carousel look.'],

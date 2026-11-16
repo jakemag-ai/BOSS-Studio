@@ -181,7 +181,7 @@ const dataUrl = (u) => { const m = /^data:image\/(jpeg|png);base64,(.+)$/.exec(u
 async function api(req, res, url) {
   const parts = url.pathname.split('/').filter(Boolean).slice(1); // after /api
   const [a, id, b] = parts;
-  if (a === 'ping') return send(res, 200, { ok: true });
+  if (a === 'ping') return send(res, 200, { ok: true, maintainer: existsSync(join(ROOT, '.maintainer')) });
   if (a === 'style-proposals') {
     const dir = pendingDir(id);
     if (req.method === 'GET') {
@@ -312,6 +312,7 @@ async function api(req, res, url) {
 function serve(req, res, url) {
   let rel = decodeURIComponent(url.pathname);
   if (rel === '/') { res.writeHead(302, { location: '/hub/#studio' }); return res.end(); }
+  if (rel === '/hub/my-styles.js' && !existsSync(join(ROOT, 'hub', 'my-styles.js'))) { res.writeHead(200, { 'content-type': MIME['.js'] }); return res.end('// no personal styles yet\n'); }
   const file = normalize(join(ROOT, rel));
   const top = file.slice(ROOT.length + 1).split(sep)[0];
   if (!file.startsWith(ROOT + sep) || !SHOW.includes(top) || file.slice(ROOT.length).split(sep).some((x) => x.startsWith('.'))) { res.writeHead(404); return res.end('not found'); }

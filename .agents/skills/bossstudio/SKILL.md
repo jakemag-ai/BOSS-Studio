@@ -102,7 +102,7 @@ any other paid API). The default is to use none of them.
 3. From the repo root: `node tools/transcribe.mjs kit/video-projects/<slug>/assets/raw.mp4`
    (add `--local` when `.env` has no Groq key). This writes `raw.json` and replaces the kit's
    ElevenLabs step.
-4. Read `my-style.md` and `my-rules.md`. Rules beat style; style beats the kit's house style.
+4. Read `my-style.md`, `my-rules.md` and `my-personal-rules.md` (if it exists). Rules beat style; style beats the kit's house style.
 5. Read `kit/AGENTS.md`, then follow the kit skill `short-form-edit` for vertical or short
    videos (under 3 minutes) or `edit-video` for long horizontal ones. Use the user's own
    footage. Extra clips in `inbox/` that the user calls B-roll are B-roll. Use `my-sounds/` for
@@ -116,7 +116,7 @@ any other paid API). The default is to use none of them.
 
 - Apply each note, render the next version (`-v2`, `-v3`, ...), and open it.
 - When a note is a lasting preference (it says always or never, it is about style, or the same
-  kind of note comes twice), add it to `my-rules.md` as one rule plus the user's exact words
+  kind of note comes twice), add it to `my-personal-rules.md` (or `my-rules.md` only when `.maintainer` exists) as one rule plus the user's exact words
   and the date. Confirm in one line: "Saved as a rule: ...". Never write rules into `kit/`;
   setup can replace it.
 - When the user approves ("ok na", "approved", "final"), render at final quality to
@@ -128,4 +128,20 @@ any other paid API). The default is to use none of them.
 
 - Post, upload, or send a video anywhere.
 - Print or log the Groq key.
-- Commit or publish anything in `inbox/`, `outbox/`, `my-style.md`, `my-rules.md`, or `my-sounds/`.
+- Commit or publish anything in `inbox/`, `outbox/`, `my-style.md`, `my-rules.md`, `my-personal-rules.md`, or `my-sounds/`.
+
+## Shared files and personal files (so updates never conflict)
+
+This repo is updated from GitHub. Files the repo owner ships (`hub/data.js`, `my-rules.md`,
+`my-style-presets/` except `_mine/`, `my-style.md`) are overwritten by updates, so a user's own
+additions go in separate personal files that updates never touch:
+
+- Lasting rules from the user's notes: `my-personal-rules.md` (create it if missing), NOT `my-rules.md`.
+  Always read both rule files; the personal one wins on a clash.
+- A new saved style: guide folder under `my-style-presets/_mine/`, media under `hub/assets/mine/`,
+  and its registry entry in `hub/my-styles.js` (`window.HUB.styles.push({...})`), NOT `hub/data.js`.
+- Never edit `hub/data.js`, `my-rules.md`, `my-style-presets/INDEX.md` or a shipped style for a user's own addition.
+- Exception: if a `.maintainer` file exists in the repo root, this is the owner's copy. Write to the
+  shared files as usual, and the owner commits them.
+- If the user asks to update ("update BOSS Studio"): commit their changes first, then `git pull`.
+  Their projects, footage, `.env` and personal files are git-ignored and stay untouched.

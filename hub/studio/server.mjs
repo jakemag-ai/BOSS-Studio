@@ -11,7 +11,7 @@ import { fileURLToPath } from 'node:url';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
 const PROJECTS = join(ROOT, 'projects');
-const PORT = +process.env.PORT || 4630;
+const PORT = +process.env.PORT || 1988;
 const SHOW = ['hub', 'my-style-presets', 'projects']; // the only folders served as files
 const MIME = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.mjs': 'text/javascript; charset=utf-8', '.css': 'text/css; charset=utf-8', '.json': 'application/json', '.md': 'text/markdown; charset=utf-8', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.png': 'image/png', '.gif': 'image/gif', '.svg': 'image/svg+xml', '.mp4': 'video/mp4', '.mov': 'video/quicktime', '.webm': 'video/webm', '.mp3': 'audio/mpeg', '.wav': 'audio/wav' };
 mkdirSync(PROJECTS, { recursive: true });

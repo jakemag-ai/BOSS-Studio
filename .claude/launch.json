@@ -4,8 +4,8 @@
     {
       "name": "editing-hub",
       "runtimeExecutable": "py",
-      "runtimeArgs": ["-m", "http.server", "4600"],
-      "port": 4600
+      "runtimeArgs": ["-m", "http.server", "1989"],
+      "port": 1989
     }
   ]
 }

@@ -983,6 +983,14 @@ function scriptAct(a) {
   }
   return false;
 }
+// keep the spoken word inside the script box: while playing, glide to it when it leaves the view (unless the user is
+// scrolling the script themselves); after a scrub or seek while paused, jump straight to it. Scrolls only the script box, never the page.
+function followWord(el, n, jump) {
+  if (!jump && Date.now() - (el._us || 0) < 3000) return;
+  const cr = el.getBoundingClientRect(), nr = n.getBoundingClientRect(), pad = Math.min(60, cr.height / 4);
+  if (nr.top >= cr.top + pad && nr.bottom <= cr.bottom - pad) return;
+  el.scrollTo({top: el.scrollTop + (nr.top - cr.top) - cr.height / 2 + nr.height / 2, behavior: jump ? 'auto' : 'smooth'});
+}
 function bindScriptVideo(vid = 'v') {
   const v = $('#' + vid), el = $('#scr'); if (!el) return;
   if (v && !v._scr) {
@@ -995,12 +1003,13 @@ function bindScriptVideo(vid = 'v') {
       const t = v.currentTime;
       if (S.preview && !v.paused) { const r = cutRanges(S.words, struckSet()).find(([a, b]) => t >= a && t < b - 0.01); if (r) v.currentTime = r[1]; }
       let i = S.words.findIndex((w) => w.end > t); if (i < 0) i = S.words.length - 1;
-      if (i !== S.now) { const o = el2.querySelector('.now'); o && o.classList.remove('now'); const n = el2.querySelector('[data-k="' + i + '"]'); if (n) { n.classList.add('now'); if (!v.paused) n.scrollIntoView({block: 'nearest'}); } S.now = i; }
+      if (i !== S.now) { const o = el2.querySelector('.now'); o && o.classList.remove('now'); const n = el2.querySelector('[data-k="' + i + '"]'); if (n) { n.classList.add('now'); followWord(el2, n, v.paused); } S.now = i; }
       if (!v.paused) requestAnimationFrame(tick);
     };
     v.addEventListener('play', () => requestAnimationFrame(tick)); v.addEventListener('seeked', tick);
   }
   if (el._bound === vid) return; el._bound = vid;
+  ['wheel', 'touchmove', 'pointerdown'].forEach((ev) => el.addEventListener(ev, () => { el._us = Date.now(); }, {passive: true}));
   const key = (e) => { const x = e.target.closest('[data-k]'); return x ? +x.dataset.k : null; };
   const span = (a, b) => S.keys.filter((k) => k >= Math.min(a, b) && k <= Math.max(a, b));
   el.addEventListener('pointerdown', (e) => {

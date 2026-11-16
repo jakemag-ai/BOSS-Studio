@@ -359,7 +359,7 @@ window.HUB = {
       formats: ['16:9 horizontal', '1920×1080 · 25 fps', 'Drafts 1728×972'],
       invoke: ['use Cobalt Captions'],
       origin: 'Written from draft v2 of the "Magic Edit Mode" project (First AI Team Hire), whose edit copied a Facebook reel\'s style. Saved in `my-style-presets/youtube-explainers/cobalt-cards/`.',
-      samples: [{title: 'Magic Edit Mode · draft v2', src: VID('custom-1794781635123-sample'), at: 4, note: '1:59, 1728×972 draft. First AI Team Hire, edited in this style.'}],
+      samples: [{title: 'Magic Edit Mode · draft v2', src: VID('custom-1794781635123-sample'), at: 4, wide: true, note: '1:59, 1728×972 draft. First AI Team Hire, edited in this style.'}],
       shots: [
         {src: IMG('custom-1794781635123-1'), cap: '0:01 · hook headline'},
         {src: IMG('custom-1794781635123-2'), cap: '0:04 · count-up number'},
@@ -405,7 +405,7 @@ window.HUB = {
       formats: ['16:9 horizontal', '1920×1080 · 30 fps', 'Drafts 1440×810'],
       invoke: ['use Neon Explainer'],
       origin: 'Recreated from a Facebook reel about AI employees (faceless, selling removed) and approved at draft v3 of `fb-reel-recreate`. Saved in `my-style-presets/youtube-explainers/explainer-video/`.',
-      samples: [{title: 'AI employees · draft v3', src: VID('explainer-video-sample'), at: 16, note: '1:37, 1440×810 draft. Krista voiceover, ElevenLabs music and effects.'}],
+      samples: [{title: 'AI employees · draft v3', src: VID('explainer-video-sample'), at: 16, wide: true, note: '1:37, 1440×810 draft. Krista voiceover, ElevenLabs music and effects.'}],
       shots: [
         {src: IMG('explainer-video-1'), cap: '0:04 · avatar row'},
         {src: IMG('explainer-video-2'), cap: '0:16 · counters'},

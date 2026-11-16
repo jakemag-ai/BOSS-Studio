@@ -231,7 +231,7 @@ td .tag{white-space:nowrap}
 /* horizontal videos: full-width row on style pages, bigger card in the carousel */
 .videos .vid.wide{flex:1 1 100%;max-width:100%}
 .videos .vid.wide video{width:100%}
-.track .vid.wide{flex:0 0 min(640px,86%)}
+.track .vid.wide{flex:0 0 min(600px,86%)} /* two vertical cards (290px each) plus the 20px gap */
 
 /* horizontal styles: big screenshots */
 .gallery.xl{grid-template-columns:repeat(auto-fill,minmax(min(100%,380px),1fr));gap:18px}

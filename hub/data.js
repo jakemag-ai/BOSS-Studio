@@ -314,7 +314,10 @@ window.HUB = {
       formats: ['9:16 vertical', '1080×1920 · 30 fps', '1:27.5 final'],
       invoke: ['use Dark Terminal'],
       origin: 'Script modelled on an Adobe Acrobat AI Assistant ad (pain-question hook, "what if" turn, silent screen walkthrough, payoff, CTA) for Entrepreneurs. No screen recording existed, so 12 mock BOSS screens were built and labelled ILLUSTRATION.',
-      samples: [{title: 'BOSS Entrepreneur Short · final', src: VID('boss-ui-short-onyx-gold'), at: 20, note: 'Voice + music + effects.'}],
+      samples: [
+        {title: 'Dark Terminal Test · draft v2 (latest)', src: VID('dark-terminal-draft-v2'), at: 20, note: '1:38 vertical draft made with Magic Edit in the studio. Krista voiceover, fast-paced graphics with B-roll and overlays.'},
+        {title: 'BOSS Entrepreneur Short · final', src: VID('boss-ui-short-onyx-gold'), at: 20, note: 'Voice + music + effects.'},
+      ],
       shots: [
         ...[['01', 'Screen 1'], ['03', 'Screen 3'], ['05', 'Screen 5'], ['07', 'Screen 7'], ['09', 'Screen 9'], ['12', 'Screen 12']].map(([n, c]) => ({src: IMG('bossui-' + n), cap: c})),
         {src: IMG('bossui-sheet'), cap: 'Contact sheet of all 12 screens'},

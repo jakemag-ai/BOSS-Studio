@@ -207,6 +207,10 @@
       <div class="studio mascot-wrap"><img class="mascot" src="assets/img/boss-hero.webp" width="1293" height="1173" alt="BOSS, the studio mascot: a French bulldog in an orange hoodie, cap and headphones, holding a video camera, surrounded by AI, clapperboard, film and timeline icons" fetchpriority="high"></div>
     </div>
     </div>
+    <section id="developed-by">
+      <div class="eyebrow">The team</div><h2>Developed <i>by</i></h2>
+      <div class="devs">${[['Jeff', 'jeff'], ['Vincent', 'vincent'], ['Ivryn', 'ivryn']].map(([n, f]) => `<figure class="dev"><div class="ph"><img src="assets/img/dev-${f}.webp?v=3" width="360" height="360" alt="${n}" loading="lazy"></div><figcaption><b>${n}</b></figcaption></figure>`).join('')}</div>
+    </section>
     <div class="band stats-band">
     <nav class="jump" aria-label="Jump to a section">
       ${[['styles', 'Styles'], ['samples', 'Samples'], ['library', 'Style files'], ['pipeline', 'Pipeline'], ['setup', 'Setup'], ['appworks', 'The app'], ['cheat', 'Cheat sheet'], ['skills-o', 'Skills'], ['conn-o', 'Connectors'], ['repos-o', 'Repos'], ['rules', 'Rules']]

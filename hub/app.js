@@ -172,7 +172,7 @@
   function overview() {
     const nVideos = D.styles.reduce((n, s) => n + (s.samples ? s.samples.length : 0), 0);
     return `
-    <div class="band hero-band">
+    <div class="band hero-band hero-grid">
     <div class="ovhero">
       <div>
         <div class="eyebrow">BOSS Studio</div>

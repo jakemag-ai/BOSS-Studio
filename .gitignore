@@ -10,7 +10,7 @@ app/dist/
 docs/private/
 
 # Your footage, renders, and keys stay local (but my-style.md/my-rules.md DO go
-# into the BOSSStudio repo, so a teammate's BOSS renders the same way yours does)
+# into the BOSS-Studio repo, so a teammate's BOSS renders the same way yours does)
 .env
 inbox/*
 outbox/*

@@ -2,7 +2,7 @@
 
 **By Krista Mashore.** Built on the MIT-licensed [free247editor](https://github.com/riecodes/free247editor) by riecodes and the [Herk Edit Kit](https://github.com/nateherkai/herk-edit-kit) by Nate Herk.
 
-![License](https://img.shields.io/github/license/vincentkmc2023/BOSSStudio?style=flat-square&color=green) ![Agent Skills](https://img.shields.io/badge/Agent-Skills-8A2BE2?style=flat-square) ![Claude Code](https://img.shields.io/badge/Claude%20Code-ready-D97757?style=flat-square&logo=anthropic&logoColor=white) ![Price](https://img.shields.io/badge/price-free-brightgreen?style=flat-square)
+![License](https://img.shields.io/github/license/vincentkmc2023/BOSS-Studio?style=flat-square&color=green) ![Agent Skills](https://img.shields.io/badge/Agent-Skills-8A2BE2?style=flat-square) ![Claude Code](https://img.shields.io/badge/Claude%20Code-ready-D97757?style=flat-square&logo=anthropic&logoColor=white) ![Price](https://img.shields.io/badge/price-free-brightgreen?style=flat-square)
 
 A free, open-source personal video editor that runs inside your AI coding agent: Claude Code,
 Codex, Cursor, Antigravity, Gemini CLI, GitHub Copilot, Windsurf, and others that support
@@ -21,7 +21,7 @@ Open your agent in any folder (for example `claude` or `codex` in a terminal, or
 in Cursor or Antigravity) and paste:
 
 ```text
-Set up bossstudio for me. Clone https://github.com/vincentkmc2023/BOSSStudio.git into my
+Set up bossstudio for me. Clone https://github.com/vincentkmc2023/BOSS-Studio.git into my
 Documents folder (install Git first if it is missing, after asking me). Then follow the
 "start" steps in its skill, .agents/skills/bossstudio/SKILL.md: run node setup.mjs from
 that folder, install anything it reports missing after asking me, help me choose free
@@ -36,7 +36,7 @@ Claude desktop app works too: in its Code tab, pick Local and the folder.
 
 ### Step by step
 
-1. **Get it.** `git clone https://github.com/vincentkmc2023/BOSSStudio.git`, or use
+1. **Get it.** `git clone https://github.com/vincentkmc2023/BOSS-Studio.git`, or use
    *Code > Download ZIP* on GitHub and unzip it.
 2. **Open the folder in your agent.** In a terminal: `cd bossstudio` then `claude` or
    `codex`. In Cursor, Antigravity, or Windsurf, open the folder as the workspace.

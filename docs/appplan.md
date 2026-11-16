@@ -5,7 +5,7 @@ top to bottom before writing code.
 
 ## What we are building
 
-A free Windows app (MIT, in vincentkmc2023/BOSSStudio) that installs everything itself. The
+A free Windows app (MIT, in vincentkmc2023/BOSS-Studio) that installs everything itself. The
 user drops a raw talking-head video on the window and gets an edited MP4 plus an SRT back.
 The editing engine is the user's own official Claude Code or Codex CLI, run hidden by the
 app. The app never reads, stores or passes on the user's credentials.

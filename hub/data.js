@@ -6,7 +6,7 @@ const shots = (slug, count, caps) => Array.from({length: count}, (_, i) => ({src
 
 window.HUB = {
   // Folder the "Start a project" button opens in Claude (the Video Editing workspace).
-  workspace: 'Documents/BOSSStudio',
+  workspace: 'Documents/BOSS-Studio',
   intro:
     'One home for everything we use to edit video, short-form and long-form: every editing style, the skills, connectors and repos behind them, the reference studies, the voice, music and cut-out tools, and the finished videos. It also holds the Editing App, where you upload a raw video, pick a style (or none), review frames, and send revisions to Claude.',
 
@@ -495,7 +495,7 @@ window.HUB = {
   ],
 
   skills: [
-    {name: 'bossstudio', what: 'The BOSS Studio skill: setup, "edit this", notes become rules, drafts and finals.', where: 'BOSSStudio/.agents/skills/bossstudio', used: true},
+    {name: 'bossstudio', what: 'The main editing skill. Say "start" to set up, drop a video and say "edit this" to get a draft, send notes to improve it, then say "approved" for the final. Your notes are saved as rules for next time.', where: 'BOSS-Studio/.agents/skills/bossstudio', used: true},
     {name: 'short-form-edit', what: 'Talking-head footage into a finished reel or Short with story-driven cuts and motion graphics.', where: 'kit/.agents/skills (Herk Edit Kit)', used: true},
     {name: 'edit-video', what: 'Full edit of a long talking-head video: transcript, silence trim, mistake review, storytelling, graphics, verified render.', where: 'kit/.agents/skills', used: false},
     {name: 'make-a-video', what: 'Beginner-friendly end-to-end video creator (built the first Why Reviews Matter video).', where: 'kit/.agents/skills', used: true},
@@ -524,13 +524,13 @@ window.HUB = {
   ],
 
   repos: [
-    {name: 'vincentkmc2023/BOSSStudio', what: 'BOSS Studio by Krista Mashore: this folder, the styles, the hub and the editing app.', url: 'https://github.com/vincentkmc2023/BOSSStudio'},
+    {name: 'vincentkmc2023/BOSS-Studio', what: 'BOSS Studio by Krista Mashore: this folder, the styles, the hub and the editing app.', url: 'https://github.com/vincentkmc2023/BOSS-Studio'},
     {name: 'nateherkai/herk-edit-kit', what: 'The editing engine installed into `kit/` (HyperFrames based).', url: 'https://github.com/nateherkai/herk-edit-kit'},
     {name: 'lemomo-ai/lemo-opuscar', what: 'Plugin with 66 film styles for Opus 5.5.', url: 'https://github.com/lemomo-ai/lemo-opuscar'},
     {name: 'PeterL1n/RobustVideoMatting', what: 'The speaker cut-out model (mobilenetv3).', url: 'https://github.com/PeterL1n/RobustVideoMatting'},
     {name: 'elevenlabs/elevenlabs-mcp', what: 'The ElevenLabs MCP server (`uvx elevenlabs-mcp`).', url: 'https://github.com/elevenlabs/elevenlabs-mcp'},
     {name: 'heygen-com/hyperframes', what: 'HyperFrames, the HTML video framework the kit builds on.', url: 'https://github.com/heygen-com/hyperframes'},
-    {name: 'BOSSStudio/remotion', what: 'Local Remotion project with every composition built.', local: 'Documents/BOSSStudio/remotion'},
+    {name: 'vincentkmc2023/BOSS-Studio/remotion', what: 'The Remotion project with every composition built. It lives inside the BOSS Studio repo, not its own repo.', url: 'https://github.com/vincentkmc2023/BOSS-Studio/tree/main/remotion'},
   ],
 
   outputs: [

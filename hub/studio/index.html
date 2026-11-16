@@ -121,6 +121,8 @@ label.l{display:block;font:700 .72rem 'JetBrains Mono',monospace;letter-spacing:
 .run small{color:var(--muted);display:block;max-width:560px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .run i{color:var(--accent);font-size:22px}.spin{animation:sp 1s linear infinite}@keyframes sp{to{transform:rotate(360deg)}}
 .run button{margin-left:auto}
+.run .rt{flex:1;min-width:0}.run em{font-style:normal}.run u{text-decoration:none;display:block;font-size:.7rem;color:var(--muted);margin-top:4px}
+.pb{height:6px;border-radius:99px;background:#EFE9DE;margin-top:8px;overflow:hidden}.pf{height:100%;width:0;border-radius:99px;background:var(--accent);transition:width 1.8s linear}
 .locked .scrub,.locked .r button{pointer-events:none;opacity:.4}
 .proj{position:relative}.pact{position:absolute;top:22px;right:22px;display:flex;gap:6px}.pact button{padding:7px 8px;background:#fff;box-shadow:0 2px 8px rgba(20,17,15,.2)}
 .ws.land:not(.ws3):not(.ws2){grid-template-columns:1fr}.ws.land:not(.ws3):not(.ws2)>section.c{max-width:860px;width:100%;margin:0 auto}
@@ -642,7 +644,14 @@ async function loadGallery() {
 }
 function paintRun() {
   const el = $('#run'); if (!el) return;
-  if (runSt && runSt.running) { el.className = 'run'; el.hidden = false; el.innerHTML = '<i class="ti ti-loader-2 spin"></i><span><b>' + esc(runLabel || 'BOSS is working') + '</b>' + (runSt.tool ? ' · using ' + esc(runSt.tool) : '') + '<small>' + esc(runSt.text || 'Starting…') + '</small></span><button data-act="cancelrun">Stop</button>'; }
+  if (runSt && runSt.running) {
+    // BOSS does not report real progress, so the bar is an estimate: elapsed time against the average of this project's earlier runs (8 min if none)
+    const ms = (cur && cur.versions || []).map((v) => v.ms).filter(Boolean), exp = ms.length ? ms.reduce((s, x) => s + x, 0) / ms.length : 480000;
+    const el_ = Date.now() - (runSt.startedAt || (runSt.startedAt = Date.now())), pct = Math.round(95 * (1 - Math.exp(-2 * el_ / exp))), tm = fmtDur(el_);
+    if (!el.querySelector('.pf')) { el.className = 'run'; el.hidden = false; el.innerHTML = '<i class="ti ti-loader-2 spin"></i><span class="rt"><b></b><em></em><small></small><div class="pb"><div class="pf"></div></div><u></u></span><button data-act="cancelrun">Stop</button>'; }
+    el.querySelector('b').textContent = runLabel || 'BOSS is working'; el.querySelector('em').textContent = runSt.tool ? ' · using ' + runSt.tool : '';
+    el.querySelector('small').textContent = runSt.text || 'Starting…'; el.querySelector('.pf').style.width = pct + '%'; el.querySelector('u').textContent = pct + '% · ' + tm + ' elapsed (estimate)';
+  }
   else if (runSt && runSt.error) { el.className = 'run err'; el.hidden = false; el.textContent = runSt.error; }
   else el.hidden = true;
 }
@@ -672,7 +681,7 @@ async function pollRun() {
 }
 async function startRunApi(prompt, images, label) {
   try { await jf('POST', '/api/projects/' + cur.id + '/run', {prompt, images: images || {}}); } catch (e) { return toast(String(e.message)); }
-  runLabel = label || 'BOSS is working'; runSt = {running: true}; paintRun(); poller = poller || setInterval(pollRun, 2000); if (cur.phase === 'approved' && !snap) project();
+  runLabel = label || 'BOSS is working'; runSt = {running: true, startedAt: Date.now()}; paintRun(); poller = poller || setInterval(pollRun, 2000); if (cur.phase === 'approved' && !snap) project();
 }
 function hiddenVideo() { return new Promise((ok, no) => { const v = document.createElement('video'); v.muted = true; v.preload = 'auto'; v.src = vurl; v.onloadedmetadata = () => ok(v); v.onerror = no; }); }
 const seekTo = (v, t) => new Promise((ok) => { v.onseeked = () => ok(); v.currentTime = t; });

@@ -448,7 +448,7 @@
     const sm = (s.samples || [])[0] || {};
     const REF = 'https://www.facebook.com/reel/2382371192514255';
     const flow = [
-      ['Reference', 'A Facebook reel about AI employees. You paste its link into a new project.', 'ti-link'],
+      ['Reference', 'A Facebook video about AI agents. You paste its link into a new project.', 'ti-link'],
       ['Study', 'BOSS watches it and pulls out the look: stages, colours, type, motion and pacing.', 'ti-eye'],
       ['Script + voice', "The selling is removed. Krista's script and ElevenLabs voice, music and effects replace the original.", 'ti-microphone'],
       ['Stills', 'Frames come first, with no video yet. You click a frame and draw a note on it.', 'ti-photo'],
@@ -459,8 +459,8 @@
     const kept = ['A glowing navy stage and a soft blue-grey stage that take turns', 'Mock app windows, robot tiles, counters and diagrams', 'Inter headlines with gradient accent words, word by word on the spoken word', 'B-roll in the presenter slots, with a big caption bottom-left', 'Blur cross-dissolves on every change, no whooshes'];
     const changed = ['The selling was removed', "Krista's script and ElevenLabs voice replace the original voiceover", 'Music and sound effects are generated, soft clicks and dings', 'Made faceless on purpose, so no presenter is needed', 'Rendered 16:9 horizontal (1440×810 draft, 1920×1080 final)'];
     return `
-    <div class="band hero-band cs-hero"><div class="eyebrow">Case study</div><h1>One reel in, <i>one style</i> out</h1>
-      <p class="lede">BOSS Studio can study an edit you like and rebuild it with your own script and voice. Here is one real run, from a Facebook reel to the Neon Explainer style.</p></div>
+    <div class="band hero-band cs-hero"><div class="eyebrow">Case study</div><h1>One video in, <i>one style</i> out</h1>
+      <p class="lede">BOSS Studio can study an edit you like and rebuild it with your own script and voice. Here is one real run, from a Facebook video to the Neon Explainer style.</p></div>
 
     <section class="cs">
       <div class="eyebrow">The workflow</div><h2>From reference to <i>reusable style</i></h2>
@@ -468,11 +468,11 @@
       <div class="floop"><svg viewBox="0 0 700 56" aria-hidden="true"><path d="M630 4v22a14 14 0 0 1-14 14H84a14 14 0 0 1-14-14V12" fill="none" stroke="var(--accent)" stroke-width="3" stroke-dasharray="7 6" stroke-linecap="round"/><path d="M62 18l8-10 8 10z" fill="var(--accent)"/></svg><span>Notes and new drafts repeat until you approve</span></div>
     </section>
 
-    <section class="cs">
+    <section class="cs cs-wide">
       <div class="eyebrow">Side by side</div><h2>Reference <i>and</i> output</h2>
       <div class="vs">
-        <figure class="vs-ref"><div class="vs-frame ref"><iframe title="The reference reel on Facebook" src="https://www.facebook.com/plugins/video.php?height=560&amp;href=${encodeURIComponent(REF + '/')}&amp;show_text=false&amp;width=315" width="315" height="560" style="border:0;overflow:hidden" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share" loading="lazy"></iframe></div>
-          <figcaption><b>Reference.</b> The original reel. <a href="${REF}" target="_blank" rel="noopener">Open on Facebook</a> if the player does not load.</figcaption></figure>
+        <figure class="vs-ref"><div class="vs-frame ref"><iframe title="The reference video on Facebook" src="https://www.facebook.com/plugins/video.php?height=450&amp;href=${encodeURIComponent(REF + '/')}&amp;show_text=false&amp;width=800" width="800" height="450" style="border:0;overflow:hidden" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share" loading="lazy"></iframe></div>
+          <figcaption><b>Reference.</b> The original video, by Content Creator.com on Facebook. <a href="${REF}" target="_blank" rel="noopener">Open on Facebook</a> if the player does not load.</figcaption></figure>
         <figure class="vs-out"><div class="vs-frame out"><video controls playsinline preload="metadata" poster="${esc(s.cover || '')}" src="${esc(sm.src || '')}#t=${sm.at || 0}"></video></div>
           <figcaption><b>Output.</b> Neon Explainer, ${esc(sm.title || '')}. ${esc(sm.note || '')}</figcaption></figure>
       </div>

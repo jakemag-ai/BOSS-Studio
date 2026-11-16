@@ -353,6 +353,15 @@
     return '<div class="carousel"><div class="car-nav"><span class="car-count" aria-live="polite"></span></div><button type="button" class="car-arrow prev" data-dir="-1" aria-label="Previous videos">&larr;</button><button type="button" class="car-arrow next" data-dir="1" aria-label="Next videos">&rarr;</button><div class="track" tabindex="0" role="region" aria-label="Sample videos, scroll sideways">' + cards + '</div></div>';
   }
 
+  // Rule: a landscape video always spans two columns (wide) in the sample slider and video rows,
+  // decided from the real video size, so no per-sample "wide" flag is needed.
+  function autoWide() {
+    document.querySelectorAll('.vid video').forEach((v) => {
+      const set = () => { if (v.videoWidth) { v.closest('.vid').classList.toggle('wide', v.videoWidth > v.videoHeight); document.querySelectorAll('.track').forEach(carState); } };
+      if (v.readyState >= 1) set(); else v.addEventListener('loadedmetadata', set, {once: true});
+    });
+  }
+
   function carState(track) {
     const nav = track.parentElement;
     const cards = [...track.children];
@@ -519,6 +528,7 @@
     document.title = (t ? t + ' · ' : '') + 'BOSS Studio';
     window.scrollTo({top: 0});
     document.querySelectorAll('.track').forEach(carState);
+    autoWide();
     if (h === 'overview') startSlider();
     app.focus({preventScroll: true});
     if (location.hash.startsWith('#/overview#')) {}

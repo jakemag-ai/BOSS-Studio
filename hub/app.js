@@ -106,15 +106,21 @@
     } else { sub.innerHTML = ''; sub.hidden = true; }
     const links = [
       ['#overview', 'Overview', route === 'overview'],
-      ...styleLinks,
+      ['__styles__', 'Editing Style', D.styles.some((x) => route === 'style-' + x.id)],
       ['#skills', 'Skills', route === 'skills'],
       ['#connectors', 'Connectors', route === 'connectors'],
       ['#repos', 'Repos', route === 'repos'],
+      ['#case-study', 'Case study', route === 'case-study'],
       ['#studio', 'Editing App', route === 'studio'],
     ];
     let html = '';
     links.forEach(([href, label, on], i) => {
       if (i === 1 || label === 'Skills' || label === 'Editing App') html += '<span class="sep"></span>';
+      if (href === '__styles__') {
+        html += '<div class="dd"><button class="ddbtn' + (on ? ' on' : '') + '" type="button" aria-haspopup="true" aria-expanded="false">Editing Style <span aria-hidden="true">&#9662;</span></button><div class="ddmenu" role="menu" hidden>' +
+          D.styles.map((s) => '<a role="menuitem" href="#style-' + s.id + '"' + (route === 'style-' + s.id ? ' aria-current="page"' : '') + '>' + esc(s.short || s.name) + '</a>').join('') + '</div></div>';
+        return;
+      }
       html += `<a href="${href}" ${on ? 'aria-current="page"' : ''}${label === 'Editing App' ? ' class="cta"' : ''}>${esc(label)}</a>`;
     });
     $('#nav').innerHTML = html;
@@ -436,8 +442,62 @@
     </section>`;
   }
 
+  // ---------- case study: reference in, Neon Explainer out ----------
+  function caseStudy() {
+    const s = D.styles.find((x) => x.id === 'explainer-video') || {};
+    const sm = (s.samples || [])[0] || {};
+    const REF = 'https://www.facebook.com/reel/2382371192514255';
+    const flow = [
+      ['Reference', 'A Facebook reel about AI employees. You paste its link into a new project.', 'ti-link'],
+      ['Study', 'BOSS watches it and pulls out the look: stages, colours, type, motion and pacing.', 'ti-eye'],
+      ['Script + voice', "The selling is removed. Krista's script and ElevenLabs voice, music and effects replace the original.", 'ti-microphone'],
+      ['Stills', 'Frames come first, with no video yet. You click a frame and draw a note on it.', 'ti-photo'],
+      ['Drafts', 'Draft v1, v2, v3. Each round you write notes and press Render Draft.', 'ti-movie'],
+      ['Approved', 'Draft v3 is approved. The final render is full resolution.', 'ti-circle-check'],
+      ['Saved style', 'Save As New Style turns it into Neon Explainer, ready for the next video.', 'ti-bookmark'],
+    ];
+    const kept = ['A glowing navy stage and a soft blue-grey stage that take turns', 'Mock app windows, robot tiles, counters and diagrams', 'Inter headlines with gradient accent words, word by word on the spoken word', 'B-roll in the presenter slots, with a big caption bottom-left', 'Blur cross-dissolves on every change, no whooshes'];
+    const changed = ['The selling was removed', "Krista's script and ElevenLabs voice replace the original voiceover", 'Music and sound effects are generated, soft clicks and dings', 'Made faceless on purpose, so no presenter is needed', 'Rendered 16:9 horizontal (1440×810 draft, 1920×1080 final)'];
+    return `
+    <div class="band hero-band cs-hero"><div class="eyebrow">Case study</div><h1>One reel in, <i>one style</i> out</h1>
+      <p class="lede">BOSS Studio can study an edit you like and rebuild it with your own script and voice. Here is one real run, from a Facebook reel to the Neon Explainer style.</p></div>
+
+    <section class="cs">
+      <div class="eyebrow">The workflow</div><h2>From reference to <i>reusable style</i></h2>
+      <div class="flow" role="list">${flow.map((f, i) => `<div class="fnode" role="listitem"><span class="fnum">${i + 1}</span><i class="ti ${f[2]}" aria-hidden="true"></i><h3>${esc(f[0])}</h3><p>${esc(f[1])}</p></div>${i < flow.length - 1 ? '<span class="farrow" aria-hidden="true">&#8594;</span>' : ''}`).join('')}</div>
+      <div class="floop"><svg viewBox="0 0 700 56" aria-hidden="true"><path d="M630 4v22a14 14 0 0 1-14 14H84a14 14 0 0 1-14-14V12" fill="none" stroke="var(--accent)" stroke-width="3" stroke-dasharray="7 6" stroke-linecap="round"/><path d="M62 18l8-10 8 10z" fill="var(--accent)"/></svg><span>Notes and new drafts repeat until you approve</span></div>
+    </section>
+
+    <section class="cs">
+      <div class="eyebrow">Side by side</div><h2>Reference <i>and</i> output</h2>
+      <div class="vs">
+        <figure class="vs-ref"><div class="vs-frame ref"><iframe title="The reference reel on Facebook" src="https://www.facebook.com/plugins/video.php?height=560&amp;href=${encodeURIComponent(REF + '/')}&amp;show_text=false&amp;width=315" width="315" height="560" style="border:0;overflow:hidden" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share" loading="lazy"></iframe></div>
+          <figcaption><b>Reference.</b> The original reel. <a href="${REF}" target="_blank" rel="noopener">Open on Facebook</a> if the player does not load.</figcaption></figure>
+        <figure class="vs-out"><div class="vs-frame out"><video controls playsinline preload="metadata" poster="${esc(s.cover || '')}" src="${esc(sm.src || '')}#t=${sm.at || 0}"></video></div>
+          <figcaption><b>Output.</b> Neon Explainer, ${esc(sm.title || '')}. ${esc(sm.note || '')}</figcaption></figure>
+      </div>
+    </section>
+
+    <section class="cs">
+      <div class="eyebrow">What carried over</div><h2>Kept <i>and</i> changed</h2>
+      <div class="kc">
+        <div class="panel"><h3>Carried into the style</h3><ul>${kept.map((k) => '<li>' + esc(k) + '</li>').join('')}</ul></div>
+        <div class="panel"><h3>Changed on purpose</h3><ul>${changed.map((k) => '<li>' + esc(k) + '</li>').join('')}</ul></div>
+      </div>
+    </section>
+
+    <section class="cs">
+      <div class="eyebrow">The result</div><h2>Moments from the <i>output</i></h2>
+      <div class="cs-shots">${(s.shots || []).map((x) => `<figure><img src="${esc(x.src)}" alt="${esc(x.cap)}" loading="lazy"><figcaption>${esc(x.cap)}</figcaption></figure>`).join('')}</div>
+      ${swatches(s.palette || [])}
+      <p style="margin-top:26px"><a class="btn" href="#style-explainer-video">Open the Neon Explainer style</a> <a class="btn" href="#studio">Try it in the Editing App</a></p>
+      <p class="lede" style="margin:18px auto 0">To use it on a new video, say <code>use Neon Explainer</code>. To copy a different reference, paste its link in New project under Reference Link(s).</p>
+    </section>`;
+  }
+
   // ---------- lists ----------
   const pages = {
+    'case-study': caseStudy,
     studio: () => '<iframe id="studio" title="BOSS Studio" allowfullscreen style="width:100%;border:0;min-height:80vh;display:block" ' + (window.HUB_STUDIO_DOC ? 'srcdoc="' + window.HUB_STUDIO_DOC.replace(/&/g, '&amp;').replace(/"/g, '&quot;') + '"' : 'src="studio/index.html"') + '></iframe>',
     skills: () => `<div class="band hero-band"><div class="eyebrow">Skills</div><h1>All <i>skills</i></h1><p class="lede">Agent Skills the editor and the sessions rely on. "Used" means a session actually used it.</p></div><section>${skillTable(false)}</section>`,
     connectors: () => `<div class="band hero-band"><div class="eyebrow">Connectors and tools</div><h1>Connectors <i>and tools</i></h1><p class="lede">What is plugged in, what it did, and how it is set up. Keys are never shown here.</p></div><section>${connTable(false)}</section>`,
@@ -455,7 +515,7 @@
     else if (h.startsWith('style-')) app.innerHTML = stylePage(h.slice(6));
     else if (pages[h]) app.innerHTML = pages[h]();
     else app.innerHTML = overview();
-    const t = h.startsWith('style-') ? (D.styles.find((x) => 'style-' + x.id === h) || {}).name : h[0].toUpperCase() + h.slice(1);
+    const t = h.startsWith('style-') ? (D.styles.find((x) => 'style-' + x.id === h) || {}).name : h[0].toUpperCase() + h.slice(1).replace(/-/g, ' ');
     document.title = (t ? t + ' · ' : '') + 'BOSS Studio';
     window.scrollTo({top: 0});
     document.querySelectorAll('.track').forEach(carState);
@@ -463,6 +523,22 @@
     app.focus({preventScroll: true});
     if (location.hash.startsWith('#/overview#')) {}
   }
+
+  // Editing Style dropdown
+  function closeDd() { document.querySelectorAll('.ddmenu').forEach((m) => { m.hidden = true; }); document.querySelectorAll('.ddbtn').forEach((b) => b.setAttribute('aria-expanded', 'false')); }
+  document.addEventListener('click', (e) => {
+    const b = e.target.closest('.ddbtn');
+    if (b) {
+      const m = b.parentElement.querySelector('.ddmenu'), open = m.hidden;
+      closeDd();
+      if (open) { const r = b.getBoundingClientRect(); m.style.top = r.bottom + 6 + 'px'; m.style.left = Math.max(8, Math.min(r.left, window.innerWidth - 228)) + 'px'; m.hidden = false; b.setAttribute('aria-expanded', 'true'); }
+      return;
+    }
+    closeDd();
+  });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeDd(); });
+  window.addEventListener('scroll', closeDd, {passive: true});
+  window.addEventListener('resize', closeDd);
   window.addEventListener('hashchange', route);
   window.addEventListener('message', (e) => { const f = $('#studio'); if (f && e.data && e.data.studioH) f.style.height = e.data.studioH + 'px'; });
 

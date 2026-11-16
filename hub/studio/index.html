@@ -199,6 +199,8 @@ body.annot .ws>section.c:first-child{padding:0;border:0;background:none;box-shad
 body.annot .stage canvas{max-width:calc(100vw - 520px) !important}
 body.annot .ws>#editmid,body.annot .ws .scrub,body.annot .ws .col>section:not(:has(#tools)){display:none}
 body.annot .pctl{display:none}
+#annv{display:none;position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#000;border-radius:12px;z-index:2}
+.cv.live #annv{display:block}.cv.live .ink{visibility:hidden}
 .cvw{display:flex;flex-direction:column;align-items:center;max-width:100%}
 .annbar{display:flex;align-items:center;gap:8px;margin-top:12px;width:100%;min-width:300px}
 .annbar input[type=range]{flex:1;min-width:120px;accent-color:var(--accent)}
@@ -342,6 +344,7 @@ function go(v, p, pop) { pendingRefs = []; clearInterval(poller); poller = null;
 let notesDirty = false; // notes were added while the floating canvas stayed open: re-render once it closes so buttons and counts catch up
 function finishAnnot() { snap = null; gv = null; seekWant = null; stage(); if (notesDirty) { notesDirty = false; project(); } }
 function closeAnnot() { annotating = false; if (history.state && history.state.annot) history.back(); else finishAnnot(); }
+addEventListener('keydown', (e) => { if (e.code === 'Space' && snap && annotating && !/INPUT|TEXTAREA|SELECT|BUTTON/.test(e.target.tagName) && !document.querySelector('.modal:not([hidden])')) { e.preventDefault(); togglePlay(); } });
 addEventListener('keydown', (e) => { if (e.key === 'Escape' && snap && annotating && !/INPUT|TEXTAREA|SELECT/.test(e.target.tagName) && !document.querySelector('.modal:not([hidden])')) closeAnnot(); });
 window.addEventListener('popstate', async (e) => {
   const st = e.state || {view: 'list'}, ph = st.phase || 'brief';
@@ -526,7 +529,7 @@ function stage() {
   if (on && ws && !x) ws.insertAdjacentHTML('beforeend', '<button class="annx i" data-act="cancelsnap" title="Close (Esc)" aria-label="Close"><i class="ti ti-x"></i></button>'); else if (!on && x) x.remove();
   if (snap) {
     // inside the floating canvas, a scrub bar lets you move to another moment without closing it (needs a video to grab frames from)
-    const bar = annotating && vurl ? '<div class="annbar"><button class="i" data-act="sstep" data-d="-5" title="Back 5 seconds"><i class="ti ti-rewind-backward-5"></i></button><button data-act="sstep" data-d="-0.0334" title="Back 1 frame"><i class="ti ti-player-track-prev"></i>1 frame</button><input type="range" id="annr" min="0" max="' + (cur.dur || Math.ceil(snap.t) + 1) + '" step="0.01" value="' + snap.t + '" aria-label="Move to another moment"><button data-act="sstep" data-d="0.0334" title="Forward 1 frame">1 frame<i class="ti ti-player-track-next"></i></button><button class="i" data-act="sstep" data-d="5" title="Forward 5 seconds"><i class="ti ti-rewind-forward-5"></i></button><span class="tm" id="annt">' + fmtp(snap.t) + '</span></div>' : '';
+    const bar = annotating && vurl ? '<div class="annbar"><button class="p i" data-act="splay" title="Play or pause (Space)"><i class="ti ti-player-play" id="annpi"></i></button><button class="i" data-act="sstep" data-d="-5" title="Back 5 seconds"><i class="ti ti-rewind-backward-5"></i></button><button data-act="sstep" data-d="-0.0334" title="Back 1 frame"><i class="ti ti-player-track-prev"></i>1 frame</button><input type="range" id="annr" min="0" max="' + (cur.dur || Math.ceil(snap.t) + 1) + '" step="0.01" value="' + snap.t + '" aria-label="Move to another moment"><button data-act="sstep" data-d="0.0334" title="Forward 1 frame">1 frame<i class="ti ti-player-track-next"></i></button><button class="i" data-act="sstep" data-d="5" title="Forward 5 seconds"><i class="ti ti-rewind-forward-5"></i></button><span class="tm" id="annt">' + fmtp(snap.t) + '</span></div>' : '';
     st.innerHTML = '<div class="cvw"><div class="cv"><canvas id="base" width="' + snap.w + '" height="' + snap.h + '"></canvas><canvas class="ink" id="ink" width="' + snap.w + '" height="' + snap.h + '"></canvas></div>' + bar + '</div>';
     $('#base').getContext('2d').drawImage(snap.c, 0, 0); draw(); $('#nt') && ($('#nt').textContent = fmt(snap.t));
     if (bar) bindScrub();
@@ -765,10 +768,39 @@ async function regrab(t) {
 }
 function bindScrub() {
   const r = $('#annr'); if (!r) return;
-  r.onpointerdown = (e) => { if (shapes.length) { e.preventDefault(); guardDrawing(); } }; // first try asks; once cleared, drag again
+  r.onpointerdown = (e) => { if (isLive()) pauseGrab(); if (shapes.length) { e.preventDefault(); guardDrawing(); } }; // first try asks; once cleared, drag again
   r.oninput = () => { if (!shapes.length) regrab(+r.value); };
 }
-async function stepTo(d) { if (!snap || !(await guardDrawing())) return; regrab(snap.t + d); }
+// play inside the canvas: a live video covers the frame; pausing grabs the frame under the playhead so you can draw on it
+const isLive = () => { const v = $('#annv'); return !!(v && !v.paused); };
+const setPlayIcon = (playing) => { const i = $('#annpi'); if (i) i.className = 'ti ' + (playing ? 'ti-player-pause' : 'ti-player-play'); };
+function pauseGrab() {
+  const v = $('#annv'), cv = v && v.parentElement; if (!v || !snap) return;
+  v.pause(); cv.classList.remove('live'); setPlayIcon(false);
+  const k = Math.min(1, 1280 / v.videoWidth), c = document.createElement('canvas'); c.width = Math.round(v.videoWidth * k); c.height = Math.round(v.videoHeight * k);
+  c.getContext('2d').drawImage(v, 0, 0, c.width, c.height);
+  snap = {c, w: c.width, h: c.height, t: v.currentTime}; shapes = [];
+  const b = $('#base'), ik = $('#ink');
+  if (b && ik && (b.width !== c.width || b.height !== c.height)) { b.width = ik.width = c.width; b.height = ik.height = c.height; }
+  if (b) b.getContext('2d').drawImage(c, 0, 0); draw(); resetZoom();
+  const rr = $('#annr'), tt = $('#annt'); if (rr) rr.value = snap.t; if (tt) tt.textContent = fmtp(snap.t);
+  ['#nt', '#ct'].forEach((s) => $(s) && ($(s).textContent = fmt(snap.t)));
+}
+async function togglePlay() {
+  if (!snap || !annotating || !vurl) return;
+  if (isLive()) return pauseGrab();
+  if (!(await guardDrawing())) return;
+  const cv = $('.cv'); let v = $('#annv');
+  if (!v) {
+    v = document.createElement('video'); v.id = 'annv'; v.src = vurl; v.playsInline = true; v.preload = 'auto'; cv.appendChild(v);
+    v.addEventListener('timeupdate', () => { if (!isLive()) return; const r = $('#annr'), t = $('#annt'); if (r) r.value = v.currentTime; if (t) t.textContent = fmtp(v.currentTime); });
+    v.addEventListener('ended', () => { if ($('#annv') === v) pauseGrab(); });
+  }
+  try {
+    if (v.readyState < 3) await new Promise((ok, no) => { v.addEventListener('canplay', ok, {once: true}); v.addEventListener('error', no, {once: true}); }); // a time set before the video can play is ignored
+    await seekTo(v, snap.t); if (Math.abs(v.currentTime - snap.t) > 0.5) await seekTo(v, snap.t); await v.play(); cv.classList.add('live'); setPlayIcon(true); } catch { toast('Could not play the video'); }
+}
+async function stepTo(d) { if (isLive()) pauseGrab(); if (!snap || !(await guardDrawing())) return; regrab(snap.t + d); }
 function inkEvents() {
   const ink = $('#ink'); let cs = null, drag = null;
   const pt = (e) => { const r = ink.getBoundingClientRect(); return [(e.clientX - r.left) * ink.width / r.width, (e.clientY - r.top) * ink.height / r.height]; };
@@ -1246,6 +1278,7 @@ document.addEventListener('click', async (e) => {
   if (a === 'seek' && v) { v.pause(); v.currentTime = Math.max(0, v.currentTime + +x.dataset.d); return; }
   if (a === 'snap') return takeSnap();
   if (a === 'sstep') return stepTo(+x.dataset.d);
+  if (a === 'splay') return togglePlay();
   if (a === 'undo') { shapes.pop(); return draw(); }
   if (a === 'clear') { shapes = []; return draw(); }
   if (API && a === 'renderdraft') {
@@ -1339,6 +1372,7 @@ document.addEventListener('click', async (e) => {
   if (a === 'approve') { cur.phase = 'approved'; save(); toast('Frames approved. The finished app would now start the full render.'); project(); return pushStep(); }
   if (a === 'cancelsnap') return closeAnnot();
   if (a === 'addnote') {
+    if (isLive()) pauseGrab(); // a note belongs to the frame it was written on, so stop on the current one first
     const text = $('#ntext').value.trim(), byLink = $('#nsty').value === '__link', refLink = byLink ? $('#nlink').value.trim() : '';
     if (byLink && !/^https?:\/\/\S+$/i.test(refLink)) return toast('Paste a full link that starts with https://');
     if (!text && !snap && !pendingRefs.length && !pendingBroll.length && !refLink && !scriptPick) return toast('Type a note, annotate a frame, add an image or B-roll, or select a phrase in Script first');

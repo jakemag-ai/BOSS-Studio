@@ -589,9 +589,15 @@
   // ---------- hosted site: the studio runs on the user's own computer, so the hosted hub explains how to get it ----------
   function getApp() {
     const steps = [
-      ['Get BOSS Studio', 'Download it free from GitHub: press <b>Code</b>, then <b>Download ZIP</b>, and unzip it into your Documents folder. Or clone it with Git.'],
-      ['Open the folder in your AI agent', 'Open the BOSS Studio folder in Claude Code, Codex, Cursor or another agent that supports Agent Skills, then type <code>start</code>. It sets everything up and asks a few questions about your style.'],
-      ['Open the Editing App', 'Double-click <code>hub/open-studio.bat</code>. The hub opens on your own computer, and the Editing App tab becomes the full studio.'],
+      ['Get BOSS Studio', '<p>It is free and open on GitHub: <a href="https://github.com/vincentkmc2023/BOSS-Studio" target="_blank" rel="noopener"><b>github.com/vincentkmc2023/BOSS-Studio</b></a></p><ul><li>With Git: open a terminal in your Documents folder and run <code>git clone https://github.com/vincentkmc2023/BOSS-Studio.git</code></li><li>Without Git: on the GitHub page press <b>Code</b>, then <b>Download ZIP</b>, and unzip it into your Documents folder.</li></ul>'],
+      ['Open the folder in Claude Code and type start', '<ul><li>Open the <b>BOSS-Studio</b> folder in Claude Code: run <code>claude</code> inside that folder, or in the Claude desktop app open the <b>Code</b> tab, pick <b>Local</b> and choose the folder.</li><li>Type <code>start</code>. It checks your computer and installs anything missing (it asks you first), helps you set up free transcription, renders a test video, and asks a few questions about your style.</li></ul><p class="gnote">Using Codex, Cursor or another agent? They can edit from the chat. The Editing App in step 3 runs on Claude Code.</p>'],
+      ['Open the Editing App', '<ul><li>Double-click <code>hub/open-studio.bat</code> (Windows). A window stays open while the studio runs. Close it to stop.</li><li>The hub opens on your computer at <code>localhost:1988</code>. Click <b>Editing App</b> and start your first project.</li></ul>'],
+    ];
+    const needs = [
+      '<b>Claude Code</b>, signed in, on a paid Claude plan. Pro works, Max is better if you edit often.',
+      '<b>Node.js 22 or newer, Git, FFmpeg and Chrome.</b> Step 2 checks for them and installs what is missing.',
+      '<b>Free transcription:</b> a free Groq key (fast, good for mixed languages), or a model that runs on your computer.',
+      'About 1 GB of free disk space. Tested on Windows 11.',
     ];
     const why = [
       'Your footage never leaves your computer.',
@@ -603,8 +609,12 @@
     <div class="band hero-band cs-hero"><div class="eyebrow">The Editing App</div><h1>It runs on <i>your</i> computer</h1>
       <p class="lede">The Editing App edits your raw footage with your own AI agent, so your videos stay private. Here is how to get it running in three steps.</p></div>
     <section class="cs g">
+      <div class="eyebrow">Before you start</div><h2>What you <i>need</i></h2>
+      <div class="kc"><div class="panel"><h3>On your computer</h3><ul>${needs.map((r) => '<li>' + r + '</li>').join('')}</ul></div></div>
+    </section>
+    <section class="cs g">
       <div class="eyebrow">Get started</div><h2>Three steps, <i>once</i></h2>
-      <div class="gsteps">${steps.map((s, i) => `<div class="gstep${i === 2 ? ' hot' : ''}"><div class="gnum">${i + 1}</div><div><h3>${esc(s[0])}</h3><p class="gsub" style="font-size:1.1rem;color:var(--ink)">${s[1]}</p></div></div>`).join('')}</div>
+      <div class="gsteps">${steps.map((s, i) => `<div class="gstep${i === 2 ? ' hot' : ''}"><div class="gnum">${i + 1}</div><div class="gbody"><h3>${esc(s[0])}</h3>${s[1]}</div></div>`).join('')}</div>
     </section>
     <section class="cs g">
       <div class="eyebrow">Why local</div><h2>Built to <i>stay</i> with you</h2>

@@ -394,6 +394,8 @@ main.wide>.stats-band{background:#E7E3DA;padding-top:34px;padding-bottom:42px;bo
 .gstep h3{font-size:1.5rem;margin-bottom:2px}
 .gstep .gsub{color:var(--muted);font-size:1.05rem;margin:0 0 12px}
 .gstep ul{margin:0;padding-left:1.15em;font-size:1.1rem;line-height:1.6}.gstep li{margin:.55em 0}.gstep li::marker{color:var(--accent)}
+.gbody{font-size:1.1rem}.gbody p{margin:.3em 0 .4em}.gbody ul{margin:.4em 0 0;padding-left:1.15em;line-height:1.6}.gbody li{margin:.5em 0}.gbody li::marker{color:var(--accent)}
+.gbody a{color:var(--accent);text-underline-offset:3px}.gbody .gnote{margin-top:.9em;padding:10px 14px;background:var(--tint);border-radius:12px;font-size:.98rem}
 .gtip{background:var(--tint);border-radius:12px;padding:12px 16px;font-size:1.02rem;margin-top:16px}
 .gtip b{font-family:var(--mono);font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-right:8px}
 @media(max-width:600px){.gstep{grid-template-columns:1fr}.gnum{width:36px;height:36px}}

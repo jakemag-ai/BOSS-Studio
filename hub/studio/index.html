@@ -1,0 +1,1308 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BOSS Studio (draft)</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700;800&family=Playfair+Display:ital,wght@1,700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
+<style>
+:root{--bg:#F6F3EC;--card:#fff;--ink:#14110F;--muted:#6B645C;--line:#E1DACD;--accent:#DC2E0A;--tint:#EDE6D9;--green:#1E9E5A;--shadow:0 10px 30px rgba(20,17,15,.10)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:500 15px/1.5 Montserrat,system-ui,sans-serif}
+h1,h2,h3{margin:0;line-height:1.1;letter-spacing:-.02em}
+h1{font-weight:800;font-size:clamp(1.8rem,3.4vw,2.8rem)}
+h1 i{font-family:'Playfair Display',serif;color:var(--accent);font-weight:700}
+h3{font-size:1.05rem;font-weight:800}
+.top{display:flex;align-items:center;gap:16px;padding:12px clamp(16px,3vw,40px);border-bottom:1px solid var(--line);flex-wrap:wrap;position:sticky;top:0;background:color-mix(in srgb,var(--bg) 90%,transparent);backdrop-filter:blur(10px);z-index:5}
+.brand{font-weight:800;display:flex;align-items:center;gap:10px;letter-spacing:-.02em;cursor:pointer}
+.brand i{font-family:'Playfair Display',serif;color:var(--accent)}
+.dot{width:12px;height:12px;border-radius:50%;background:var(--accent)}
+.badge{font:700 .66rem 'JetBrains Mono',monospace;letter-spacing:.1em;text-transform:uppercase;background:var(--tint);color:var(--muted);padding:4px 10px;border-radius:999px}
+.sp{flex:1}
+main{max-width:1280px;margin:0 auto;padding:clamp(16px,2.5vw,32px) clamp(16px,3vw,40px) 60px}
+.eb{font:700 .72rem 'JetBrains Mono',monospace;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.sub{color:var(--muted);margin:6px 0 20px}
+.hero{text-align:center;margin:10px auto 34px;max-width:820px}
+.hero h1{font-size:clamp(2.6rem,7vw,5rem)}
+.hero.proj h1{font-size:clamp(1.5rem,3.2vw,2.4rem);line-height:1.15}
+.hero .eb{font-size:.82rem}
+.hero .sub{font-size:1.2rem;margin:12px auto 0}
+.sect{margin-top:64px}
+.sect .hero{margin-bottom:24px}
+.sty2{display:flex;flex-direction:column;text-decoration:none;color:inherit;padding:0;overflow:hidden;transition:transform .15s}
+.sty2:hover{transform:translateY(-3px)}
+.sty2 .th{aspect-ratio:4/5;background:var(--tint) center top/cover}
+.sty2 .bd{padding:12px 14px 14px;display:flex;flex-direction:column;gap:4px}
+.sty2 p{margin:0;color:var(--muted);font-size:.82rem;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.c{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:16px 18px;box-shadow:var(--shadow)}
+.h{font:700 .72rem 'JetBrains Mono',monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin:0 0 10px;display:flex;align-items:center;gap:8px}
+.h i{color:var(--accent);font-size:18px}
+.r{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+button,.b{font:700 .82rem Montserrat,sans-serif;padding:9px 15px;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px;display:inline-flex;align-items:center;gap:6px;cursor:pointer;text-decoration:none}
+button:hover{border-color:var(--ink)}
+button.p{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+button.a{background:var(--accent);color:#fff;border-color:var(--accent)}
+button.i{padding:9px 11px}
+button.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+button i{font-size:16px}
+button:disabled{opacity:.4;cursor:not-allowed}
+input[type=text],select,textarea{font:500 .9rem Montserrat,sans-serif;color:var(--ink);background:#fff;border:1px solid var(--line);border-radius:14px;padding:10px 12px;width:100%}
+textarea{resize:vertical;min-height:62px}
+label.l{display:block;font:700 .72rem 'JetBrains Mono',monospace;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:14px 0 6px}
+.mut{font-size:.8rem;color:var(--muted);margin:8px 0 0}
+.grid{display:grid;gap:16px;grid-template-columns:repeat(auto-fill,minmax(250px,1fr))}
+.proj{cursor:pointer;display:flex;flex-direction:column;gap:6px;transition:transform .15s}
+.proj:hover{transform:translateY(-3px)}
+.proj .th{aspect-ratio:16/9;border-radius:14px;background:var(--tint) center top/cover;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:34px}
+.newc{border:2px dashed var(--line);box-shadow:none;align-items:center;justify-content:center;min-height:200px;color:var(--muted);text-align:center}
+.styles{display:flex;gap:14px;margin-top:6px;align-items:flex-start}.styles>.col{flex:1;min-width:0;display:flex;flex-direction:column;gap:14px}
+#stylepick{width:100vw;margin-left:calc(50% - 50vw);padding:0 clamp(12px,2vw,28px);box-sizing:border-box}body{overflow-x:clip}
+.sty{cursor:pointer;border:2px solid var(--line);border-radius:16px;overflow:hidden;background:#fff}
+.sty .th{background:var(--tint);position:relative}
+.sty .th img{display:block;width:100%;height:auto;min-height:120px}
+.sty .th video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.sty .th video:fullscreen,.sty .th video:-webkit-full-screen{object-fit:contain;background:#000}
+.sty .th .use{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(20,17,15,.45);opacity:0;transition:opacity .15s}
+.sty:hover .th .use{opacity:1}
+.sty .th .use span{background:var(--ink);color:var(--bg);font:700 .78rem Montserrat,sans-serif;padding:9px 16px;border-radius:999px}
+.sty .th [data-fsvideo]{position:absolute;top:8px;right:8px;z-index:2;background:rgba(20,17,15,.55);color:#fff;border:0;border-radius:50%;width:30px;height:30px;padding:0;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .15s}
+.sty:hover .th [data-fsvideo]{opacity:1}
+.sty b{display:block;padding:8px 10px;font-size:.82rem;text-align:center}
+.sty.on{border-color:var(--accent)}
+.drop{border:2px dashed var(--line);border-radius:18px;padding:16px 18px;color:var(--muted);cursor:pointer;background:#fff;display:flex;align-items:center;gap:14px;text-align:left}
+.drop .dicon{width:44px;height:44px;border-radius:12px;background:var(--tint);display:flex;align-items:center;justify-content:center;font-size:20px;color:var(--ink);flex:none}
+.drop .dtext{flex:1;min-width:0}
+.drop .dtext b{display:block;font-size:.95rem;color:var(--ink);overflow-wrap:anywhere}
+.drop .dtext small{display:block;color:var(--muted);font-size:.78rem;margin-top:2px}
+.drop .ok-mark{color:var(--green);font-size:22px;flex:none}
+.drop .b{flex:none}
+.drop.ok{border-color:var(--green);color:var(--green)}
+.drop.dragover{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 6%,#fff)}
+.err{border-color:var(--accent) !important}
+.ws{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:20px;align-items:start}
+@media(max-width:900px){.ws{grid-template-columns:1fr}}
+.stage{background:var(--tint);border-radius:18px;padding:14px;display:flex;justify-content:center;position:relative}
+.stage video,.stage .cv{max-height:min(34vh,400px);max-width:100%;border-radius:12px;background:#000;display:block}
+.stage .cv{position:relative}
+.stage canvas{display:block;max-height:min(34vh,400px);max-width:100%;border-radius:12px;touch-action:none}
+.stage .ink{position:absolute;inset:0;width:100%;height:100%;cursor:crosshair}
+.empty{aspect-ratio:9/16;max-height:min(34vh,400px);width:min(100%,300px);border-radius:12px;background:#fff;border:2px dashed var(--line);display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--muted);gap:8px;padding:16px;text-align:center}
+.scrub{position:relative;height:24px;margin:14px 2px 8px;cursor:pointer}
+.scrub .tr{position:absolute;top:10px;left:0;right:0;height:6px;border-radius:3px;background:var(--line)}
+.scrub .fl{position:absolute;top:10px;left:0;height:6px;border-radius:3px;background:var(--accent)}
+.scrub .ph{position:absolute;top:2px;width:3px;height:22px;border-radius:2px;background:var(--ink)}
+.scrub .mk{position:absolute;top:16px;width:9px;height:9px;border-radius:50%;background:var(--ink);margin-left:-4px}
+.col{display:flex;flex-direction:column;gap:16px}
+.n{display:flex;gap:10px;align-items:flex-start;font-size:.88rem;background:var(--tint);border-radius:14px;padding:8px 10px}
+.n img{width:44px;height:78px;object-fit:cover;border-radius:8px;flex:none;border:1px solid var(--line)}
+.n .t{font:700 .7rem 'JetBrains Mono',monospace;background:var(--ink);color:var(--bg);border-radius:7px;padding:3px 8px;cursor:pointer}
+.n .x{margin-left:auto;padding:4px 6px;border:0;background:transparent;color:var(--muted)}
+.tag{font:700 .62rem 'JetBrains Mono',monospace;letter-spacing:.08em;text-transform:uppercase;background:var(--accent);color:#fff;padding:3px 9px;border-radius:999px;margin-top:4px;display:inline-block}
+.stybar{display:flex;align-items:center;gap:12px;background:#fff;border:1px solid var(--line);border-radius:16px;padding:8px 14px 8px 8px;max-width:520px;margin:0 auto 22px;box-shadow:var(--shadow)}
+.stybar .th{width:46px;height:58px;border-radius:10px;background:var(--tint) center top/cover;flex:none}
+.stybar small{display:block;font:700 .62rem 'JetBrains Mono',monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.stybar b{display:block;font-size:.95rem}
+.stybar select{width:auto;margin-left:auto;padding:7px 10px;font-size:.78rem}
+.styline{display:flex;justify-content:center;align-items:baseline;gap:8px;font-size:1rem;margin:-4px 0 20px;flex-wrap:wrap}.styline small,.styline b,.styline span{font:inherit}.styline small,.styline span{font-weight:500;color:var(--muted)}.styline b{font-weight:800}
+.stybar.inner{max-width:none;margin:0 0 14px;box-shadow:none;background:var(--tint);border:0}
+.steps{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:0 0 22px}
+.steps span[data-step]:hover{outline:2px solid var(--ink)}
+.steps span{font:700 .72rem 'JetBrains Mono',monospace;letter-spacing:.08em;text-transform:uppercase;padding:6px 12px;border-radius:999px;background:var(--tint);color:var(--muted)}
+.steps .on{background:var(--ink);color:var(--bg)}.steps .done{background:var(--green);color:#fff}
+.fg{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(112px,1fr));width:100%}
+.fr{padding:0;border:2px solid transparent;border-radius:12px;overflow:hidden;background:#fff;position:relative;cursor:pointer;display:block}
+.fr:hover{border-color:var(--ink)}.fr.hasnote{border-color:var(--accent)}
+.fr img{display:block;width:100%;height:auto}
+.fr span{position:absolute;left:6px;bottom:6px;font:700 .64rem 'JetBrains Mono',monospace;background:var(--ink);color:var(--bg);border-radius:6px;padding:2px 6px}
+.fr i{position:absolute;right:6px;top:6px;background:var(--accent);color:#fff;border-radius:50%;width:18px;height:18px;font-size:11px;display:flex;align-items:center;justify-content:center}
+.run{display:flex;gap:12px;align-items:center;max-width:760px;margin:0 auto 20px;background:#fff;border:1px solid var(--accent);border-radius:16px;padding:10px 14px}
+.run[hidden]{display:none}.run.err{border-color:#E24B4A;color:#A32D2D}
+.run small{color:var(--muted);display:block;max-width:560px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.run i{color:var(--accent);font-size:22px}.spin{animation:sp 1s linear infinite}@keyframes sp{to{transform:rotate(360deg)}}
+.run button{margin-left:auto}
+.locked .scrub,.locked .r button{pointer-events:none;opacity:.4}
+.proj{position:relative}.pact{position:absolute;top:22px;right:22px;display:flex;gap:6px}.pact button{padding:7px 8px;background:#fff;box-shadow:0 2px 8px rgba(20,17,15,.2)}
+.ws.land:not(.ws3):not(.ws2){grid-template-columns:1fr}.ws.land:not(.ws3):not(.ws2)>section.c{max-width:860px;width:100%;margin:0 auto}
+.ws.land:not(.ws3):not(.ws2) .col{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:16px;align-items:start}
+.ws.land:not(.ws3):not(.ws2) .stage video,.ws.land:not(.ws3):not(.ws2) .stage .cv,.ws.land:not(.ws3):not(.ws2) .stage canvas{max-height:min(40vh,420px)}
+.ws.land:not(.ws3):not(.ws2) .fg{grid-template-columns:repeat(auto-fill,minmax(170px,1fr))}
+/* Editing page (ws3) in landscape: real three columns, full width, wider video column — not the
+   stacked single-column layout above, which is for the older two-column pages (Script/Instructions) */
+main.wide3.landwide{max-width:none}
+@media(min-width:1301px){.ws3.land{grid-template-columns:minmax(0,1.1fr) minmax(260px,1fr) minmax(300px,1.1fr)}}
+.empty.wide{aspect-ratio:16/9;width:min(100%,520px)}
+.galgrid{display:grid;gap:16px;grid-template-columns:repeat(auto-fill,minmax(230px,1fr))}
+.gc{background:var(--tint);border-radius:16px;overflow:hidden}.gc video{width:100%;max-height:340px;background:#000;display:block}
+.gb{padding:10px 12px 12px;display:flex;flex-direction:column;gap:2px}.gb small{color:var(--muted);font-size:.72rem;overflow-wrap:anywhere}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:12px 18px;border-radius:14px;font-weight:700;font-size:.85rem;z-index:20;max-width:90vw}
+.toast[hidden]{display:none}
+/* First instruction: editing option checkboxes */
+.opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:8px;margin:0 0 12px}
+.opt{display:flex;gap:10px;align-items:flex-start;background:#fff;border:1px solid var(--line);border-radius:14px;padding:10px 12px;cursor:pointer}
+.opt:hover{border-color:var(--ink)}
+.opt:has(input:checked){border-color:var(--accent);background:color-mix(in srgb,var(--accent) 6%,#fff)}
+.opt input{accent-color:var(--accent);width:18px;height:18px;margin:2px 0 0;flex:none}
+.opt b{display:block;font-size:.88rem}
+.opt small{display:block;color:var(--muted);font-size:.76rem;line-height:1.35}
+.vonote{display:flex;gap:10px;align-items:flex-start;background:#FFF4E5;border:1px solid #F0B35B;border-radius:14px;padding:10px 12px;margin:0 0 12px;font-size:.84rem;line-height:1.45}
+.vonote i{color:#C26A00;font-size:18px;flex:none;margin-top:1px}
+/* First instruction: a reference video whose editing BOSS copies */
+.refbox{background:var(--tint);border-radius:16px;padding:12px 14px;margin:-6px 0 14px}
+.refbox small{display:block;font:700 .62rem 'JetBrains Mono',monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+.refbox .r{flex-wrap:nowrap}
+.refbox input[type=text]{flex:1;min-width:0;padding:8px 12px;border-radius:999px}
+.refbox .refon{display:flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--accent);border-radius:12px;padding:8px 10px;margin-top:8px;font-size:.85rem;overflow-wrap:anywhere}
+.refbox .refon i{color:var(--accent)}
+.refbox .refon button{margin-left:auto;padding:4px 6px;border:0;background:transparent;color:var(--muted)}
+@media(max-width:560px){.refbox .r{flex-wrap:wrap}.refbox input[type=text]{flex-basis:100%}}
+/* Editing page: video, Script and Revision notes side by side, so the page runs wider than usual.
+   Mobile sizing for this is a later pass; for now it just folds down like every other .ws does. */
+main.wide3{max-width:1680px}
+@media(min-width:1301px){.ws3{grid-template-columns:minmax(0,1fr) minmax(260px,.95fr) minmax(300px,1.05fr)}}
+@media(max-width:1300px){.ws3{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.ws3>#editmid{grid-column:span 2}}
+@media(max-width:900px){.ws3{grid-template-columns:1fr}}
+/* Script step: the transcript is the edit */
+.scr{max-height:min(58vh,620px);overflow:auto;background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px 16px;font-size:1rem;line-height:1.9;user-select:none;outline:none}
+.scr p{margin:0 0 12px}
+.scr .w,.scr .pz{border-radius:5px;padding:1px 1px;cursor:pointer}
+.scr .w:hover,.scr .pz:hover{background:var(--tint)}
+.scr .pz{font:700 .7rem 'JetBrains Mono',monospace;color:var(--muted);background:var(--tint);padding:2px 6px;margin:0 3px}
+.scr .sug{background:#FCEFC7;box-shadow:inset 0 -2px #E0A800}
+.scr .cut{text-decoration:line-through;text-decoration-thickness:2px;color:#B4ADA3;background:#FBE3DD}
+.scr .sel{background:var(--ink)!important;color:var(--bg)!important}
+.scr .now{outline:2px solid var(--accent);outline-offset:1px}
+.scrub .cx{position:absolute;top:8px;height:10px;background:#E24B4A;opacity:.75;border-radius:2px;pointer-events:none}
+.modal{position:fixed;inset:0;background:rgba(20,17,15,.6);display:flex;align-items:center;justify-content:center;padding:20px;z-index:30}
+.modal[hidden]{display:none}
+.modal .c{max-width:720px;width:100%}
+.modal pre{white-space:pre-wrap;font:500 .82rem/1.55 'JetBrains Mono',monospace;background:var(--tint);border-radius:14px;padding:14px;max-height:50vh;overflow:auto;margin:0 0 12px}
+/* portrait: the player stays a fixed, sane height regardless of how tall the modules beside it get */
+@media(min-width:901px){
+  .ws:not(.land)>section.c,.ws3.land>section.c,.ws2.land>section.c{display:flex;flex-direction:column}
+  .ws:not(.land) .stage,.ws3.land .stage,.ws2.land .stage{flex:1;min-height:0}
+  .ws:not(.land) .stage:has(video),.ws3.land .stage:has(video),.ws2.land .stage:has(video){position:relative;min-height:440px;max-height:min(60vh,640px)}
+  .ws:not(.land) .stage video,.ws3.land .stage video,.ws2.land .stage video{position:absolute;left:14px;top:14px;width:calc(100% - 28px);height:calc(100% - 28px);max-height:none;max-width:none;object-fit:contain;background:transparent}
+  .ws:not(.land) .stage canvas,.ws:not(.land) .stage .cv,.ws3.land .stage canvas,.ws3.land .stage .cv,.ws2.land .stage canvas,.ws2.land .stage .cv{max-height:min(60vh,640px)}
+}
+/* subtle drifting grid behind the projects list and new-project page */
+body.gridbg::before{content:'';position:fixed;inset:0;z-index:-1;pointer-events:none;background-image:linear-gradient(color-mix(in srgb,var(--line) 70%,transparent) 1px,transparent 1px),linear-gradient(90deg,color-mix(in srgb,var(--line) 70%,transparent) 1px,transparent 1px);background-size:42px 42px;animation:gridshift 70s linear infinite}
+/* New-project page: dark stage, light text for everything that is not inside a card */
+body.darknew{background:#14110F;--line:#2A2520}
+body.darknew .hero,body.darknew .hero h1,body.darknew .hero .sub,body.darknew .hero b{color:#F6F3EC}
+body.darknew .hero .eb,body.darknew #stylepick>label.l{color:#A89F93}
+body.darknew .hero .sub{color:#CFC8BC}
+body.darknew .hero .sub b{color:#FF6B3D!important}
+body.darknew .top{background:rgba(20,17,15,.9);color:#F6F3EC}
+body.darknew .top b{color:#F6F3EC}
+body.darknew .hero h1 i{color:#FF6B3D}
+body.darknew .c,body.darknew .sty,body.darknew .sty b{color:var(--ink)}
+@keyframes gridshift{to{background-position:420px 420px}}
+</style>
+</head>
+<body>
+<header class="top">
+  <span class="brand" data-go="list"><span class="dot"></span>BOSS <i>Studio</i></span>
+  <span class="badge">Draft prototype</span>
+  <span class="sp"></span>
+  <span id="crumb" class="mut" style="margin:0"></span>
+</header>
+<main id="app"></main>
+<div id="toast" class="toast" hidden></div>
+<div id="cfm" class="modal" hidden><div class="c" style="max-width:460px"><p id="cfmtext" style="margin:0 0 14px;font-weight:600"></p><div class="r"><button class="a" id="cfmyes">Yes, delete</button><button id="cfmno">Cancel</button></div></div></div>
+<div id="modal" class="modal" hidden><div class="c"><p class="h"><i class="ti ti-send"></i><span id="mtitle">Revision request</span></p><pre id="prompt"></pre><div class="r"><button class="a" data-act="copyprompt"><i class="ti ti-copy"></i>Copy prompt</button><button data-act="closemodal">Close</button></div><p class="mut">Draft prototype: this window only gives you the prompt. Copy it into a BOSS chat in this workspace. The raw video and snapshots are not saved to a project folder yet, so tell BOSS where your video file is.</p></div></div>
+<div id="stymodal" class="modal" hidden><div class="c" id="stymodalbody"></div></div>
+<script src="../data.js"></script>
+<script>
+const $ = (s, r = document) => r.querySelector(s);
+const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;'}[c]));
+const FR = parent !== window; // framed inside the hub page
+const HUBD = window.HUB || parent.HUB; // the hub data: loaded by ../data.js, or the parent page's
+const P = location.protocol === 'about:' ? '' : '../'; // asset prefix: the hosted copy is a srcdoc next to assets/
+const STY = HUBD.styles;
+const styName = (id) => (id ? (STY.find((s) => s.id === id) || {}).name || 'No style' : 'Custom');
+const fmt = (t) => Math.floor(t / 60) + ':' + String(Math.floor(t % 60)).padStart(2, '0');
+const fmtDur = (ms) => { const s = Math.round(ms / 1000); return s < 60 ? s + 's' : Math.floor(s / 60) + 'm ' + (s % 60) + 's'; };
+// target-platform presets: [id, label, ratio label, width, height]. A project keeps a snapshot of
+// whichever one it picked (id/label/w/h), so editing this list later never changes an existing project.
+const FORMATS = [
+  ['tiktok', 'TikTok', '9:16', 1080, 1920],
+  ['reels', 'Instagram Reels', '9:16', 1080, 1920],
+  ['shorts', 'YouTube Shorts', '9:16', 1080, 1920],
+  ['igstory', 'Instagram Story', '9:16', 1080, 1920],
+  ['igfeed', 'Instagram Feed', '4:5', 1080, 1350],
+  ['youtube', 'YouTube', '16:9', 1920, 1080],
+  ['linkedin', 'LinkedIn', '1:1', 1080, 1080],
+  ['x', 'X', '16:9', 1920, 1080],
+  ['classic', 'Classic 4:3', '4:3', 1440, 1080],
+  ['portrait34', 'Portrait 3:4', '3:4', 1080, 1440],
+  ['cinematic', 'Cinematic 21:9', '21:9', 2560, 1080],
+].map(([id, label, ratio, w, h]) => ({id, label, ratio, w, h}));
+const formatById = (id) => FORMATS.find((f) => f.id === id);
+// most style guides state their ratio as the first entry in `formats`, e.g. "9:16 vertical" or "16:9 horizontal"
+function styleRatio(sty) {
+  const text = (sty && sty.formats || []).join(' ');
+  return ['9:16', '16:9', '4:5', '1:1', '4:3', '3:4', '21:9'].find((r) => text.includes(r)) || '9:16';
+}
+const defaultFormatFor = (sty) => FORMATS.find((f) => f.ratio === styleRatio(sty)) || FORMATS[1];
+const projectFormat = (p) => (p.format && p.format.w && p.format.h ? p.format : { label: 'TikTok', ratio: '9:16', w: 1080, h: 1920 });
+const draftSizeText = (p) => { const f = projectFormat(p); return Math.round(f.w * 0.9) + 'x' + Math.round(f.h * 0.9); };
+const finalSizeText = (p) => { const f = projectFormat(p); return f.w + 'x' + f.h; };
+const RANGES = ['This frame only', 'Next 5 seconds', 'Next 10 seconds', 'Whole section', 'Custom'];
+const fmtp = (t) => fmt(t) + '.' + Math.floor((t % 1) * 10); // one decimal, for a word-accurate time
+const rangeLabel = (n) => n.range === 'Custom' && Number.isFinite(n.rangeStart) ? fmtp(n.rangeStart) + '–' + fmtp(n.rangeEnd) : n.range;
+
+// ---- storage: projects in localStorage, raw video files in IndexedDB (draft: stays inside this browser)
+const load = () => { try { return JSON.parse(localStorage.getItem('studio.projects') || '[]'); } catch { return []; } };
+let API = false; // true when the local studio server is running: projects live in projects/<name>/
+const H = {'x-studio': '1'};
+const jf = async (m, u, b) => { const r = await fetch(u, {method: m, headers: b ? {...H, 'content-type': 'application/json'} : H, body: b ? JSON.stringify(b) : undefined}); if (!r.ok) throw new Error((await r.json().catch(() => ({}))).error || r.status); return r.json(); };
+const voUrl = (p) => (API && p.voiceoverFile ? '/projects/' + p.id + '/voiceover/' + encodeURIComponent(p.voiceoverFile) : null);
+const voCut = (p) => /voiceover-edited/.test(p.cutFile || ''); // the Script step cut the voiceover, not the video
+const rawUrl = (p) => (API && p.rawName ? '/projects/' + p.id + '/raw/' + encodeURIComponent(p.rawName) : null);
+const openUrl = async (p) => { if (API) return rawUrl(p); const f = await getRaw(p.id); return f ? URL.createObjectURL(f) : null; };
+async function upload(p, f) { const r = await fetch('/api/projects/' + p.id + '/raw?name=' + encodeURIComponent(f.name), {method: 'PUT', headers: H, body: f}); if (!r.ok) throw new Error('upload failed'); Object.assign(p, await r.json()); }
+async function uploadVO(p, f) { const r = await fetch('/api/projects/' + p.id + '/voiceover?name=' + encodeURIComponent(f.name), {method: 'PUT', headers: H, body: f}); if (!r.ok) throw new Error('upload failed'); Object.assign(p, await r.json()); }
+// one video, or several clips joined in the order chosen on the New Project screen
+async function uploadDraftVideo(p) {
+  if (draftNew.files && draftNew.files.length > 1) {
+    toast('Joining ' + draftNew.files.length + ' clips…');
+    const partNames = draftNew.files.map((f, i) => 'part-' + String(i + 1).padStart(2, '0') + (/\.[^.]+$/.exec(f.name) || ['.mp4'])[0]);
+    for (let i = 0; i < draftNew.files.length; i++) {
+      const r = await fetch('/api/projects/' + p.id + '/rawpart?name=' + encodeURIComponent(partNames[i]), {method: 'PUT', headers: H, body: draftNew.files[i]});
+      if (!r.ok) throw new Error('upload failed: ' + draftNew.files[i].name);
+    }
+    Object.assign(p, await jf('POST', '/api/projects/' + p.id + '/concat', {files: partNames}));
+  } else if (draftNew.file) await upload(p, draftNew.file);
+}
+// one or more reference links pasted on the New Project screen itself, before the project exists
+async function applyNewRefLinks(p) {
+  const vals = [...document.querySelectorAll('.reflinkrow')].map((i) => i.value.trim()).filter(Boolean);
+  if (!vals.length) return;
+  const bad = vals.find((u) => !/^https?:\/\/\S+$/i.test(u));
+  if (bad) return toast('Reference link ignored — paste a full link that starts with https://: ' + bad);
+  Object.assign(p, {refLinks: vals}); await jf('PUT', '/api/projects/' + p.id, p);
+}
+// the instructions box on the New Project screen: a one-time copy into the Instructions step's text,
+// appended if there's already a brief (not a live-synced duplicate — see hub/studio/NEXT-BUILD-NOTES.md item 4)
+async function applyNewInstructions(p) {
+  const instr = (($('#pinstr') || {}).value || '').trim(); if (!instr) return;
+  p.brief = p.brief ? p.brief + '\n\n' + instr : instr;
+  if (API) await jf('PUT', '/api/projects/' + p.id, p);
+}
+const save = () => { if (API) { if (cur) jf('PUT', '/api/projects/' + cur.id, cur).catch(() => toast('Could not save to the project folder')); return; } try { localStorage.setItem('studio.projects', JSON.stringify(projects)); } catch { toast('Could not save: browser storage is full'); } };
+let projects = load();
+const idb = () => new Promise((ok, no) => { const q = indexedDB.open('studio', 1); q.onupgradeneeded = () => q.result.createObjectStore('raw'); q.onsuccess = () => ok(q.result); q.onerror = no; });
+const putRaw = async (id, f) => { const d = await idb(); d.transaction('raw', 'readwrite').objectStore('raw').put(f, id); };
+const delRaw = async (id) => { const d = await idb(); d.transaction('raw', 'readwrite').objectStore('raw').delete(id); };
+const getRaw = async (id) => { const d = await idb(); return new Promise((ok) => { const q = d.transaction('raw').objectStore('raw').get(id); q.onsuccess = () => ok(q.result); q.onerror = () => ok(null); }); };
+
+let view = 'list', cur = null, draftNew = {name: '', styleId: '', file: null, vofile: null, files: [], refLinks: [''], instructions: '', format: defaultFormatFor(undefined).id, formatTouched: false}, tool = 'pen', shapes = [], snap = null, vurl = null;
+let annotating = false; // snap can be a plain preview (frame click, no draft yet); drawing tools only show once this is true
+// re-rendering the New Project screen (e.g. after picking a style or reordering clips) would otherwise wipe out whatever was typed in the name/reference-link fields
+function keepNewFormText() { if ($('#pname')) draftNew.name = $('#pname').value; if ($('#pinstr')) draftNew.instructions = $('#pinstr').value; const rows = [...document.querySelectorAll('.reflinkrow')]; if (rows.length) draftNew.refLinks = rows.map((r) => r.value); }
+// flags a field red so a missing-input toast isn't the only sign something's wrong; clears itself once touched
+function flagErr(sel) { const el = $(sel); if (el) { el.classList.add('err'); el.addEventListener(el.tagName === 'DIV' ? 'click' : 'input', () => el.classList.remove('err'), {once: true}); } return el; }
+const INK_COLORS = ['#E24B4A', '#14110F', '#1E9E5A', '#2E6FDC', '#F0B33D', '#ffffff'];
+const INK_SIZES = [0.6, 1, 1.8]; // thin, medium (the old fixed look), thick
+let inkColor = INK_COLORS[0], inkSize = 1;
+const app = $('#app');
+function askConfirm(msg, yesLabel, noLabel) { return new Promise((ok) => { const m = $('#cfm'); $('#cfmtext').textContent = msg; $('#cfmyes').textContent = yesLabel || 'Yes, delete'; $('#cfmno').textContent = noLabel || 'Cancel'; m.hidden = false; const done = (v) => { m.hidden = true; ok(v); }; $('#cfmyes').onclick = () => done(true); $('#cfmno').onclick = () => done(false); }); }
+function isFacelessStyle(id) { const s = STY.find((x) => x.id === id); return !!(s && s.faceless); }
+async function confirmFacelessMismatch() {
+  if (!draftNew.file || !isFacelessStyle(draftNew.styleId)) return true;
+  return askConfirm('Heads up — this style is faceless. We\'ll pull the audio from your video as narration and build the edit around motion graphics instead of the footage itself. Your face won\'t appear in the final video.', 'Continue anyway', 'Pick a different style');
+}
+function toast(m) { const t = $('#toast'); t.textContent = m; t.hidden = false; clearTimeout(toast.h); toast.h = setTimeout(() => (t.hidden = true), 2600); }
+const pushStep = () => history.pushState({view, pid: cur && cur.id, phase: cur && (cur.phase || 'brief'), annot: !!snap}, '');
+function go(v, p, pop) { pendingRefs = []; clearInterval(poller); poller = null; runSt = null; runLabel = ''; view = v; cur = p || null; snap = null; $('#crumb').textContent = p ? p.name : ''; render(); window.scrollTo(0, 0); if (!pop) pushStep(); }
+function closeAnnot() { annotating = false; if (history.state && history.state.annot) history.back(); else { snap = null; stage(); } }
+window.addEventListener('popstate', async (e) => {
+  const st = e.state || {view: 'list'}, ph = st.phase || 'brief';
+  if (st.view === 'project' && cur && cur.id === st.pid && (cur.phase || 'brief') === ph) { if (snap && !st.annot) { snap = null; stage(); } return; }
+  if (st.view !== 'project') return go(st.view || 'list', null, true);
+  const p = projects.find((y) => y.id === st.pid); if (!p) return go('list', null, true);
+  vurl = await openUrl(p); await ensureOrient(p); p.phase = ph; save(); frames = []; go('project', p, true);
+});
+
+// ---- screens
+// Masonry: put each card in the shortest column, at its natural height, so no column ends far above the rest.
+function layoutStyles() {
+  const box = document.querySelector('.styles'); if (!box || document.fullscreenElement) return; // moving a fullscreen video out of its parent would exit fullscreen
+  const cards = box._cards || (box._cards = [...box.querySelectorAll('.sty')]);
+  const n = Math.max(2, Math.floor(box.clientWidth / 250)), cols = [];
+  if (box._n === n && !box._force) return; box._n = n;
+  box.replaceChildren(...Array.from({length: n}, () => { const c = document.createElement('div'); c.className = 'col'; cols.push(c); return c; }));
+  cards.forEach((c) => { cols.reduce((a, b) => (b.offsetHeight < a.offsetHeight ? b : a)).append(c); });
+}
+addEventListener('resize', () => { if (document.fullscreenElement) return; clearTimeout(layoutStyles.t); layoutStyles.t = setTimeout(layoutStyles, 120); });
+// Style cards autoplay a short loop from the style's own sample video once visible, instead of
+// decoding all of them at once; falls back to the static cover (already the background) if missed.
+function watchStyleVideos() {
+  const vids = [...document.querySelectorAll('.sty .th video[data-src]')];
+  if (!vids.length) return;
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((e) => {
+      const v = e.target;
+      if (e.isIntersecting) {
+        if (!v.src) v.src = v.dataset.src;
+        const at = +v.dataset.at || 0;
+        if (!v._seeked) { v._seeked = true; v.addEventListener('loadedmetadata', () => (v.currentTime = at), {once: true}); v.addEventListener('timeupdate', () => { if (v.currentTime - at > 4) v.currentTime = at; }); }
+        v.play().catch(() => {});
+      } else v.pause();
+    });
+  }, {threshold: 0.4});
+  vids.forEach((v) => io.observe(v));
+}
+function render() {
+  document.body.classList.toggle('gridbg', view === 'list' || view === 'new'); document.body.classList.toggle('darknew', view === 'new');
+  if (view === 'list') {
+    app.innerHTML = `<div class="hero"><div class="eb">Projects</div><h1>Your <i>projects</i></h1><p class="sub">Each project is its own folder with its raw video, drafts and revision notes.</p></div>
+    <div class="grid"><div class="c proj newc" data-go="new"><i class="ti ti-plus" style="font-size:34px;color:var(--accent)"></i><h3>New project</h3><span class="mut">Upload a raw video and pick a style</span></div>
+    ${projects.map((p) => { const s = STY.find((x) => x.id === p.styleId) || {}; return `<div class="c proj" data-open="${p.id}"><div class="pact"><button data-dup="${p.id}" title="Duplicate"><i class="ti ti-copy"></i></button><button data-delproj="${p.id}" title="Delete"><i class="ti ti-trash"></i></button></div><div class="th" style="background-image:${API && p.thumb ? `url('/projects/${p.id}/${p.thumb}'),` : ''}url('${P}${s.cover || ''}')${API && p.thumb ? ';background-position:center center,center top;background-size:contain,cover' : ''}"></div><h3>${esc(p.name)}</h3><span class="mut" style="margin:0">${esc(styName(p.styleId))} · ${p.notes.length} notes</span></div>`; }).join('')}</div>`;
+  } else if (view === 'new') {
+    const multiFiles = draftNew.files && draftNew.files.length > 1;
+    const fileList = draftNew.files && draftNew.files.length > 0;
+    app.innerHTML = `<div class="hero"><div class="eb">New project</div><h1>Create like a <i>BOSS</i></h1><p class="sub" style="font-size:1.35rem">Upload a <b style="color:var(--ink)">video</b> to edit the person on camera, or just a <b style="color:var(--ink)">voiceover</b> to build a faceless video around it.</p></div>
+    <div class="c" style="max-width:860px;margin:0 auto"><label class="l" style="margin-top:0;color:var(--ink);font:700 .95rem Montserrat,sans-serif;letter-spacing:normal;text-transform:none">Project name</label><input type="text" id="pname" placeholder="Enter the name of the project" value="${esc(draftNew.name)}">
+    <label class="l" style="color:var(--ink);font:700 .95rem Montserrat,sans-serif;letter-spacing:normal;text-transform:none">Media <span class="mut" style="font-weight:500">(video or audio, optional)</span></label>
+    <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap">
+      <div class="drop ${(draftNew.file || draftNew.vofile) ? 'ok' : ''}" id="dropmedia" style="flex:1;min-width:240px"><div class="dicon"><i class="ti ${draftNew.vofile && !draftNew.file ? 'ti-microphone' : 'ti-video'}"></i></div><div class="dtext"><b>${multiFiles ? draftNew.files.length + ' videos selected' + (draftNew.vofile ? ' + ' + esc(draftNew.vofile.name) : '') : [draftNew.file ? esc(draftNew.file.name) : '', draftNew.vofile ? esc(draftNew.vofile.name) : ''].filter(Boolean).join(' + ') || 'Drop your video or audio here'}</b><small>${multiFiles ? 'Joined into one video, in the order below' : 'mp4, avi, mov, wav, mp3'}</small></div>${(draftNew.file || draftNew.vofile) ? '<i class="ti ti-circle-check ok-mark"></i>' : ''}<button type="button" class="b">Browse files</button></div><input type="file" id="filemedia" accept=".mp4,.avi,.mov,.wav,.mp3" multiple hidden>
+      <button class="a" id="btncreate" data-act="create" style="padding:16px 22px;font-size:1rem"${(!draftNew.name.trim() || !(draftNew.file || draftNew.vofile)) ? ' disabled' : ''}><i class="ti ti-folder-plus"></i>Create project</button>
+      <button class="p" id="btnmagic" data-act="magicedit" style="padding:16px 22px;font-size:1rem"${(!draftNew.name.trim() || !(draftNew.file || draftNew.vofile)) ? ' disabled' : ''}><i class="ti ti-wand" style="color:var(--accent)"></i>Magic Edit</button>
+    </div>
+    ${fileList ? '<p class="mut" style="margin:8px 0 4px">' + (multiFiles ? 'Arrange the order these clips play in — they\'ll be joined into one video before anything else happens.' : 'Drop or browse more clips to join them, in order.') + '</p><div style="display:flex;flex-direction:column;gap:6px">' + draftNew.files.map((f, i) => '<div class="n" style="justify-content:space-between"><span style="overflow-wrap:anywhere">' + (i + 1) + '. ' + esc(f.name) + '</span><span class="r" style="gap:2px"><button class="i" data-reorder="up" data-i="' + i + '"' + (i === 0 ? ' disabled' : '') + ' title="Move up"><i class="ti ti-arrow-up"></i></button><button class="i" data-reorder="down" data-i="' + i + '"' + (i === draftNew.files.length - 1 ? ' disabled' : '') + ' title="Move down"><i class="ti ti-arrow-down"></i></button><button class="i" data-reorder="rm" data-i="' + i + '" title="Remove"><i class="ti ti-x"></i></button></span></div>').join('') + '</div>' : ''}
+    <p class="mut" style="margin:6px 0 0">Magic Edit: BOSS decides everything — cuts, style, render — with no review until it's done.</p>
+    <p class="mut" style="margin:4px 0 0">At least one file is needed. This choice is final for the project — there's no timeline editor here to add or swap footage later.</p>
+    <label class="l" style="color:var(--ink);font:700 .95rem Montserrat,sans-serif;letter-spacing:normal;text-transform:none">Your Vision. Your Story (Write Your First Prompt)</label>
+    <textarea id="pinstr" rows="3" placeholder="e.g. Cut it fast, add bold captions, use Pastel Punch">${esc(draftNew.instructions || '')}</textarea>
+    <p class="mut" style="margin:14px 0 0;font-size:.95rem"><b style="color:var(--ink);font:700 .95rem Montserrat,sans-serif">Style</b> ${esc(styName(draftNew.styleId))}</p>
+    <label class="l" style="color:var(--ink);font:700 .95rem Montserrat,sans-serif;letter-spacing:normal;text-transform:none">Format <span class="mut" style="font-weight:500">(where this will be posted — sets the render size)</span></label>
+    <select id="pformat">${FORMATS.map((f) => '<option value="' + f.id + '"' + (f.id === draftNew.format ? ' selected' : '') + '>' + esc(f.label) + ' · ' + f.ratio + '</option>').join('')}</select>
+    <div class="refbox" style="margin-top:10px"><label class="l" style="margin:0 0 8px;color:var(--ink);font:700 .95rem Montserrat,sans-serif;letter-spacing:normal;text-transform:none">Reference Link(s) <span class="mut" style="font-weight:500">· copy the editing of one or more reference videos (optional)</span></label>${draftNew.refLinks.map((v, i) => '<div class="r" style="margin-bottom:6px"><input type="text" class="reflinkrow" data-i="' + i + '" placeholder="Paste a YouTube, TikTok or Instagram link" value="' + esc(v) + '">' + (draftNew.refLinks.length > 1 ? '<button class="i" data-rmreflink="' + i + '" title="Remove"><i class="ti ti-x"></i></button>' : '') + '</div>').join('')}<button type="button" data-act="addreflinkrow"><i class="ti ti-plus"></i>Add another link</button><p class="mut" style="margin:8px 0 0">Copying a reference link takes longer than picking a style below — BOSS has to download and study each video first, instead of using an already-built template.</p></div>
+    </div>
+    <div id="stylepick" style="margin-top:28px"><label class="l" style="margin-top:0;text-align:center;display:block">Style</label><div class="styles"><div class="sty ${draftNew.styleId === '' ? 'on' : ''}" data-sty=""><div class="th" style="aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:34px"><i class="ti ti-scissors"></i><div class="use"><span>Use this style</span></div></div><b>Custom</b></div>${STY.map((s) => { const sm = s.samples && s.samples[0]; return `<div class="sty ${s.id === draftNew.styleId ? 'on' : ''}" data-sty="${s.id}"><div class="th"><img src="${P}${s.cover}" alt="">${sm ? `<video muted loop playsinline preload="none" data-src="${P}${sm.src}" data-at="${sm.at || 0}"></video><button class="i" data-fsvideo="1" title="Watch the full video"><i class="ti ti-maximize"></i></button>` : ''}<div class="use"><span>Use this style</span></div></div><b>${esc(s.name)}</b></div>`; }).join('')}</div></div>
+    <div class="r" style="margin-top:20px;justify-content:center"><button data-go="list">Cancel</button></div>`;
+    layoutStyles(); document.querySelectorAll('.styles img').forEach((i) => i.complete || i.addEventListener('load', () => { const b = document.querySelector('.styles'); if (b) b._n = 0; layoutStyles(); }, {once: true}));
+    watchStyleVideos();
+  } else project();
+}
+
+const ORDER = ['script', 'brief', 'frames', 'approved', 'gallery'];
+// each run that makes a new version keeps its notes, style and base, so a version can be reopened with its context
+function archive(kind, base, magic) { (cur.versions ||= []).push({at: Date.now(), kind, style: cur.styleId, base: base || null, magic: !!magic, notes: cur.notes.map((n) => ({t: n.t, text: n.text, styleId: n.styleId, refLink: n.refLink, range: n.range, img: n.img, refsN: (n.refs || []).length}))}); cur.notes = []; }
+function sentPack() { const sorted = cur.notes.slice().sort((x, y) => x.t - y.t), images = {}; sorted.forEach((n, i) => { if (n.full) images['note-' + (i + 1)] = n.full; (n.refs || []).forEach((r, j) => { images['ref-' + (i + 1) + '-' + (j + 1)] = r; }); }); return images; }
+const noteLinesText = () => buildPrompt().split('\n\n').slice(1).join('\n\n');
+const versionNote = () => '\n\nSave the result as a NEW version in projects/' + cur.id + '/drafts/ (draft-v<N>.mp4, N = the next number). Never overwrite or delete earlier versions.' + (pickDraft ? ' Base this on ' + pickDraft + ', not on the latest version.' : '');
+const recFor = (v) => (cur.versions || []).filter((r) => r.at <= v).pop(); // the run that made a file saved at time v
+const KIND = {revision: 'Revision', restyle: 'New style', approve: 'First render', final: 'Final render', unsent: 'Not sent (script re-cut)'};
+async function restyle(id) {
+  if (id === cur.styleId) return;
+  const ph = cur.phase || 'brief';
+  if ($('#brief')) cur.brief = $('#brief').value;
+  if (!API || ph === 'brief') { cur.styleId = id; save(); return project(); }
+  if (!confirm((!id ? 'Remove the style and edit as is? ' : 'Change the whole video to "' + styName(id) + '"? ') + (ph === 'frames' ? 'BOSS will redo the still frames in the new style.' : 'BOSS will render a new version in the new style. The current version stays in the gallery.'))) return project();
+  const sty = STY.find((x) => x.id === id) || {}, guide = (sty.guides && sty.guides[0] && sty.guides[0].path) || '';
+  const withNotes = cur.notes.length ? '\n\nAlso apply these notes:\n' + noteLinesText() : '', images = sentPack();
+  const text = (!id ? 'Stop using a style: show the video as it is, and keep only the changes I asked for' : 'Change the whole video to the style "' + styName(id) + '"') + (guide ? ' (read its guide first: ' + guide + ')' : '') + '. Keep the content, the cuts and all my earlier notes. Only the look changes.' + withNotes + (ph === 'frames' ? ' Update the still frames in projects/' + cur.id + '/frames/ only.' : versionNote());
+  cur.styleId = id; archive('restyle', ph === 'approved' ? pickDraft : null); save(); project(); return startRunApi(text, images, 'Changing Style');
+}
+function project() {
+  const p = cur, ph = p.phase || 'brief', sty = STY.find((x) => x.id === p.styleId) || {};
+  if (ph === 'script' && API) vurl = voUrl(p) || rawUrl(p); // the script is timed to the voiceover if there is one, else the raw video
+  if (ph === 'brief' && API) vurl = rawUrl(p) || voUrl(p);
+  if (ph === 'approved' && API && !viewFile) vurl = ''; // no draft yet: don't show the raw video here, show the waiting state instead
+  // the Script step shows the raw footage, so its layout follows that file's real shape; everywhere
+  // else shows (or will show) the rendered draft, which is always the chosen target format's shape
+  const showLandscape = (ph === 'script' || ph === 'brief') ? p.landscape : projectFormat(p).w > projectFormat(p).h;
+  p.reached = Math.max(p.reached || 0, ORDER.indexOf(ph));
+  const step = (n, t, k) => '<span' + (ORDER.indexOf(k) <= p.reached ? ' data-step="' + k + '" style="cursor:pointer" title="Go to this step"' : '') + ' class="' + (ph === k ? 'on' : (ORDER.indexOf(ph) > ORDER.indexOf(k) ? 'done' : '')) + '">' + n + ' · ' + t + '</span>';
+  const tools = [['pen', 'pencil'], ['arrow', 'arrow-up-right'], ['circle', 'circle'], ['box', 'square'], ['text', 'typography']].map(([k, ic]) => '<button class="i ' + (k === tool ? 'on' : '') + '" data-tool="' + k + '" title="' + k + '"><i class="ti ti-' + ic + '"></i></button>').join('');
+  const swatches = '<span class="mut" style="margin:0 0 0 8px;font-weight:700">Color</span>' + INK_COLORS.map((c) => '<button class="i" data-color="' + c + '" style="background:' + c + ';width:22px;height:22px;padding:0;border-radius:50%;border:2px solid ' + (c === inkColor ? 'var(--ink)' : 'var(--line)') + '" title="' + c + '"></button>').join('');
+  const thickness = '<span class="mut" style="margin:0 0 0 8px;font-weight:700">Size</span>' + ['Thin', 'Medium', 'Thick'].map((lab, i) => '<button class="i' + (i === inkSize ? ' on' : '') + '" data-thick="' + i + '" title="' + lab + '">' + (i + 1) + '</button>').join('');
+  const toolRow = '<div id="tools" class="r" style="margin-top:10px;display:none;flex-wrap:wrap"><span class="mut" style="margin:0;font-weight:700">Draw</span>' + tools + swatches + thickness + '<button class="i" data-act="undo" title="Undo"><i class="ti ti-arrow-back-up"></i></button><button class="i" data-act="clear" title="Clear"><i class="ti ti-trash"></i></button><button data-act="cancelsnap">Back to frames</button></div>';
+  const styLine = '<p class="styline"><small>Project style</small><span>·</span><b>' + esc(styName(p.styleId)) + '</b></p>';
+  const briefLocked = API && ph === 'brief' && (p.reached >= 2 || p.magic); // frames or a draft already exist (or BOSS decided everything itself): this page is read-only, go to Editing to revise instead
+  const styCard = '<div class="stybar">' + '<div><small>Project style</small><b>' + esc(styName(p.styleId)) + '</b></div>' + (ph !== 'brief' ? '' : '<select id="psty" title="Change the project style"' + (briefLocked ? ' disabled' : '') + '><option value=""' + (p.styleId ? '' : ' selected') + '>Custom</option>' + STY.map((s) => '<option value="' + s.id + '"' + (s.id === p.styleId ? ' selected' : '') + '>' + esc(s.name) + '</option>').join('') + '</select>') + '</div>';
+  const video = '<p class="h"><i class="ti ti-movie"></i><span id="vname">' + esc(ph === 'approved' && API && viewLabel ? viewLabel : (p.rawName || p.voiceoverFile || 'No media attached')) + '</span></p><div class="stage" id="stage"></div>' +
+    '<div class="scrub" id="scrub"><div class="tr"></div><div class="fl" id="fl"></div><div class="ph" id="ph" style="left:0"></div>' + p.notes.map((n) => '<div class="mk" data-t="' + n.t + '" style="left:' + (n.t / (p.dur || 1)) * 100 + '%"></div>').join('') + '</div>' +
+    '<div class="r" style="justify-content:space-between"><div class="r"><button class="i" data-act="seek" data-d="-5" title="Back 5 seconds"><i class="ti ti-rewind-backward-5"></i></button><button class="p i" data-act="play" title="Play or pause"><i class="ti ti-player-play" id="pi"></i></button><button class="i" data-act="seek" data-d="5" title="Forward 5 seconds"><i class="ti ti-rewind-forward-5"></i></button><button data-act="seek" data-d="0.0334"><i class="ti ti-player-track-next"></i>1 frame</button><button class="i" data-act="fs" title="Full screen"><i class="ti ti-arrows-maximize"></i></button></div><span class="mut" style="margin:0" id="tm">0:00 / 0:00</span></div>';
+  const frames_ = '<p class="h"><i class="ti ti-layout-grid"></i>Frame preview · still images, not a full render</p><div class="stage" id="stage" style="min-height:240px"></div><p class="mut">Click a frame to annotate it. Frames with a note have an orange edge. The full video is only rendered after you approve the frames.</p>';
+  const styleRange = '<label class="l" style="margin-top:16px"><i class="ti ti-palette" style="vertical-align:-2px;margin-right:4px"></i>Use a style here</label><div class="r" style="margin:0 0 6px"><select id="nsty" style="flex:1;min-width:160px"><option value="">Keep the project style (' + esc(styName(p.styleId)) + ')</option>' + STY.map((s) => '<option value="' + s.id + '">' + esc(s.name) + '</option>').join('') + '<option value="__link">Copy a style from a link…</option></select><select id="nrange" style="width:170px">' + RANGES.map((r) => '<option>' + r + '</option>').join('') + '</select></div>' +
+    '<div id="nlinkrow" hidden><input type="text" id="nlink" placeholder="Paste a YouTube, TikTok or Instagram link" style="margin:0 0 4px"><p class="mut" style="margin:0 0 6px">Say what to copy in the note, like "the zoom on each key word". Leave it empty to copy the whole look.</p></div>' +
+    '<p class="mut" style="margin:0 0 14px">Attached to the note as "use this style from this time".</p>';
+  const notes = '<section class="c"><p class="h"><i class="ti ti-message"></i>Revision notes</p>' + styleRange + '<textarea id="ntext" rows="6" style="margin:4px 0 16px" placeholder="Make the captions bigger and move them up"></textarea><div class="r" style="margin-top:8px"><button data-act="addref"><i class="ti ti-photo-plus"></i>Add image or logo</button><span class="mut" style="margin:0">or paste one into the box</span></div><div id="refs" class="r" style="margin-top:8px"></div><div class="r" style="margin-top:8px"><button data-act="addbroll"><i class="ti ti-video-plus"></i>Add B-roll video</button><span class="mut" style="margin:0">cut in at this note\'s point or range</span></div><div id="broll" class="r" style="margin-top:8px"></div><div id="pick" style="margin-top:8px"></div><div class="r" style="margin-top:8px"><button class="p" data-act="addnote"><i class="ti ti-plus"></i>Add note at <span id="nt">0:00</span></button></div><div id="notes" style="display:flex;flex-direction:column;gap:8px;margin-top:12px"></div><div class="r" style="margin-top:14px;justify-content:space-between"><span class="mut" style="margin:0;font-weight:700" id="nc"></span><button class="a" data-act="send">Send to BOSS for revision ↗</button></div></section>';
+  // voiceover: for edits that need audio beyond the raw video — an existing file, or a script BOSS turns into one
+  // revising an existing voiceover (there's no upload here: the video/MP3 choice at creation is final)
+  const voGenCard = p.voiceoverFile ? '<section class="c"><p class="h"><i class="ti ti-wand"></i>Revise the voiceover</p><p class="mut" style="margin:0 0 10px">Current file: ' + esc(p.voiceoverFile) + '</p><label class="l" style="margin-top:0">Paste a new script and have BOSS regenerate it</label><textarea id="voscript" rows="3" placeholder="Paste the voiceover script here">' + esc(p.voScript || '') + '</textarea><div class="r" style="margin-top:8px"><button class="a" data-act="genvo"><i class="ti ti-wand"></i>Generate voiceover with ElevenLabs</button></div><p class="mut">Needs the ElevenLabs connector. If it isn\'t connected yet, BOSS will tell you to connect it first. This replaces the current file and restarts the Script step.</p></section>' : '';
+  let left, right, mid = '';
+  if (ph === 'brief') {
+    left = video;
+    right = '<section class="c"><p class="h"><i class="ti ti-message-2"></i>First instruction</p>' + styCard.replace('stybar', 'stybar inner') + refHtml(p, briefLocked) + optsHtml(p, briefLocked) + '<textarea id="brief" rows="6" placeholder="Tell BOSS how to edit this video. For example: open with the strongest line, use the style on every section."' + (briefLocked ? ' disabled' : '') + '>' + esc(p.brief || '') + '</textarea><p class="mut">' + (API ? (p.magic ? 'This project was made with Magic Edit — BOSS decided everything automatically, including the style and the cuts. Use Editing to revise it.' : p.reached >= 4 ? 'The draft is rendered — go to Editing to review and revise it.' : p.reached >= 2 ? 'Frames are ready — go to Editing to review them and render the first draft.' : 'BOSS makes still frames first, then the full draft — both happen on the Editing page.') : 'The first option shows you the graphics on still frames before rendering. The second skips that and renders the full draft right away.') + '</p><div class="r" style="margin-top:12px">' + (API ? '<button class="a" data-act="renderdraft"><i class="ti ' + (p.reached >= 2 ? 'ti-arrow-right' : 'ti-player-play') + '"></i>' + (p.reached >= 2 ? 'Go to Editing' : 'Render Draft') + '</button>' : '<button class="a" data-act="sendbrief">Send first instruction ↗</button><button data-act="toframes"><i class="ti ti-layout-grid"></i>Preview frames</button><button data-act="proceed"><i class="ti ti-player-play"></i>Skip frames and render draft</button>') + '</div></section>';
+  } else if (ph === 'script') {
+    left = video;
+    right = scriptCardHtml(p, 'phase') + voGenCard;
+  } else if (ph === 'frames') {
+    left = frames_;
+    right = '<section class="c"><p class="h"><i class="ti ti-pencil"></i>Annotate a frame</p><span class="mut" style="margin:0">Click a frame on the left, then draw on it.</span>' + toolRow + '</section>' + notes +
+      '<section class="c" style="border:2px solid var(--green)"><p class="h"><i class="ti ti-circle-check" style="color:var(--green)"></i>Happy with the frames?</p><div class="r"><button class="a" data-act="approve">Approve frames and render the full video</button>' + (p.reached >= 3 ? '<button data-step="approved"><i class="ti ti-player-play"></i>Back to the rendered video</button>' : '') + '</div><p class="mut">Annotations stay on still frames until you approve.</p></section>';
+  } else {
+    left = video;
+    if (ph === 'approved' && !p.editMode) p.editMode = viewFile ? 'script' : 'frames';
+    mid = ph === 'approved' ? midHtml() : scriptCardHtml(p, 'panel');
+    const sendLocked = !p.notes.length || !!(runSt && runSt.running), finalLocked = !viewFile || !!(runSt && runSt.running);
+    let captureInNotes = notes.replace(
+      '<p class="h"><i class="ti ti-message"></i>Revision notes</p>',
+      '<p class="h"><i class="ti ti-message"></i>Revision notes · <span id="ct">0:00</span></p><div class="r"><button class="a" data-act="snap"><i class="ti ti-camera"></i>Snapshot</button><button data-editmode="frames"><i class="ti ti-layout-grid"></i>View frames</button></div>' + toolRow.replace('Back to frames', 'Cancel')
+    );
+    captureInNotes = captureInNotes.replace(
+      '<button class="a" data-act="send">Send to BOSS for revision ↗</button>',
+      '<button class="a" data-act="send"' + (sendLocked ? ' disabled' : '') + '>Render Draft</button>'
+    );
+    const addStyleLocked = !viewFile || !!(runSt && runSt.running);
+    const styleProposalHtml = cur.styleProposalReady
+      ? '<section class="c" style="border:2px solid var(--accent)">' + styleProposalBody(cur.styleProposalReady) + '<div class="r"><button class="a" data-act="approvestyle">Approve — add to style picker</button><button data-act="discardstyle">Discard</button></div></section>'
+      : cur.pendingStyleSlug ? '<section class="c"><p class="h"><i class="ti ti-sparkles"></i>New style proposal</p><p class="mut" style="margin:0">BOSS is studying this edit and drafting a new style…</p></section>' : '';
+    right = (API && viewV && recFor(viewV) ? '<section class="c"><p class="h"><i class="ti ti-history"></i>This version was made from</p>' + versionInfo(viewV) + '</section>' : '') + captureInNotes + styleProposalHtml + '<section class="c" style="border:2px solid var(--green)"><p class="h"><i class="ti ti-circle-check" style="color:var(--green)"></i>Final version</p><div class="r"><button data-act="addstyle"' + (addStyleLocked ? ' disabled' : '') + '><i class="ti ti-sparkles"></i>Save As New Style</button><button class="a" data-act="final"' + (finalLocked ? ' disabled' : '') + '>Render Final Version</button></div><p class="mut">Drafts are always low resolution so they render fast. Full resolution (1080×1920) only happens when you press this.</p></section>';
+  }
+  app.classList.toggle('wide3', ph === 'approved'); // the Editing page runs wider, to fit video + Script + notes
+  app.classList.toggle('landwide', ph === 'approved' && showLandscape); // a landscape draft keeps all three columns full width instead of the usual 1680px cap
+  app.innerHTML = '<div class="hero proj" style="margin-bottom:18px"><div class="eb">' + (ph === 'script' ? 'New project' : ph === 'brief' ? 'Instructions' : ph === 'frames' ? 'Frame review' : ph === 'approved' ? 'Editing' : 'Rendered versions') + '</div><h1>' + esc(p.name) + '</h1></div>' + (ph === 'brief' ? '' : styLine) +
+    '<div class="steps">' + step(1, 'Script', 'script') + step(2, 'Instructions', 'brief') + step(3, 'Editing', 'approved') + step(4, 'Gallery', 'gallery') + '</div><div id="run" class="run" hidden></div>' +
+    (ph === 'gallery' ? '<section class="c"><p class="h"><i class="ti ti-library-photo"></i>Rendered versions · oldest to latest</p><div id="gal"></div></section>' : '<div class="ws' + (ph === 'approved' ? ' ws3' : '') + ((ph === 'script' || ph === 'brief') ? ' ws2' : '') + (showLandscape ? ' land' : '') + '"><section class="c' + (API && ph === 'approved' && runSt && runSt.running ? ' locked' : '') + '">' + left + '</section>' + mid + '<div class="col">' + right + '</div></div>');
+  if (ph === 'gallery') loadGallery(); else { if ($('#notes')) notesHtml(); stage(); bindVideo(); }
+  paintStyModal();
+  if (ph === 'script' && API && !p.magic) scriptInit();
+  if (ph === 'approved' && API) { if (p.editMode === 'frames') { if (!frames.length) loadFrames().then(() => { if (cur && cur.phase === 'approved' && cur.editMode === 'frames') paintFrames(); }); else paintFrames(); } else scriptInit(); }
+  if (API) {
+    paintRun(); pollRun();
+    // a step counts as done if its files exist in the project folder (frames, a rendered draft), even from before the steps were tracked
+    Promise.all([jf('GET', '/api/projects/' + cur.id + '/drafts'), jf('GET', '/api/projects/' + cur.id + '/frames')]).then(([d, f]) => { const cutAt = cur.cutAt || 0, nd = d.filter((x) => x.v > cutAt), nf = f.filter((x) => x.v > cutAt); const r = nd.length ? 4 : nf.length ? 2 : 0; if (cur && r > (cur.reached || 0)) { cur.reached = r; save(); if (!snap) project(); } }).catch(() => {});
+    if (ph === 'frames' && !frames.length) loadFrames().then(() => { if (cur && cur.phase === 'frames' && !snap) stage(); });
+    if (ph === 'approved') { const hadDraft = !!viewFile; loadDraft().then((ch) => { if (ch && cur && cur.phase === 'approved') { if (!hadDraft && viewFile) { if (cur.editMode === 'frames') cur.editMode = 'script'; if (cur.magic) { cur.framesV = viewV; save(); } } if (!snap) project(); } }); }
+    if (ph === 'script') loadVoiceover().then((ch) => { if (ch && cur && cur.phase === 'script') { S = null; save(); project(); } });
+  }
+}
+
+function notesHtml() {
+  const p = cur;
+  $('#notes').innerHTML = p.notes.length ? p.notes.map((n) => `<div class="n"><span class="t" data-t="${n.t}">${fmt(n.t)}</span>${n.img ? `<img src="${n.img}" alt="">` : ''}${(n.refs || []).map((r) => `<img src="${r}" alt="Reference" style="object-fit:contain;background:#fff;height:44px;width:auto;max-width:70px">`).join('')}<span>${esc(n.text || (n.img ? '(drawing only)' : n.refLink ? 'Copy the style from this link' : n.quote ? '' : ''))}${n.quote ? `<br><span class="tag"><i class="ti ti-quote"></i> "${esc(n.quote)}" · ${esc(rangeLabel(n))}</span>` : ''}${n.styleId ? `<br><span class="tag">${esc(styName(n.styleId))} · ${esc(rangeLabel(n))}</span>` : ''}${n.refLink ? `<br><span class="tag"><i class="ti ti-link"></i> ${esc(n.refLink.replace(/^https?:\/\/(www\.)?/, '').slice(0, 40))} · ${esc(n.range)}</span>` : ''}${(n.broll || []).map((f) => `<br><span class="tag"><i class="ti ti-video"></i> ${esc(f)}</span>`).join('')}</span><button class="x" data-del="${n.id}" title="Delete"><i class="ti ti-x"></i></button></div>`).join('') : '<span class="mut" style="margin:0">No notes yet. Pause on a moment and add one.</span>';
+  $('#nc').textContent = p.notes.length + ' note' + (p.notes.length === 1 ? '' : 's') + ' ready';
+}
+
+// ---- player + snapshot/annotation
+function stage() {
+  const st = $('#stage'), ph = cur.phase || 'brief';
+  if (snap) {
+    st.innerHTML = '<div class="cv"><canvas id="base" width="' + snap.w + '" height="' + snap.h + '"></canvas><canvas class="ink" id="ink" width="' + snap.w + '" height="' + snap.h + '"></canvas></div>';
+    $('#base').getContext('2d').drawImage(snap.c, 0, 0); draw(); $('#nt') && ($('#nt').textContent = fmt(snap.t));
+    // a frame click only previews a still (no draw tools) until Snapshot is pressed; takeSnap()/the
+    // "already previewing, just start drawing" path in the snap action both set annotating themselves
+    if (annotating) { inkEvents(); $('#tools').style.display = 'flex'; } else { const tl = $('#tools'); if (tl) tl.style.display = 'none'; }
+    return;
+  }
+  $('#tools') && ($('#tools').style.display = 'none');
+  if (ph === 'frames') {
+    if (API && !frames.length) {
+      st.innerHTML = runSt && runSt.running ? '<div class="empty" style="aspect-ratio:auto;padding:40px 20px"><i class="ti ti-loader-2 spin" style="font-size:30px"></i><b>BOSS is making your frames…</b><span style="font-size:.8rem">They appear here as soon as they are ready.</span></div>' : '<div class="empty" style="aspect-ratio:auto;padding:40px 20px"><i class="ti ti-photo-off" style="font-size:30px"></i><b>No frames yet</b><span style="font-size:.8rem">Send your first instruction and BOSS will make them.</span>' + (vurl ? '<button data-act="standin">Use frames from my raw video for now</button>' : '') + '</div>'; return;
+    }
+    if (!vurl && !frames.length) { st.innerHTML = '<div class="empty"><i class="ti ti-video-plus" style="font-size:34px"></i><b>No video yet</b><span style="font-size:.8rem">Attach the raw video to make frames.</span></div>'; return; }
+    if (!frames.length) { st.innerHTML = '<div class="empty" style="aspect-ratio:auto;padding:40px 20px"><i class="ti ti-loader-2" style="font-size:30px"></i><b id="fprog">Making frames…</b></div>'; if (!frameBusy) makeFrames(); return; }
+    const step = cur.dur / frames.length || 5;
+    st.innerHTML = '<div class="fg">' + frames.map((f, i) => '<button class="fr ' + (cur.notes.some((n) => Math.abs(n.t - f.t) < step / 2) ? 'hasnote' : '') + '" data-fr="' + i + '"><img src="' + f.img + '" alt="Frame at ' + fmt(f.t) + '"><span>' + fmt(f.t) + '</span>' + (cur.notes.some((n) => Math.abs(n.t - f.t) < step / 2) ? '<i class="ti ti-pencil"></i>' : '') + '</button>').join('') + '</div>';
+    return;
+  }
+  if (ph === 'approved' && API && runSt && runSt.running) { st.innerHTML = '<div class="empty" style="gap:12px"><i class="ti ti-loader-2 spin" style="font-size:46px;color:var(--accent)"></i><b>Rendering your video…</b><span style="font-size:.8rem">The player unlocks when the render is ready.</span></div>'; return; }
+  if (ph === 'approved' && API && !viewFile) { st.innerHTML = '<div class="empty"><i class="ti ti-movie" style="font-size:34px"></i><b>Waiting for the first draft</b><span style="font-size:.8rem">Review the frames on the right, then press Render Draft.</span></div>'; return; }
+  st.innerHTML = vurl ? '<video id="v" src="' + vurl + '" playsinline preload="metadata"></video>' : '<div class="empty"><i class="ti ti-video-plus" style="font-size:34px"></i><b>No video yet</b><span style="font-size:.8rem">Attach the raw video, or the first draft once it exists.</span></div>';
+}
+// Frames module on the Editing page: a toggle alternative to Script, in the middle column (not the
+// video stage on the left). Before the first draft exists these are BOSS's own frames from the brief;
+// once a draft exists, toggling to (or already being on) Frames re-pulls them from the current version
+// whenever it's newer than what we have — see ensureFreshFrames().
+function paintFrames() {
+  const el = $('#fgrid'); if (!el) return;
+  if (!frames.length) {
+    if (!viewFile && !cur.rawName && !cur.voiceoverFile) { el.innerHTML = '<div class="empty" style="aspect-ratio:auto;padding:30px 16px;margin:0 auto"><i class="ti ti-photo-off" style="font-size:28px"></i><b>Waiting for the first draft</b><span style="font-size:.8rem">Frames appear here once there is something to make them from.</span></div>'; return; }
+    el.innerHTML = runSt && runSt.running
+      ? '<div class="empty" style="aspect-ratio:auto;padding:30px 16px;margin:0 auto"><i class="ti ti-loader-2 spin" style="font-size:28px"></i><b>BOSS is making your frames…</b></div>'
+      : '<div class="empty" style="aspect-ratio:auto;padding:30px 16px;margin:0 auto"><i class="ti ti-layout-grid" style="font-size:28px"></i><b>No frames yet</b><span style="font-size:.8rem">' + (viewFile ? 'Pull stills from the current draft.' : 'Waiting for the first draft to render.') + '</span></div>';
+    return;
+  }
+  const step = cur.dur / frames.length || 5;
+  el.innerHTML = '<div class="fg">' + frames.map((f, i) => '<button class="fr ' + (cur.notes.some((n) => Math.abs(n.t - f.t) < step / 2) ? 'hasnote' : '') + '" data-fr="' + i + '"><img src="' + f.img + '" alt="Frame at ' + fmt(f.t) + '"><span>' + fmt(f.t) + '</span>' + (cur.notes.some((n) => Math.abs(n.t - f.t) < step / 2) ? '<i class="ti ti-pencil"></i>' : '') + '</button>').join('') + '</div>';
+}
+function midHtml() {
+  const p = cur;
+  const toggle = '<div class="r" style="margin-bottom:12px;justify-content:center"><button class="' + (p.editMode === 'script' ? 'p' : '') + '" data-editmode="script"><i class="ti ti-text-caption"></i>Script</button><button class="' + (p.editMode === 'frames' ? 'p' : '') + '" data-editmode="frames"><i class="ti ti-layout-grid"></i>Frames</button></div>';
+  const panel = p.editMode === 'frames'
+    ? '<section class="c">' + toggle + '<p class="h"><i class="ti ti-layout-grid"></i>Frames · click a frame to annotate it</p><div id="fgrid" style="max-height:min(58vh,620px);overflow:auto"></div></section>'
+    : scriptCardHtml(p, 'panel').replace('<section class="c">', '<section class="c">' + toggle);
+  return '<div id="editmid">' + panel + '</div>';
+}
+// toggling to Frames (or landing on it already selected) is the trigger: if the current draft is newer
+// than the frames we last pulled, ask BOSS to regenerate them automatically — no separate button needed
+function ensureFreshFrames() {
+  if (viewFile && cur.framesV !== viewV && !(runSt && runSt.running)) {
+    cur.framesV = viewV; save(); frames = []; paintFrames();
+    toast('Pulling new frames from this draft…');
+    startRunApi('Regenerate the still frames in projects/' + cur.id + '/frames/ from the current draft projects/' + cur.id + '/drafts/' + viewFile + ' (overwrite the old ones, same naming convention). Do not touch or re-render the draft itself.', null, 'Updating Frames');
+    return true;
+  }
+  return false;
+}
+// still frames from the video (stand-in for the frames BOSS will render); the full video is not played here
+let pendingRefs = [];
+function paintRefs() { const el = $('#refs'); if (el) el.innerHTML = pendingRefs.map((r, i) => '<span style="position:relative"><img src="' + r + '" alt="Reference image" style="height:54px;max-width:96px;object-fit:contain;background:var(--tint);border-radius:8px;border:1px solid var(--line)"><button class="x" data-rmref="' + i + '" title="Remove" style="position:absolute;top:-8px;right:-8px;padding:2px 5px;border-radius:50%;background:#fff;border:1px solid var(--line)"><i class="ti ti-x" style="font-size:12px"></i></button></span>').join(''); }
+async function addRefFile(f) {
+  if (!f || !/^image\/(png|jpeg|webp|gif)/.test(f.type)) return toast('Choose a PNG or JPEG image');
+  const bm = await createImageBitmap(f), k = Math.min(1, 1024 / Math.max(bm.width, bm.height)), c = document.createElement('canvas'); c.width = Math.round(bm.width * k); c.height = Math.round(bm.height * k);
+  c.getContext('2d').drawImage(bm, 0, 0, c.width, c.height); pendingRefs.push(f.type === 'image/png' || f.type === 'image/webp' || f.type === 'image/gif' ? c.toDataURL('image/png') : c.toDataURL('image/jpeg', 0.85)); paintRefs();
+}
+document.addEventListener('paste', (e) => { const it = [...(e.clipboardData?.items || [])].find((i) => i.type.startsWith('image/')); if (it && $('#ntext')) { e.preventDefault(); addRefFile(it.getAsFile()); } });
+let pendingBroll = []; // filenames already saved in broll/, waiting to attach to the note being composed
+function paintBroll() { const el = $('#broll'); if (el) el.innerHTML = pendingBroll.map((f, i) => '<span class="n" style="padding:6px 10px"><i class="ti ti-video"></i><span style="overflow-wrap:anywhere">' + esc(f) + '</span><button class="x" data-rmbroll="' + i + '" title="Remove"><i class="ti ti-x"></i></button></span>').join(''); }
+let frames = [], frameBusy = false, runSt = null, poller = null, runLabel = '';
+async function ensureOrient(p) {
+  if (p.landscape !== undefined || !vurl) return;
+  try { const v = await hiddenVideo(); p.landscape = v.videoWidth > v.videoHeight; p.dur = v.duration; API ? jf('PUT', '/api/projects/' + p.id, p).catch(() => {}) : save(); } catch {}
+}
+async function loadFrames() { try { frames = (await jf('GET', '/api/projects/' + cur.id + '/frames')).filter((f) => f.v > (cur.cutAt || 0)).map((f) => ({t: f.t, img: '/projects/' + cur.id + '/frames/' + encodeURIComponent(f.file) + '?v=' + f.v})); } catch {} }
+async function loadVoiceover() { try { const d = await jf('GET', '/api/projects/' + cur.id + '/voiceover'); if (d[0] && d[0].file !== cur.voiceoverFile) { cur.voiceoverFile = d[0].file; return true; } } catch {} return false; }
+let pickDraft = null, viewLabel = '', viewV = 0, viewFile = ''; // pickDraft: a version chosen in the gallery to look at in the editing step
+let scriptPick = null; // a word or phrase picked in Script (step 4), waiting to anchor the next note
+async function loadDraft() {
+  const was = vurl + '|' + viewV;
+  try {
+    const d = (await jf('GET', '/api/projects/' + cur.id + '/drafts')).sort((a, b) => a.v - b.v);
+    // after a script re-cut, don't let an old pre-cut draft silently resurface as "current" — unless the
+    // gallery explicitly asked to open it (pickDraft), in which case that deliberate choice always wins
+    const cutAt = cur.cutAt || 0, avail = pickDraft ? d : d.filter((y) => y.v > cutAt);
+    const x = avail.find((y) => y.file === pickDraft) || avail[avail.length - 1];
+    if (x) { vurl = '/projects/' + cur.id + '/drafts/' + encodeURIComponent(x.file) + '?v=' + x.v; viewV = x.v; viewFile = x.file; viewLabel = 'V' + (d.indexOf(x) + 1) + (x === d[d.length - 1] ? ' · latest' : '') + ' · ' + x.file; const el = $('#vname'); if (el && (cur.phase === 'approved')) el.textContent = viewLabel; }
+    else { vurl = ''; viewV = 0; viewFile = ''; viewLabel = ''; }
+  } catch {}
+  return was !== vurl + '|' + viewV;
+}
+function versionInfo(v) {
+  const r = recFor(v); if (!r) return '';
+  return '<details style="margin-top:6px"><summary style="cursor:pointer;font-size:.74rem;font-weight:700">' + esc(KIND[r.kind] || r.kind) + ' · ' + esc(styName(r.style)) + (r.magic ? ' · via Magic Edit' : '') + (r.ms ? ' · ' + fmtDur(r.ms) : '') + ' · ' + r.notes.length + ' note' + (r.notes.length === 1 ? '' : 's') + '</summary>' +
+    (r.notes.length ? r.notes.map((n) => '<div class="n" style="margin-top:6px"><span class="t">' + fmt(n.t) + '</span><span>' + esc(n.text || '(drawing only)') + '</span></div>').join('') : '<small>No notes on this one.</small>') + '</details>';
+}
+async function loadGallery() {
+  const el = $('#gal'); if (!el) return;
+  if (!API) { el.innerHTML = '<span class="mut" style="margin:0">Rendered versions appear here when the studio server is running.</span>'; return; }
+  let d = []; try { d = await jf('GET', '/api/projects/' + cur.id + '/drafts'); } catch {}
+  if (!$('#gal')) return; d.sort((a, b) => a.v - b.v);
+  if (!d.length) { el.innerHTML = '<span class="mut" style="margin:0">No rendered versions yet. Approve the frames and BOSS will render the first one.</span>'; return; }
+  el.innerHTML = '<div class="galgrid">' + d.map((x, i) => { const u = '/projects/' + cur.id + '/drafts/' + encodeURIComponent(x.file) + '?v=' + x.v; return '<div class="gc"><video src="' + u + '#t=1" preload="metadata" controls playsinline></video><div class="gb"><b>V' + (i + 1) + (i === d.length - 1 ? ' · latest' : '') + (/^final/i.test(x.file) ? ' · final' : '') + '</b><small>' + esc(x.file) + '</small><small>' + new Date(x.v).toLocaleString() + (x.size ? ' · ' + (x.size / 1e6).toFixed(1) + ' MB' : '') + '</small>' + versionInfo(x.v) + '<div class="r" style="margin-top:8px"><button data-opendraft="' + esc(x.file) + '">Open in editing</button><button class="i" data-deldraft="' + esc(x.file) + '" title="Delete this version"><i class="ti ti-trash"></i></button></div></div></div>'; }).join('') + '</div>';
+}
+function paintRun() {
+  const el = $('#run'); if (!el) return;
+  if (runSt && runSt.running) { el.className = 'run'; el.hidden = false; el.innerHTML = '<i class="ti ti-loader-2 spin"></i><span><b>' + esc(runLabel || 'BOSS is working') + '</b>' + (runSt.tool ? ' · using ' + esc(runSt.tool) : '') + '<small>' + esc(runSt.text || 'Starting…') + '</small></span><button data-act="cancelrun">Stop</button>'; }
+  else if (runSt && runSt.error) { el.className = 'run err'; el.hidden = false; el.textContent = runSt.error; }
+  else el.hidden = true;
+}
+async function pollRun() {
+  if (!API || !cur) return;
+  try {
+    const s = await jf('GET', '/api/projects/' + cur.id + '/status'), was = runSt && runSt.running; runSt = s; paintRun();
+    if (s.running && !poller) poller = setInterval(pollRun, 2000);
+    if (s.running && !was && cur.phase === 'approved' && !snap) project();
+    if (!s.running && poller) { clearInterval(poller); poller = null; }
+    if (was && !s.running) {
+      if (cur.pendingStyleSlug) {
+        // this run was asked to draft a new style proposal, not render a draft — check if it landed
+        try { cur.styleProposalReady = await jf('GET', '/api/style-proposals/' + cur.pendingStyleSlug); cur.styleProposalSeen = false; toast('Style proposal ready: ' + (cur.styleProposalReady.name || cur.styleProposalReady.id)); }
+        catch { cur.pendingStyleSlug = null; toast('BOSS did not finish the style proposal.'); }
+        save(); project();
+      } else {
+        // the run just ended: timestamp it onto whichever version record was archived right before it started
+        const v = cur.versions && cur.versions[cur.versions.length - 1];
+        let durMsg = '';
+        if (v && s.startedAt && s.finishedAt && v.ms === undefined) { v.ms = s.finishedAt - s.startedAt; save(); durMsg = ' in ' + fmtDur(v.ms) + (v.magic ? ' (Magic Edit)' : ''); }
+        toast(s.error ? 'BOSS stopped: ' + s.error : 'BOSS finished' + durMsg);
+        if (cur.phase === 'frames') { await loadFrames(); if (!snap) stage(); } else if (cur.phase === 'approved') { await Promise.all([loadDraft(), loadFrames()]); project(); } else if (cur.phase === 'script') { if (await loadVoiceover()) { S = null; save(); project(); } }
+      }
+    }
+  } catch {}
+}
+async function startRunApi(prompt, images, label) {
+  try { await jf('POST', '/api/projects/' + cur.id + '/run', {prompt, images: images || {}}); } catch (e) { return toast(String(e.message)); }
+  runLabel = label || 'BOSS is working'; runSt = {running: true}; paintRun(); poller = poller || setInterval(pollRun, 2000); if (cur.phase === 'approved' && !snap) project();
+}
+function hiddenVideo() { return new Promise((ok, no) => { const v = document.createElement('video'); v.muted = true; v.preload = 'auto'; v.src = vurl; v.onloadedmetadata = () => ok(v); v.onerror = no; }); }
+const seekTo = (v, t) => new Promise((ok) => { v.onseeked = () => ok(); v.currentTime = t; });
+async function makeFrames() {
+  frameBusy = true;
+  try {
+    const v = await hiddenVideo(), d = v.duration, n = Math.min(24, Math.max(4, Math.ceil(d / 5))), out = [];
+    cur.dur = d;
+    for (let i = 0; i < n; i++) {
+      const t = (i + 0.5) * d / n; await seekTo(v, t);
+      const c = document.createElement('canvas'); c.width = 200; c.height = Math.round(200 * v.videoHeight / v.videoWidth);
+      c.getContext('2d').drawImage(v, 0, 0, c.width, c.height); out.push({t, img: c.toDataURL('image/jpeg', 0.7)});
+      const pr = $('#fprog'); if (pr) pr.textContent = 'Making frames… ' + (i + 1) + ' / ' + n;
+    }
+    frames = out;
+  } catch { toast('Could not read frames from this video'); }
+  frameBusy = false; if (cur && cur.phase === 'frames') stage();
+}
+async function snapAt(t, i) {
+  // preview only (no draft yet to scrub to) — Snapshot is the explicit action that starts drawing
+  annotating = false;
+  if (API && frames[i]) {
+    const im = new Image(); im.src = frames[i].img; await im.decode(); const k = Math.min(1, 720 / im.naturalWidth), c = document.createElement('canvas'); c.width = Math.round(im.naturalWidth * k); c.height = Math.round(im.naturalHeight * k);
+    c.getContext('2d').drawImage(im, 0, 0, c.width, c.height); snap = {c, w: c.width, h: c.height, t}; shapes = []; stage(); pushStep(); return;
+  }
+  if (!vurl) return toast('Attach the raw video first');
+  const v = await hiddenVideo(); await seekTo(v, t);
+  const k = Math.min(1, 720 / v.videoWidth), c = document.createElement('canvas'); c.width = Math.round(v.videoWidth * k); c.height = Math.round(v.videoHeight * k);
+  c.getContext('2d').drawImage(v, 0, 0, c.width, c.height); snap = {c, w: c.width, h: c.height, t}; shapes = []; stage(); pushStep();
+}
+function bindVideo() {
+  const v = $('#v'); if (!v) return;
+  const upd = () => { const d = v.duration || 0; if (d && cur.dur !== d) { cur.dur = d; } $('#tm').textContent = fmt(v.currentTime) + ' / ' + fmt(d); if (!scriptPick) ['#ct', '#nt'].forEach((k) => $(k) && ($(k).textContent = fmt(v.currentTime))); $('#ph').style.left = (d ? (v.currentTime / d) * 100 : 0) + '%'; $('#fl').style.width = (d ? (v.currentTime / d) * 100 : 0) + '%'; };
+  if (cur._t) { const t0 = cur._t; cur._t = 0; v.addEventListener('loadedmetadata', () => (v.currentTime = t0), {once: true}); }
+  ['timeupdate', 'loadedmetadata', 'seeked'].forEach((e) => v.addEventListener(e, upd));
+  v.addEventListener('play', () => ($('#pi').className = 'ti ti-player-pause')); v.addEventListener('pause', () => ($('#pi').className = 'ti ti-player-play'));
+  v.addEventListener('loadedmetadata', () => { save(); document.querySelectorAll('.mk').forEach((m) => (m.style.left = (m.dataset.t / v.duration) * 100 + '%')); });
+}
+function takeSnap() {
+  const v = $('#v');
+  if (!v || !v.videoWidth) {
+    if (snap) { annotating = true; stage(); return; } // already previewing a frame with nothing to capture from — just start drawing on it
+    return toast(runSt && runSt.running ? 'Wait for the render to finish' : 'Attach a video first');
+  }
+  v.pause(); const k = Math.min(1, 720 / v.videoWidth), c = document.createElement('canvas'); c.width = Math.round(v.videoWidth * k); c.height = Math.round(v.videoHeight * k);
+  c.getContext('2d').drawImage(v, 0, 0, c.width, c.height); snap = {c, w: c.width, h: c.height, t: v.currentTime}; shapes = []; annotating = true; stage(); pushStep();
+}
+function draw(cur2) {
+  const ink = $('#ink'); if (!ink) return; const g = ink.getContext('2d'); g.clearRect(0, 0, ink.width, ink.height);
+  g.lineCap = g.lineJoin = 'round';
+  [...shapes, ...(cur2 ? [cur2] : [])].forEach((s) => {
+    const lw = s.lw || 1;
+    g.strokeStyle = g.fillStyle = s.color || inkColor; g.lineWidth = Math.max(3, ink.width / 160) * lw; g.font = `800 ${Math.round(ink.width / 18 * lw)}px Montserrat,sans-serif`;
+    g.beginPath();
+    if (s.k === 'pen') { s.p.forEach((q, i) => (i ? g.lineTo(q[0], q[1]) : g.moveTo(q[0], q[1]))); g.stroke(); }
+    else if (s.k === 'box') g.strokeRect(s.a[0], s.a[1], s.b[0] - s.a[0], s.b[1] - s.a[1]);
+    else if (s.k === 'circle') { g.ellipse((s.a[0] + s.b[0]) / 2, (s.a[1] + s.b[1]) / 2, Math.abs(s.b[0] - s.a[0]) / 2 || 1, Math.abs(s.b[1] - s.a[1]) / 2 || 1, 0, 0, 7); g.stroke(); }
+    else if (s.k === 'arrow') { const [x1, y1] = s.a, [x2, y2] = s.b, an = Math.atan2(y2 - y1, x2 - x1), h = ink.width / 22 * lw; g.moveTo(x1, y1); g.lineTo(x2, y2); g.moveTo(x2, y2); g.lineTo(x2 - h * Math.cos(an - .45), y2 - h * Math.sin(an - .45)); g.moveTo(x2, y2); g.lineTo(x2 - h * Math.cos(an + .45), y2 - h * Math.sin(an + .45)); g.stroke(); }
+    else if (s.k === 'text') g.fillText(s.t, s.a[0], s.a[1]);
+  });
+}
+function inkEvents() {
+  const ink = $('#ink'); let cs = null, drag = null;
+  const pt = (e) => { const r = ink.getBoundingClientRect(); return [(e.clientX - r.left) * ink.width / r.width, (e.clientY - r.top) * ink.height / r.height]; };
+  // text shapes are vector (position + string), so an existing one can be picked up and moved by hit-testing its box
+  const hitText = (q) => {
+    const g = ink.getContext('2d');
+    for (let i = shapes.length - 1; i >= 0; i--) {
+      const s = shapes[i]; if (s.k !== 'text') continue;
+      const h = Math.round(ink.width / 18 * (s.lw || 1)); g.font = `800 ${h}px Montserrat,sans-serif`;
+      const w = g.measureText(s.t).width;
+      if (q[0] >= s.a[0] - 4 && q[0] <= s.a[0] + w + 4 && q[1] >= s.a[1] - h - 4 && q[1] <= s.a[1] + 4) return s;
+    }
+    return null;
+  };
+  ink.onpointerdown = (e) => {
+    const q = pt(e);
+    if (tool === 'text') {
+      const hit = hitText(q);
+      if (hit) { drag = {s: hit, dx: q[0] - hit.a[0], dy: q[1] - hit.a[1]}; ink.setPointerCapture(e.pointerId); return; }
+      const t = prompt('Text on the frame'); if (t) { shapes.push({k: 'text', a: q, t, color: inkColor, lw: INK_SIZES[inkSize]}); draw(); }
+      return;
+    }
+    ink.setPointerCapture(e.pointerId); cs = tool === 'pen' ? {k: 'pen', p: [q], color: inkColor, lw: INK_SIZES[inkSize]} : {k: tool, a: q, b: q, color: inkColor, lw: INK_SIZES[inkSize]}; draw(cs);
+  };
+  ink.onpointermove = (e) => {
+    if (drag) { const q = pt(e); drag.s.a = [q[0] - drag.dx, q[1] - drag.dy]; draw(); return; }
+    if (!cs) return; const q = pt(e); cs.k === 'pen' ? cs.p.push(q) : (cs.b = q); draw(cs);
+  };
+  ink.onpointerup = () => { if (drag) { drag = null; return; } if (cs) { shapes.push(cs); cs = null; draw(); } };
+}
+function mergedFull() { const c = document.createElement('canvas'); c.width = snap.w; c.height = snap.h; const g = c.getContext('2d'); g.drawImage($('#base'), 0, 0); g.drawImage($('#ink'), 0, 0); return c.toDataURL('image/jpeg', 0.82); }
+function merged() { const c = document.createElement('canvas'); c.width = snap.w; c.height = snap.h; const g = c.getContext('2d'); g.drawImage($('#base'), 0, 0); g.drawImage($('#ink'), 0, 0); const o = document.createElement('canvas'); o.width = 270; o.height = Math.round(270 * snap.h / snap.w); o.getContext('2d').drawImage(c, 0, 0, o.width, o.height); return o.toDataURL('image/jpeg', 0.7); }
+
+// ---- Script step: word-level transcript you edit like text; struck words become cuts in the video.
+// Keys: word i is i, the pause after word i is i + 0.5, so a numeric range selects words and pauses together.
+let S = null; // {id, words, keys, sugg: Map key -> reason, sel: Set, anchor, undo, redo, preview, drag}
+const PAUSE = 0.6, FILLERS = new Set(['um', 'uh', 'umm', 'uhm', 'erm', 'er', 'ah', 'hmm', 'mm', 'mhm']);
+const norm = (t) => String(t).toLowerCase().replace(/[^a-z0-9']/g, '');
+// cut ranges on the raw timeline: a struck word takes the gap after it too; a struck pause keeps a 0.15 s breath each side
+function cutRanges(words, struck) {
+  const r = [];
+  for (const k of struck) {
+    const i = Math.floor(k), w = words[i], nx = words[i + 1]; if (!w) continue;
+    if (k === i) r.push([w.start, nx ? nx.start : w.end]);
+    else if (nx && nx.start - w.end > 0.3) r.push([w.end + 0.15, nx.start - 0.15]);
+  }
+  r.sort((a, b) => a[0] - b[0]);
+  return r.reduce((m, x) => { const l = m[m.length - 1]; if (l && x[0] <= l[1] + 0.001) l[1] = Math.max(l[1], x[1]); else m.push(x.slice()); return m; }, []);
+}
+// local suggestions: filler words, "you know", and a phrase of 1 to 4 words said twice in a row (the first copy goes)
+function localSugg(words) {
+  const s = new Map(), n = words.map((w) => norm(w.text));
+  n.forEach((t, i) => { if (FILLERS.has(t)) s.set(i, 'filler "' + t + '"'); if (t === 'you' && n[i + 1] === 'know' && /[,.]$/.test(words[i + 1].text)) { s.set(i, 'filler "you know"'); s.set(i + 1, 'filler "you know"'); } });
+  for (let len = 4; len >= 1; len--) for (let i = 0; i + 2 * len <= n.length; i++) {
+    let same = true; for (let k = 0; k < len && same; k++) same = n[i + k] && n[i + k] === n[i + len + k];
+    if (same && words[i + len].start - words[i + len - 1].end < 1.5) for (let k = 0; k < len; k++) if (!s.has(i + k)) s.set(i + k, 'repeated "' + words.slice(i, i + len).map((w) => w.text).join(' ') + '"');
+  }
+  return s;
+}
+const struckSet = () => new Set(cur.struck || []);
+addEventListener('pointerup', () => S && (S.drag = false));
+// The Script card: 'phase' is the full dedicated step (step 2, before frames exist) — it can still cut
+// the raw footage or voiceover, and every revision from there makes a new version. 'panel' is the copy
+// on the Editing page (step 4) — it never cuts anything. It reads the rendered video's own words and
+// is only a precise way to point a revision note at a moment or a section, sharing the one video player.
+function scriptCardHtml(p, mode) {
+  if (!API) return '<section class="c"><p class="h"><i class="ti ti-text-caption"></i>Script</p><p class="mut" style="margin:0">The Script step needs the studio server. Start it with hub/open-studio.bat.</p></section>';
+  if (mode === 'phase' && p.magic) return '<section class="c"><p class="h"><i class="ti ti-text-caption"></i>Script</p><p class="mut" style="margin:0">This project was made with Magic Edit — BOSS decided everything automatically, including any cuts. Use Editing to revise it.</p></section>';
+  if (mode === 'phase') {
+    const title = p.voiceoverFile ? 'Voiceover script' : 'Script';
+    const body = '<div class="r" style="margin-bottom:8px"><button data-act="sdel" title="Delete (Del)"><i class="ti ti-scissors"></i>Delete selected</button><button data-act="srestore"><i class="ti ti-arrow-back"></i>Restore</button><button data-act="sall" title="Ctrl+A">Select all</button><button class="i" data-act="sundo" title="Undo (Ctrl+Z)"><i class="ti ti-arrow-back-up"></i></button><button class="i" data-act="sredo" title="Redo (Ctrl+Y)"><i class="ti ti-arrow-forward-up"></i></button></div>' +
+      '<div class="r" style="margin-bottom:10px"><button data-act="ssuggest"><i class="ti ti-sparkles"></i>Suggest cleanup</button><button data-act="ssug">Select suggestions</button><button data-act="sprev" id="sprev"><i class="ti ti-player-skip-forward"></i>Preview edits: On</button></div>' +
+      '<div id="scr" class="scr" tabindex="0"></div><p class="mut" id="sstat"></p>' +
+      '<p class="mut">Drag or shift-click to select several words, Ctrl-click to add one, double-click for a sentence. Deleted words are struck through and skipped in the preview. The raw video is never changed.</p>';
+    return '<section class="c"><p class="h"><i class="ti ti-text-caption"></i>' + title + ' · click a word to jump there</p>' + body + '<div class="r" style="margin-top:12px;justify-content:space-between"><div class="r"><button data-act="sreset">Restore original</button><button data-act="ssave"><i class="ti ti-download"></i>Save script</button></div><div class="r"><button data-act="toinstr">Already edited — skip to Instructions</button><button class="a" data-act="scontinue" disabled>Apply edits and continue →</button></div></div></section>';
+  }
+  const title = 'Script' + (viewLabel ? ' · ' + viewLabel.split(' · ')[0] : '');
+  return '<section class="c"><p class="h"><i class="ti ti-text-caption"></i>' + title + '</p>' +
+    '<div id="scr" class="scr" tabindex="0"></div><p class="mut" id="sstat"></p>' +
+    '<p class="mut">Click a word to point a note at it. Drag or shift-click a span of words to point a note at that whole section — it carries the exact words over.</p>' +
+    '<div class="r" style="margin-top:12px"><button data-act="ssave"><i class="ti ti-download"></i>Save script</button></div></section>';
+}
+// On the Editing page, Script works on the rendered video itself (its own transcript, its own cuts,
+// which land in the next version) instead of the raw footage; before frames exist it's still the raw
+// footage, since there's no rendered video yet.
+function scriptTarget() { return cur.phase === 'approved' ? {target: 'draft', file: viewFile} : {}; }
+function scriptInit() {
+  const draftMode = cur.phase === 'approved';
+  const src = draftMode ? 'draft:' + viewFile : (cur.voiceoverFile || cur.rawName);
+  // Opening a project paints the raw video first, then swaps to the draft once loadDraft() resolves —
+  // each of those is its own render, with its own fresh #scr/#v. Bind to whichever exists right now,
+  // every time, instead of only after the transcript itself finishes loading: otherwise a bind that was
+  // mid-flight against an earlier render's #scr never reaches the element the page actually ends up with.
+  bindScriptVideo();
+  if (S && S.id === cur.id && S.src === src) { if (S.words) paintScript(); return; }
+  if (draftMode && !viewFile) { if ($('#scr')) $('#scr').innerHTML = '<span class="mut">Waiting for the first draft to render.</span>'; return; }
+  if (cur.scriptSrc !== src) { if (cur.scriptSrc) cur.struck = []; cur.scriptSrc = src; save(); } // struck words belong to one recording
+  S = {id: cur.id, src, words: null, keys: [], sugg: new Map(), sel: new Set(), anchor: null, undo: [], redo: [], preview: true};
+  scriptPick = null; paintPick();
+  $('#scr').innerHTML = '<span class="mut">Loading the transcript…</span>';
+  const checkUrl = draftMode
+    ? '/projects/' + cur.id + '/script/' + encodeURIComponent(viewFile.replace(/\.[^.]+$/, '')) + '.json?v=' + Date.now()
+    : '/projects/' + cur.id + '/' + (cur.voiceoverFile ? 'vo-' : '') + 'transcript.json?v=' + Date.now();
+  fetch(checkUrl).then((r) => (r.ok ? r.json() : null)).catch(() => null).then(async (t) => {
+    if (!t) {
+      if ($('#scr')) $('#scr').innerHTML = '<span class="mut"><i class="ti ti-loader-2 spin"></i> Transcribing ' + (draftMode ? 'this version' : 'the video') + ', word by word. This takes about a minute…</span>';
+      try { t = await jf('POST', '/api/projects/' + cur.id + '/transcribe', scriptTarget()); } catch (e) {
+        // "not found" means the studio server was started before the Script step existed
+        const msg = /not found/i.test(e.message) ? 'The studio server is out of date. Close the open-studio window, open hub/open-studio.bat again, then press Try again.' : e.message;
+        if ($('#scr')) $('#scr').innerHTML = '<span class="mut">' + esc(msg) + '</span> <button data-act="sretry">Try again</button>'; return;
+      }
+    }
+    if (!S || S.id !== cur.id || S.src !== src) return;
+    S.words = (t.words || []).filter((w) => Number.isFinite(+w.start) && Number.isFinite(+w.end)).map((w) => ({text: String(w.text).trim(), start: +w.start, end: +w.end}));
+    S.sugg = localSugg(S.words);
+    if (cur.phase === 'script' || cur.phase === 'approved') { paintScript(); bindScriptVideo(); } // #scr may be a newer element by now; (re)bind is a no-op if it's already current
+  });
+}
+function paintScript() {
+  const el = $('#scr'); if (!el || !S.words) return;
+  const W = S.words, st = struckSet(), cls = (k) => (st.has(k) ? ' cut' : '') + (S.sel.has(k) ? ' sel' : '') + (S.sugg.has(k) ? ' sug' : '');
+  let html = '<p>', sent = 0; S.keys = [];
+  W.forEach((w, i) => {
+    S.keys.push(i);
+    html += '<span class="w' + cls(i) + '" data-k="' + i + '" title="' + fmt(w.start) + (S.sugg.has(i) ? ' · ' + esc(S.sugg.get(i)) : '') + '">' + esc(w.text) + '</span> ';
+    const nx = W[i + 1]; if (!nx) return;
+    const gap = nx.start - w.end, end = /[.?!]["')]?$/.test(w.text);
+    if (gap > PAUSE) { S.keys.push(i + 0.5); html += '<span class="pz' + cls(i + 0.5) + '" data-k="' + (i + 0.5) + '" title="Pause">' + gap.toFixed(1) + 's</span> '; }
+    if (end && (gap > 1 || ++sent >= 4)) { html += '</p><p>'; sent = 0; }
+  });
+  el.innerHTML = html + '</p>';
+  const ranges = cutRanges(W, st), gone = ranges.reduce((s, r) => s + r[1] - r[0], 0), d = cur.dur || W[W.length - 1]?.end || 1;
+  $('#sstat').textContent = W.length + ' words · ' + [...st].filter((k) => k % 1 === 0).length + ' deleted' + (gone ? ' · removes ' + gone.toFixed(1) + ' s (' + fmt(d - gone) + ' left)' : '') + (S.sugg.size ? ' · ' + S.sugg.size + ' suggested' : '') + (S.sel.size ? ' · ' + S.sel.size + ' selected' : '');
+  const spv = $('#sprev'); if (spv) { spv.innerHTML = '<i class="ti ti-player-skip-forward"></i>Preview edits: ' + (S.preview ? 'On' : 'Off'); spv.classList.toggle('on', S.preview); } // only exists in step 2
+  const cbtn = $('[data-act="scontinue"]'); if (cbtn) cbtn.disabled = !cutsChanged(ranges);
+  const sc = $('#scrub'); if (sc) { sc.querySelectorAll('.cx').forEach((x) => x.remove()); ranges.forEach(([a, b]) => sc.insertAdjacentHTML('beforeend', '<div class="cx" style="left:' + (a / d) * 100 + '%;width:' + Math.max(0.3, ((b - a) / d) * 100) + '%"></div>')); }
+  S.now = -1;
+}
+function setStruck(next) { S.undo.push(cur.struck || []); S.redo = []; cur.struck = [...next].sort((a, b) => a - b); save(); paintScript(); }
+function scriptAct(a) {
+  if (a === 'clearpick') { if (S) S.sel.clear(); scriptPick = null; if (S) paintScript(); paintPick(); return true; }
+  if (cur.phase !== 'script' && ['sdel', 'srestore', 'sall', 'sundo', 'sredo', 'ssug', 'sprev', 'sreset', 'ssuggest'].includes(a)) return true; // cutting only exists in step 2
+  const st = struckSet();
+  if (a === 'sdel') { if (!S.sel.size) return toast('Select words first'), true; S.sel.forEach((k) => st.add(k)); S.sel.clear(); setStruck(st); return true; }
+  if (a === 'srestore') { if (!S.sel.size) return toast('Select struck words to restore them'), true; S.sel.forEach((k) => st.delete(k)); S.sel.clear(); setStruck(st); return true; }
+  if (a === 'sall') { S.sel = new Set(S.keys); paintScript(); return true; }
+  if (a === 'sundo' || a === 'sredo') { const [from, to] = a === 'sundo' ? [S.undo, S.redo] : [S.redo, S.undo]; if (!from.length) return true; to.push(cur.struck || []); cur.struck = from.pop(); save(); paintScript(); return true; }
+  if (a === 'ssug') { if (!S.sugg.size) return toast('No suggestions yet. Press Suggest cleanup.'), true; S.sel = new Set([...S.sugg.keys()].filter((k) => !st.has(k))); paintScript(); toast('Suggestions selected. Check them, then press Delete.'); return true; }
+  if (a === 'sprev') { S.preview = !S.preview; paintScript(); return true; }
+  if (a === 'sretry') { S = null; scriptInit(); return true; }
+  if (a === 'sreset') { if (!st.size) return true; setStruck([]); toast('Back to the original. Undo brings your edits back.'); return true; }
+  if (a === 'ssave') {
+    const txt = $('#scr').innerText.replace(/\n{3,}/g, '\n\n'), kept = [...$('#scr').querySelectorAll('p')].map((p) => [...p.querySelectorAll('.w:not(.cut)')].map((w) => w.textContent).join(' ')).filter(Boolean).join('\n\n');
+    const u = URL.createObjectURL(new Blob([kept || txt], {type: 'text/plain'})), l = document.createElement('a'); l.href = u; l.download = cur.id + '-script.txt'; l.click(); setTimeout(() => URL.revokeObjectURL(u), 1000); return true;
+  }
+  if (a === 'ssuggest') {
+    toast('Looking for stutters, repeats, false starts and retakes…');
+    jf('POST', '/api/projects/' + cur.id + '/suggest', scriptTarget()).then((d) => {
+      const W = S.words; (d.candidates || []).forEach((c) => W.forEach((w, i) => { if (w.start >= c.cut.start - 0.01 && w.start < c.cut.end - 0.01 && !S.sugg.has(i)) S.sugg.set(i, c.type.replace('_', ' ') + (c.note ? ': ' + c.note : '')); }));
+      paintScript(); toast(S.sugg.size + ' words highlighted. Nothing is removed until you choose.');
+    }).catch((e) => toast(e.message));
+    return true;
+  }
+  return false;
+}
+function bindScriptVideo(vid = 'v') {
+  const v = $('#' + vid), el = $('#scr'); if (!el) return;
+  if (v && !v._scr) {
+    v._scr = true;
+    const tick = () => {
+      if (!S || !S.words || (cur.phase !== 'script' && cur.phase !== 'approved')) return;
+      // #scr can be swapped out from under this loop (e.g. toggling to Frames and back), so look it up
+      // fresh each frame instead of closing over the element that existed when the loop was started
+      const el2 = $('#scr'); if (!el2) return void (!v.paused && requestAnimationFrame(tick));
+      const t = v.currentTime;
+      if (S.preview && !v.paused) { const r = cutRanges(S.words, struckSet()).find(([a, b]) => t >= a && t < b - 0.01); if (r) v.currentTime = r[1]; }
+      let i = S.words.findIndex((w) => w.end > t); if (i < 0) i = S.words.length - 1;
+      if (i !== S.now) { const o = el2.querySelector('.now'); o && o.classList.remove('now'); const n = el2.querySelector('[data-k="' + i + '"]'); if (n) { n.classList.add('now'); if (!v.paused) n.scrollIntoView({block: 'nearest'}); } S.now = i; }
+      if (!v.paused) requestAnimationFrame(tick);
+    };
+    v.addEventListener('play', () => requestAnimationFrame(tick)); v.addEventListener('seeked', tick);
+  }
+  if (el._bound === vid) return; el._bound = vid;
+  const key = (e) => { const x = e.target.closest('[data-k]'); return x ? +x.dataset.k : null; };
+  const span = (a, b) => S.keys.filter((k) => k >= Math.min(a, b) && k <= Math.max(a, b));
+  el.addEventListener('pointerdown', (e) => {
+    const k = key(e); if (k === null) return; el.focus();
+    if (e.shiftKey && S.anchor !== null) S.sel = new Set(span(S.anchor, k));
+    else if (e.ctrlKey || e.metaKey) { S.sel.has(k) ? S.sel.delete(k) : S.sel.add(k); S.anchor = k; }
+    else { S.sel = new Set([k]); S.anchor = k; S.drag = true; const w = S.words[Math.floor(k)], vv = $('#' + vid); if (vv && w) vv.currentTime = k % 1 ? w.end : w.start; }
+    paintScript(); syncPick();
+  });
+  el.addEventListener('pointerover', (e) => { if (!S.drag || !(e.buttons & 1)) return; const k = key(e); if (k !== null) { S.sel = new Set(span(S.anchor, k)); paintScript(); syncPick(); } });
+  el.addEventListener('dblclick', (e) => {
+    const k = key(e); if (k === null) return; const W = S.words, end = (i) => /[.?!]["')]?$/.test(W[i].text);
+    let a = Math.floor(k), b = a; while (a > 0 && !end(a - 1)) a--; while (b < W.length - 1 && !end(b)) b++;
+    S.sel = new Set(span(a, b)); S.anchor = a; paintScript(); syncPick();
+  });
+  el.addEventListener('keydown', (e) => {
+    const c = e.ctrlKey || e.metaKey, kk = e.key.toLowerCase();
+    const act = e.key === 'Delete' || e.key === 'Backspace' ? 'sdel' : c && kk === 'z' && !e.shiftKey ? 'sundo' : c && (kk === 'y' || (kk === 'z' && e.shiftKey)) ? 'sredo' : c && kk === 'a' ? 'sall' : null;
+    if (e.key === 'Escape') { S.sel.clear(); paintScript(); return syncPick(); }
+    if (e.key === ' ') { e.preventDefault(); const vv = $('#' + vid); return vv && (vv.paused ? vv.play() : vv.pause()); }
+    if (act) { e.preventDefault(); scriptAct(act); }
+  });
+}
+// On the Editing page, the current word selection is what points a revision note at a moment or a
+// section: one word is just a timestamp; several words become a Custom-range note quoting that phrase.
+function syncPick() {
+  if (cur.phase !== 'approved' || !S) return;
+  const ks = [...S.sel].filter((k) => S.words[Math.floor(k)]);
+  if (ks.length < 2) {
+    scriptPick = null;
+    if (ks.length === 1) { const k = ks[0], w = S.words[Math.floor(k)]; cur._t = k % 1 ? w.end : w.start; }
+    return paintPick();
+  }
+  const lo = Math.min(...ks), hi = Math.max(...ks), wLo = S.words[Math.floor(lo)], wHi = S.words[Math.floor(hi)];
+  const start = lo % 1 ? wLo.end : wLo.start, end = hi % 1 ? wHi.end : wHi.end;
+  const text = S.keys.filter((k) => k >= lo && k <= hi && k % 1 === 0).map((k) => S.words[k].text).join(' ');
+  scriptPick = { start, end, text }; cur._t = start; paintPick();
+}
+function paintPick() {
+  const el = $('#pick'), r = $('#nrange'); if (!el) return;
+  if (!scriptPick) { el.innerHTML = ''; if (r && r.value === 'Custom') r.value = RANGES[0]; return; }
+  if (r) r.value = 'Custom';
+  const label = fmtp(scriptPick.start) + '–' + fmtp(scriptPick.end);
+  el.innerHTML = '<div class="n"><i class="ti ti-quote"></i><span>"' + esc(scriptPick.text) + '" · ' + label + '</span><button class="x" data-act="clearpick" title="Clear"><i class="ti ti-x"></i></button></div>';
+  ['#ct', '#nt'].forEach((k) => $(k) && ($(k).textContent = label));
+}
+// Cuts the raw video or voiceover to match the struck words (step 2, before frames exist). The Editing
+// page's Script panel never cuts anything — see scriptPick/syncPick for what it does instead.
+function toCutObjs(ranges) { return ranges.map(([a, b]) => ({start: +a.toFixed(3), end: +b.toFixed(3), reason: 'removed in the Script step'})); }
+function cutsChanged(ranges) {
+  if (!S || !S.words) return false;
+  const cuts = toCutObjs(ranges || cutRanges(S.words, struckSet()));
+  return !(JSON.stringify(cuts) === JSON.stringify(cur.cuts || []) && !(cuts.length && !cur.cutFile));
+}
+async function applyScriptCuts() {
+  if (!cur.rawName && !cur.voiceoverFile) { toast('Attach a video or an MP3 first'); return false; }
+  if (!S || !S.words) { toast('Wait for the transcript first'); return false; }
+  const cuts = toCutObjs(cutRanges(S.words, struckSet()));
+  if (JSON.stringify(cuts) === JSON.stringify(cur.cuts || []) && !(cuts.length && !cur.cutFile)) return 'same';
+  const run = $('#run');
+  if (run) { run.className = 'run'; run.hidden = false; run.innerHTML = '<i class="ti ti-loader-2 spin"></i><span><b>' + (cuts.length ? 'Cutting ' + cuts.length + ' parts out of the video' : 'Going back to the original video') + '</b><small>This uses FFmpeg on this computer, so it can take a minute.</small></span>'; }
+  try { const r = await jf('POST', '/api/projects/' + cur.id + '/apply', {cuts}); cur.cutFile = r.cutFile; cur.cuts = cuts; if (run) run.hidden = true; return 'changed'; }
+  catch (e) { if (run) { run.className = 'run err'; run.textContent = e.message; } return false; }
+}
+async function scriptContinue() {
+  const r = await applyScriptCuts();
+  if (!r) return;
+  if (r === 'changed' && (cur.reached || 0) >= 2) {
+    // the cut changed the timeline: old frames/drafts are now stale, but stay in the gallery untouched.
+    // anything typed but not yet sent was pointed at the old timeline, so it can't carry forward — keep it
+    // on record (tagged, never rendered) instead of silently dropping it.
+    if (cur.notes.length) archive('unsent', pickDraft);
+    cur.reached = 0; cur.cutAt = Date.now(); frames = []; pickDraft = null;
+  }
+  cur.phase = 'brief'; save(); project(); return pushStep();
+}
+
+// ---- revision prompt
+// editing options on the first instruction: [key, label, hint shown in the window, what BOSS is told]
+const OPTS = [
+  ['audio', 'Enhance the audio', 'Clearer voice, less background noise, even volume', 'Enhance the voice: reduce background noise and hum, even out the volume, and normalise loudness to about -14 LUFS.'],
+  ['music', 'Add background music', 'Soft music under the voice', 'Add background music under the voice, ducked so every word stays clear. Generate it with the ElevenLabs MCP (music composition), to fit this edit\'s mood and pacing. If the ElevenLabs connector is not connected, use a track from my-sounds/ instead, and skip it only if neither is available.'],
+  ['sfx', 'Add sound effects', 'Subtle whooshes and pops on cuts and graphics', 'Add subtle sound effects on transitions and graphic pop-ins, always quieter than the voice. Generate them with the ElevenLabs MCP (sound effects), to fit each moment. If the ElevenLabs connector is not connected, use my-sounds/ instead, or simple ones made with FFmpeg if neither is available.'],
+];
+const optsOf = (p) => p.opts || {audio: true};
+const optsHtml = (p, locked) => '<div class="opts">' + OPTS.map(([k, label, hint]) => '<label class="opt"><input type="checkbox" data-opt="' + k + '"' + (optsOf(p)[k] ? ' checked' : '') + (locked ? ' disabled' : '') + '><span><b>' + label + '</b><small>' + hint + '</small></span></label>').join('') + '</div>';
+function optsLine(p) {
+  const o = optsOf(p), on = OPTS.filter(([k]) => o[k]), off = OPTS.filter(([k]) => !o[k]);
+  return (on.length ? '\nEditing options I picked:\n' + on.map((x) => '- ' + x[3]).join('\n') : '') + (off.length ? '\nNot wanted, even if the style usually has it: ' + off.map((x) => x[1].toLowerCase()).join(', ') + '.' : '');
+}
+// a reference video (uploaded file or a link) whose editing style BOSS copies
+const refHtml = (p, locked) => '<div class="refbox"><small>Copy the editing of one or more reference videos (optional)</small>' +
+  '<div class="r"><button data-act="addref2"' + (locked ? ' disabled' : '') + '><i class="ti ti-upload"></i>Upload video</button><input type="text" id="reflink" placeholder="Paste another YouTube, TikTok or Instagram link"' + (locked ? ' disabled' : '') + '></div>' +
+  [p.refFile && ['ti-movie', p.refFile, 'reffile', null], p.refLink && ['ti-link', p.refLink, 'reflink', null], ...(p.refLinks || []).map((u, i) => ['ti-link', u, 'reflinks', i])].filter(Boolean).map(([ic, t, k, i]) => '<div class="refon"><i class="ti ' + ic + '"></i><span>' + esc(t) + '</span>' + (locked ? '' : '<button data-act="rmref" data-k="' + k + '"' + (i !== null ? ' data-i="' + i + '"' : '') + ' title="Remove"><i class="ti ti-x"></i></button>') + '</div>').join('') +
+  '</div>';
+function refLine(p) {
+  const links = (p.refLinks || []).concat(p.refLink ? [p.refLink] : []);
+  const where = [p.refFile && (API ? 'projects/' + p.id + '/reference/' : '') + p.refFile, ...links.map((u) => u + ' (download it with yt-dlp into projects/' + p.id + '/reference/ first)')].filter(Boolean);
+  if (!where.length) return '';
+  const many = where.length > 1;
+  return '\nEditing reference' + (many ? 's' : '') + ': ' + where.join(' and ') + '. Study ' + (many ? 'them' : 'it') + ' first: pull frames with FFmpeg every second or so and transcribe ' + (many ? 'them' : 'it') + ' with tools/transcribe.mjs. Then copy ' + (many ? 'their' : 'its') + ' editing style: pacing and cut rhythm, hook, caption look and placement, text and graphics, transitions, zooms and punch-ins, music and sound design. Where ' + (many ? 'they differ' : 'it differs') + ' from the project style, ' + (many ? 'the references win' : 'the reference wins') + '. Copy the style only: never reuse ' + (many ? 'their' : 'its') + ' footage, music, voice or logos.';
+}
+function voiceoverLine(p) {
+  if (p.voiceoverFile && API && voCut(p)) return '\nVoiceover: projects/' + p.id + '/' + p.cutFile + ' (my recorded voiceover with the words I removed in the Script step already cut out; the original is projects/' + p.id + '/voiceover/' + p.voiceoverFile + '). Use it as the audio track, replacing the video\'s own audio. Its word timings: projects/' + p.id + '/cut/vo.mistakes-transcript.json.';
+  if (p.voiceoverFile) return '\nVoiceover: ' + (API ? 'projects/' + p.id + '/voiceover/' : '') + p.voiceoverFile + ' (already recorded — use it as the audio track, replacing the video\'s own audio).';
+  if (p.voScript) return '\nVoiceover: none recorded yet. Generate one with the ElevenLabs MCP (voice: Krista Mashore, or the closest fit if that voice is not available) from the script below, save it in ' + (API ? 'projects/' + p.id + '/voiceover/' : 'the voiceover folder') + ', and use it as the audio track. If the ElevenLabs connector is not connected, stop and tell me to connect it first, with no other changes.\nScript:\n' + p.voScript;
+  return '';
+}
+// the raw video, mentioning the Script step's cut file when there is one; '' when the project is audio-only
+function rawVideoLine(p) {
+  if (!p.rawName) return '';
+  const raw = (API ? 'projects/' + p.id + '/raw/' : 'raw/') + p.rawName;
+  return '\nRaw video: ' + (API && p.cutFile && !voCut(p) ? 'projects/' + p.id + '/' + p.cutFile + ' (my raw video with the words I removed in the Script step already cut out; the untouched original is ' + raw + '). Edit from this file and do not remove other words unless my instruction asks' : raw);
+}
+function briefPrompt() {
+  const p = cur, sty = STY.find((x) => x.id === p.styleId) || {}, guide = (sty.guides && sty.guides[0] && sty.guides[0].path) || '';
+  return 'Start a new video edit.\nProject: "' + p.name + '"' + (rawVideoLine(p) || '\nNo raw video: this is audio-only, build it from the voiceover.') + '\nStyle: ' + styName(p.styleId) + (p.styleId ? '' : ' (apply no style: keep the video exactly as it is and change only what my instruction asks)') + (guide ? ' (read its guide first: ' + guide + ')' : '') + voiceoverLine(p) + refLine(p) + optsLine(p) + '\n\nMy instruction:\n' + (p.brief || (p.styleId ? '(none given: edit it in the project style, using your best judgement)' : '(none given: leave the video as it is)')) + '\n\nImportant: first render only still image frames (a storyboard) so I can review and annotate them. Do not render the full video until I approve the frames.';
+}
+function styleProposalBody(prop) {
+  return '<p class="h"><i class="ti ti-sparkles"></i>New style proposal · ' + esc(prop.name || prop.id) + '</p>' +
+    (prop.hasCover ? '<img src="/my-style-presets/_pending/' + encodeURIComponent(prop.id) + '/cover.jpg" alt="" style="width:100%;border-radius:12px;margin-bottom:10px">' : '') +
+    '<details style="margin-bottom:10px"><summary style="cursor:pointer;font-size:.78rem;font-weight:700">View the style guide</summary><pre style="white-space:pre-wrap;font:500 .8rem/1.5 var(--mono,monospace);background:var(--tint);border-radius:12px;padding:12px;max-height:40vh;overflow:auto;margin-top:8px">' + esc(prop.guide || '') + '</pre></details>';
+}
+function paintStyModal() {
+  const m = $('#stymodal'); if (!m) return;
+  if (cur && cur.styleProposalReady && !cur.styleProposalSeen) {
+    $('#stymodalbody').innerHTML = styleProposalBody(cur.styleProposalReady) + '<div class="r"><button class="a" data-act="approvestyle">Approve — add to style picker</button><button data-act="discardstyle">Discard</button><button data-act="closestymodal">Not now</button></div>';
+    m.hidden = false;
+  } else m.hidden = true;
+}
+function addStylePrompt(slug) {
+  const p = cur, sty = STY.find((x) => x.id === p.styleId) || {}, guide = (sty.guides && sty.guides[0] && sty.guides[0].path) || '';
+  return 'Study the current draft of this project (projects/' + p.id + '/drafts/' + viewFile + ')' + (guide ? ' and the style guide it was based on (' + guide + ')' : '') + '. From its actual visual identity (palette, typography, caption placement and timing, transitions, pacing), write a NEW reusable style guide — your own write-up of what this specific edit does, not a copy of the original. Pick a short, fitting display name for it, and a one-sentence tagline describing its look (palette, typography, one signature move) in the same tone as the "tagline" field on other entries in hub/data.js.' +
+    '\n\nSave everything under my-style-presets/_pending/' + slug + '/ (create the folder; use exactly this folder name):\n- STYLE-GUIDE.md: the style guide itself, following the structure of other files under my-style-presets/\n- cover.jpg: one representative still frame from the draft\n- shots/shot-01.jpg through shot-0N.jpg: 6 to 8 more still frames spanning the whole edit (hook, a few mid-edit beats, the close), the same way hub/data.js\'s "shots" galleries do for other styles\n- sample.mp4: a short highlight clip from this draft (use the draft itself if it is already short, otherwise trim to the strongest 15-20 seconds) to serve as this style\'s sample video\n- meta.json: {"id": "' + slug + '", "name": "<the display name you picked>", "tagline": "<the one-sentence tagline>", "formats": [<its real aspect ratio and resolution, as strings, matching the style other entries in hub/data.js use>], "shots": [{"file": "shots/shot-01.jpg", "cap": "<short caption for this frame>"}, ...one per shot file], "samples": [{"title": "<short title for the clip>", "file": "sample.mp4", "at": <seconds into the clip to use as its thumbnail>, "note": "<one-sentence note>"}]}' +
+    '\n\nDo not touch hub/data.js or any live (non-_pending) style folder — this is only a proposal, waiting for my review.';
+}
+function approveStylePrompt(prop) {
+  return 'I approved the pending style proposal at my-style-presets/_pending/' + prop.id + '/. Move that folder into my-style-presets/ proper (pick whichever existing group subfolder fits best, e.g. motion-graphics-reels or talking-head-edits, or make a new one if none fit), renaming STYLE-GUIDE.md to match this repo\'s existing naming convention for other style guides.' +
+    '\n\nThen copy its media into hub/assets/ the same way the other hub/data.js entries do: cover.jpg to hub/assets/img/' + prop.id + '-cover.jpg, each shots/shot-NN.jpg to hub/assets/img/' + prop.id + '-N.jpg in order, and sample.mp4 to hub/assets/video/' + prop.id + '-sample.mp4.' +
+    '\n\nThen add a matching entry to hub/data.js\'s STY array using my-style-presets/_pending/' + prop.id + '/meta.json for its id, name, tagline and formats; IMG(\'' + prop.id + '-cover\') for cover; each shots entry from meta.json as {src: IMG(\'' + prop.id + '-N\'), cap: "<its caption>"}; and each samples entry from meta.json as {title: "<its title>", src: VID(\'' + prop.id + '-sample\'), at: <its at value>, note: "<its note>"} — following the exact shape of the other entries already there (see the IMG()/VID() helpers at the top of hub/data.js). Tell me the final path you used when done.';
+}
+function magicPrompt() {
+  const p = cur, sty = STY.find((x) => x.id === p.styleId) || {}, guide = (sty.guides && sty.guides[0] && sty.guides[0].path) || '';
+  return 'Magic Edit: do the whole edit yourself, with no review step — there is no Script-step cleanup and no frame approval for this project.\nProject: "' + p.name + '"' + (rawVideoLine(p) || '\nNo raw video: this is audio-only, build it from the voiceover.') + '\nStyle: ' + styName(p.styleId) + (p.styleId ? '' : ' (apply no style: keep the video exactly as it is)') + (guide ? ' (read its guide first: ' + guide + ')' : '') + voiceoverLine(p) + refLine(p) + (p.brief ? '\n\nMy instruction:\n' + p.brief : '') + '\n\nFirst remove dead air, filler words and stutters using your own judgement. Check every cut against the transcript\'s word timestamps so a cut never lands inside a word or clips off part of it — cut only at a word boundary. I gave no instruction on audio polish, music or sound effects either — use your own judgement: clean up the voice (noise, hum, uneven volume) only if it actually needs it, add subtle background music under the voice if it fits the style (ducked so every word stays clear), and add subtle sound effects on transitions or graphic pop-ins if they fit, always quieter than the voice — generate the music and sound effects with the ElevenLabs MCP, falling back to my-sounds/ (or simple FFmpeg effects for the sfx) only if the ElevenLabs connector is not connected. Then apply the style end to end, using your best judgement for pacing and structure since I gave no instruction. Render the result straight to ' + (API ? 'projects/' + p.id + '/drafts/' : 'outbox/') + ' as draft-v1, then also save a handful of still frames from it into ' + (API ? 'projects/' + p.id + '/frames/' : 'the frames') + ' (same convention as the usual frame step: frame-001_t03.5.jpg), so they are ready to view immediately. Skip the frame-preview stage entirely — there is nothing to approve here.';
+}
+function buildPrompt() {
+  const p = cur, lines = p.notes.slice().sort((a, b) => a.t - b.t).map((n, i) => `${i + 1}. ${fmt(n.t)}: ${n.text || (n.img ? '(see the drawing)' : n.refLink ? 'copy the style from the link' : n.quote ? '(see the exact words below)' : (n.broll || []).length ? '(cut in the B-roll below)' : '(see the attached image)')}${n.img ? (API ? ' [annotated snapshot: {{img:note-' + (i + 1) + '}}]' : ' [snapshot attached]') : ''}${(n.refs || []).map((r, j) => API ? ' [reference image or logo to add: {{img:ref-' + (i + 1) + '-' + (j + 1) + '}}]' : ' [reference image attached]').join('')}${(n.broll || []).length ? ` [cut in this B-roll footage ${n.range === 'Custom' ? 'across ' + rangeLabel(n) : n.range.toLowerCase()}, over the original audio (keep the voice playing): ${n.broll.map((f) => (API ? 'projects/' + p.id + '/broll/' : 'broll/') + f).join(', ')}]` : ''}${n.quote ? ` [exact words: "${n.quote}", ${rangeLabel(n)}]` : ''}${n.styleId ? ` [use ${styName(n.styleId)}, ${n.range === 'Custom' ? 'from ' + fmtp(n.rangeStart) + ' to ' + fmtp(n.rangeEnd) : n.range.toLowerCase()}]` : ''}${n.refLink ? ` [copy the editing style of ${n.refLink}, ${n.range.toLowerCase()}${n.text ? ', as the note says' : ', the whole look'}: download it with yt-dlp${API ? ' into projects/' + p.id + '/reference/' : ''}, study it, and copy only its style, never its footage, music, voice or logos]` : ''}`);
+  return `${!viewLabel ? (p.rawName ? 'Edit the raw video' + rawVideoLine(p).replace(/^\nRaw video: /, ' ') : 'Build this edit from the voiceover; there is no raw video') + ' of the project "' + p.name + '"' + (p.brief ? '. Overall instruction: ' + p.brief : '') + '. Change only what the notes ask and leave the rest untouched' + voiceoverLine(p) + refLine(p) + optsLine(p) : 'Revise the draft of the project "' + p.name + '"'} (project style: ${styName(p.styleId)}).\nApply all ${p.notes.length} notes below in one pass, then ${cur.phase === 'frames' ? 'update the still frames in ' + (API ? 'projects/' + p.id + '/frames/' : 'the frames') + ' only. Do not render the full video until I approve the frames.' : 'render a new draft to ' + (API ? 'projects/' + p.id + '/drafts/' : 'outbox/') + '.'}\n\n${lines.join('\n')}`;
+}
+
+// ---- events
+document.addEventListener('click', async (e) => {
+  const q = (s) => e.target.closest(s);
+  let x;
+  if ((x = q('[data-opendraft]'))) {
+    pickDraft = x.dataset.opendraft; cur.phase = 'approved';
+    const d = await jf('GET', '/api/projects/' + cur.id + '/drafts').catch(() => []), f = d.find((y) => y.file === pickDraft), r = f && recFor(f.v);
+    if (r && r.style !== cur.styleId) { cur.styleId = r.style; toast('Project style set to ' + styName(r.style) + ', the style of this version'); }
+    save(); project(); return pushStep();
+  }
+  if ((x = q('[data-deldraft]'))) {
+    if (!(await askConfirm('Delete this version (' + x.dataset.deldraft + ')? It moves to projects/.trash, so it can be recovered.'))) return;
+    try { await jf('DELETE', '/api/projects/' + cur.id + '/drafts?file=' + encodeURIComponent(x.dataset.deldraft)); } catch (err) { return toast('Could not delete: ' + err.message); }
+    if (pickDraft === x.dataset.deldraft) pickDraft = null; toast('Version deleted'); return loadGallery();
+  }
+  if ((x = q('[data-step]'))) { if (x.dataset.step === (cur.phase || 'brief')) return; if ($('#brief')) cur.brief = $('#brief').value; snap = null; cur.phase = x.dataset.step; save(); project(); return pushStep(); }
+  if ((x = q('[data-dup]'))) {
+    const p = projects.find((y) => y.id === x.dataset.dup); if (!p) return;
+    if (API) { try { projects.unshift(await jf('POST', '/api/projects/' + p.id + '/duplicate')); } catch (err) { return toast('Could not duplicate: ' + err.message); } }
+    else { const c = JSON.parse(JSON.stringify(p)); c.id = 'p' + Date.now(); c.name = p.name + ' copy'; const f = await getRaw(p.id); if (f) await putRaw(c.id, f); projects.unshift(c); save(); }
+    toast('Duplicated'); return render();
+  }
+  if ((x = q('[data-delproj]'))) {
+    const p = projects.find((y) => y.id === x.dataset.delproj); if (!p) return;
+    if (!(await askConfirm('Delete "' + p.name + '"?' + (API ? ' The folder moves to projects/.trash, so it can be recovered.' : ' This cannot be undone.')))) return;
+    if (API) { try { await jf('DELETE', '/api/projects/' + p.id); } catch (err) { return toast('Could not delete: ' + err.message); } } else await delRaw(p.id);
+    projects = projects.filter((y) => y.id !== p.id); if (!API) save(); toast('Deleted'); return render();
+  }
+  if ((x = q('[data-go]'))) return go(x.dataset.go);
+  if ((x = q('[data-open]'))) { const p = projects.find((y) => y.id === x.dataset.open); vurl = await openUrl(p); await ensureOrient(p); frames = []; return go('project', p); }
+  if ((x = q('[data-fsvideo]'))) {
+    const vid = x.closest('.th').querySelector('video'); if (!vid) return;
+    vid.muted = false; vid.loop = false; vid.currentTime = 0; vid.controls = true;
+    vid.requestFullscreen().catch(() => {}); vid.play().catch(() => {});
+    const restore = () => { if (!document.fullscreenElement) { vid.muted = true; vid.loop = true; vid.controls = false; vid.currentTime = +vid.dataset.at || 0; vid.play().catch(() => {}); document.removeEventListener('fullscreenchange', restore); } };
+    document.addEventListener('fullscreenchange', restore);
+    return;
+  }
+  if ((x = q('[data-sty]'))) {
+    keepNewFormText(); draftNew.styleId = x.dataset.sty;
+    if (!draftNew.formatTouched) draftNew.format = defaultFormatFor(STY.find((s) => s.id === x.dataset.sty)).id;
+    return render();
+  }
+  if ((x = q('[data-rmreflink]'))) { keepNewFormText(); draftNew.refLinks.splice(+x.dataset.rmreflink, 1); if (!draftNew.refLinks.length) draftNew.refLinks = ['']; return render(); }
+  if ((x = q('[data-reorder]'))) {
+    keepNewFormText();
+    const i = +x.dataset.i, act = x.dataset.reorder;
+    if (act === 'up' && i > 0) [draftNew.files[i - 1], draftNew.files[i]] = [draftNew.files[i], draftNew.files[i - 1]];
+    else if (act === 'down' && i < draftNew.files.length - 1) [draftNew.files[i + 1], draftNew.files[i]] = [draftNew.files[i], draftNew.files[i + 1]];
+    else if (act === 'rm') draftNew.files.splice(i, 1);
+    draftNew.file = draftNew.files[0] || null; return render();
+  }
+  if (q('#dropmedia')) return $('#filemedia').click();
+  if ((x = q('[data-tool]'))) { tool = x.dataset.tool; document.querySelectorAll('[data-tool]').forEach((b) => b.classList.toggle('on', b === x)); return; }
+  if ((x = q('[data-color]'))) { inkColor = x.dataset.color; document.querySelectorAll('[data-color]').forEach((b) => (b.style.borderColor = b.dataset.color === inkColor ? 'var(--ink)' : 'var(--line)')); return; }
+  if ((x = q('[data-thick]'))) { inkSize = +x.dataset.thick; document.querySelectorAll('[data-thick]').forEach((b) => b.classList.toggle('on', +b.dataset.thick === inkSize)); return; }
+  if ((x = q('[data-t]')) && $('#v')) { $('#v').currentTime = +x.dataset.t; return; }
+  if ((x = q('[data-fr]'))) {
+    const t = frames[+x.dataset.fr].t, v = $('#v');
+    if (viewFile && v) { v.currentTime = t; return; } // a draft exists: just scrub the real, playable video
+    return snapAt(t, +x.dataset.fr); // no draft yet: nothing to scrub, so preview the still instead
+  }
+  if ((x = q('[data-rmref]'))) { pendingRefs.splice(+x.dataset.rmref, 1); return paintRefs(); }
+  if ((x = q('[data-rmbroll]'))) { pendingBroll.splice(+x.dataset.rmbroll, 1); return paintBroll(); }
+  if ((x = q('[data-del]'))) { cur.notes = cur.notes.filter((n) => n.id !== x.dataset.del); save(); return project(); }
+  if ((x = q('[data-editmode]'))) {
+    if (snap) { snap = null; annotating = false; stage(); }
+    cur.editMode = x.dataset.editmode; save();
+    const el = $('#editmid'); if (el) el.outerHTML = midHtml();
+    if (cur.editMode === 'frames') { if (!ensureFreshFrames()) { if (!frames.length) loadFrames().then(() => paintFrames()); else paintFrames(); } } else scriptInit();
+    return;
+  }
+  if (q('.scrub') && $('#v') && $('#v').duration) { const r = $('#scrub').getBoundingClientRect(); $('#v').currentTime = Math.max(0, Math.min(1, (e.clientX - r.left) / r.width)) * $('#v').duration; return; }
+  x = q('[data-act]'); if (!x) return;
+  const a = x.dataset.act, v = $('#v');
+  if (a === 'addreflinkrow') { keepNewFormText(); draftNew.refLinks.push(''); return render(); }
+  if (a === 'create') {
+    const name = $('#pname').value.trim(); if (!name) { flagErr('#pname').focus(); return toast('Give the project a name'); }
+    if (!draftNew.file && !draftNew.vofile) { flagErr('#dropmedia'); return toast('Choose a video or audio file first'); }
+    if (!(await confirmFacelessMismatch())) return;
+    let p;
+    if (API) {
+      toast('Saving to the project folder…');
+      try {
+        p = await jf('POST', '/api/projects', {name, styleId: draftNew.styleId, format: formatById(draftNew.format)});
+        await uploadDraftVideo(p);
+        if (draftNew.vofile) await uploadVO(p, draftNew.vofile);
+        await applyNewRefLinks(p);
+        await applyNewInstructions(p);
+      } catch (err) { return toast('Could not create the project: ' + err.message); }
+    } else {
+      p = {id: 'p' + Date.now(), name, styleId: draftNew.styleId, rawName: draftNew.file ? draftNew.file.name : '', voiceoverFile: draftNew.vofile ? draftNew.vofile.name : undefined, brief: (($('#pinstr') || {}).value || '').trim(), notes: [], dur: 0, phase: 'script'};
+      if (draftNew.file) await putRaw(p.id, draftNew.file);
+    }
+    projects.unshift(p); if (!API) save();
+    vurl = draftNew.file ? (API ? rawUrl(p) : URL.createObjectURL(draftNew.file)) : (API ? voUrl(p) : (draftNew.vofile ? URL.createObjectURL(draftNew.vofile) : null));
+    frames = []; await ensureOrient(p); draftNew = {name: '', styleId: '', file: null, vofile: null, files: [], refLinks: [''], instructions: '', format: defaultFormatFor(undefined).id, formatTouched: false}; toast(API ? 'Project folder created: projects/' + p.id : 'Project created'); return go('project', p);
+  }
+  if (a === 'magicedit') {
+    const name = $('#pname').value.trim(); if (!name) { flagErr('#pname').focus(); return toast('Give the project a name'); }
+    if (!draftNew.file && !draftNew.vofile) { flagErr('#dropmedia'); return toast('Choose a video or audio file first'); }
+    if (!API) return toast('Magic Edit needs the studio server running');
+    if (!(await confirmFacelessMismatch())) return;
+    let p;
+    toast('Saving to the project folder…');
+    try {
+      p = await jf('POST', '/api/projects', {name, styleId: draftNew.styleId, format: formatById(draftNew.format)});
+      await uploadDraftVideo(p);
+      if (draftNew.vofile) await uploadVO(p, draftNew.vofile);
+      await applyNewRefLinks(p);
+      await applyNewInstructions(p);
+    } catch (err) { return toast('Could not create the project: ' + err.message); }
+    projects.unshift(p); vurl = rawUrl(p) || voUrl(p); frames = []; cur = p; await ensureOrient(p);
+    draftNew = {name: '', styleId: '', file: null, vofile: null, files: [], refLinks: [''], instructions: '', format: defaultFormatFor(undefined).id, formatTouched: false};
+    cur.phase = 'approved'; cur.editMode = 'frames'; cur.magic = true; archive('approve', null, true); save();
+    go('project', p);
+    return startRunApi(magicPrompt(), null, 'Magic Editing');
+  }
+  if (a === 'fs') { if (!v) return toast('No video to show');if (document.fullscreenElement) return document.exitFullscreen(); return v.requestFullscreen().catch(() => toast('Full screen is blocked here. Open the studio in its own tab.')); }
+  if (a === 'play' && v) return v.paused ? v.play() : v.pause();
+  if (a === 'seek' && v) { v.pause(); v.currentTime = Math.max(0, v.currentTime + +x.dataset.d); return; }
+  if (a === 'snap') return takeSnap();
+  if (a === 'undo') { shapes.pop(); return draw(); }
+  if (a === 'clear') { shapes = []; return draw(); }
+  if (API && a === 'renderdraft') {
+    if ($('#brief')) cur.brief = $('#brief').value.trim();
+    const framesExist = cur.reached >= 2, draftExists = cur.reached >= 4;
+    cur.phase = 'approved'; pickDraft = null; save(); project(); pushStep();
+    if (draftExists || framesExist) return; // already have something to look at; don't retrigger BOSS
+    return startRunApi(briefPrompt(), null, 'Rendering Draft');
+  }
+  if (API && a === 'scontinue') return scriptContinue();
+  if (API && a === 'toinstr') { cur.phase = 'brief'; save(); project(); return pushStep(); }
+  if (a === 'clearpick') return scriptAct('clearpick');
+  if (a.startsWith('s') && S && (cur.phase === 'script' || cur.phase === 'approved') && scriptAct(a)) return;
+  if (API && a === 'send') {
+    if (!cur.notes.length) return toast('Add at least one note first');
+    const images = sentPack(), prompt = buildPrompt() + (viewLabel ? versionNote() : '');
+    archive(viewLabel ? 'revision' : 'approve', viewLabel ? pickDraft : null); save(); project(); return startRunApi(prompt, images, viewLabel ? 'Rendering Revision' : 'Rendering Draft');
+  }
+  if (API && a === 'approve') {
+    // notes made on the frames travel with the approval, so they are not lost
+    const lines = cur.notes.length ? '\n\nApply these notes from my frame review:\n' + noteLinesText() : '', images = sentPack();
+    archive('approve'); cur.phase = 'approved'; pickDraft = null; save(); project(); pushStep();
+    return startRunApi('The frames are approved. Now render the full video for this project at draft size (' + draftSizeText(cur) + ') into projects/' + cur.id + '/drafts/, ' + (cur.styleId ? 'following the project style' : 'applying no style, keeping the video as it is') + ' and all my notes so far.' + lines + versionNote() + ' Do not render at full resolution until I say final.', images, 'Rendering Draft');
+  }
+  if (API && a === 'addstyle') {
+    if (!viewFile) return toast('Render a draft first');
+    const slug = 'custom-' + Date.now();
+    cur.pendingStyleSlug = slug; cur.styleProposalReady = null; cur.styleProposalSeen = false; save(); project();
+    toast('Asking BOSS to draft a new style from this edit…');
+    return startRunApi(addStylePrompt(slug), null, 'Drafting New Style');
+  }
+  if (API && a === 'approvestyle') {
+    const prop = cur.styleProposalReady; if (!prop) return;
+    toast('Asking BOSS to add it to the style picker…');
+    cur.pendingStyleSlug = null; cur.styleProposalReady = null; save(); project();
+    return startRunApi(approveStylePrompt(prop), null, 'Saving Your Template');
+  }
+  if (API && a === 'discardstyle') {
+    const prop = cur.styleProposalReady; if (!prop) return;
+    try { await jf('DELETE', '/api/style-proposals/' + prop.id); } catch {}
+    cur.pendingStyleSlug = null; cur.styleProposalReady = null; save(); project();
+    return toast('Proposal discarded');
+  }
+  if (a === 'final') { const pr = 'This draft is approved. Render the FINAL video at full resolution (' + finalSizeText(cur) + ', 30 fps) into ' + (API ? 'projects/' + cur.id + '/drafts/' : 'outbox/') + ', named final-<project>.mp4, ' + (cur.styleId ? 'with the project style' : 'with no style applied') + ' and all my notes applied.'; if (API) { archive('final', pickDraft); save(); return startRunApi(pr, null, 'Rendering Final Version'); } $('#mtitle').textContent = 'Final render'; $('#prompt').textContent = pr; $('#modal').hidden = false; return; }
+  if (a === 'addref') { const i = document.createElement('input'); i.type = 'file'; i.accept = 'image/*'; i.multiple = true; i.onchange = () => [...i.files].forEach(addRefFile); return i.click(); }
+  if (a === 'addbroll') {
+    const i = document.createElement('input'); i.type = 'file'; i.accept = 'video/*'; i.multiple = true;
+    i.onchange = async () => {
+      if (!API) return toast('Adding B-roll needs the studio server running');
+      for (const f of i.files) {
+        toast('Saving ' + f.name + '…');
+        try { const r = await fetch('/api/projects/' + cur.id + '/broll?name=' + encodeURIComponent(f.name), {method: 'PUT', headers: H, body: f}); if (!r.ok) throw 0; pendingBroll.push((await r.json()).name); }
+        catch { toast('Upload failed: ' + f.name); }
+      }
+      paintBroll();
+    };
+    return i.click();
+  }
+  if (a === 'addref2') {
+    const i = document.createElement('input'); i.type = 'file'; i.accept = 'video/*';
+    i.onchange = async () => {
+      const f = i.files[0]; if (!f) return;
+      if ($('#brief')) cur.brief = $('#brief').value;
+      if (!API) return toast('Uploading a reference needs the studio server running');
+      toast('Saving the reference video…');
+      try { const r = await fetch('/api/projects/' + cur.id + '/reference?name=' + encodeURIComponent(f.name), {method: 'PUT', headers: H, body: f}); if (!r.ok) throw 0; Object.assign(cur, await r.json()); } catch { return toast('Upload failed'); }
+      save(); project(); toast('Reference saved. BOSS will copy its editing style.');
+    };
+    return i.click();
+  }
+  if (a === 'rmref') {
+    if ($('#brief')) cur.brief = $('#brief').value;
+    if (x.dataset.k === 'reflinks') (cur.refLinks || []).splice(+x.dataset.i, 1);
+    else delete cur[x.dataset.k === 'reffile' ? 'refFile' : 'refLink'];
+    save(); return project();
+  }
+  if (a === 'genvo') {
+    if ($('#brief')) cur.brief = $('#brief').value;
+    cur.voScript = ($('#voscript') || {}).value.trim();
+    if (!cur.voScript) return toast('Paste the script first');
+    save();
+    if (!API) return toast('Generating a voiceover needs the studio server running');
+    toast('Asking BOSS to generate the voiceover…');
+    return startRunApi('Generate a voiceover for the project "' + cur.name + '" with the ElevenLabs MCP (voice: Krista Mashore, or the closest fit if that voice is not available) from the script below. Save the audio file in projects/' + cur.id + '/voiceover/ and tell me its file name. If the ElevenLabs connector is not connected, stop and tell me to connect it first, with no other changes.\n\nScript:\n' + cur.voScript, null, 'Generating Voiceover');
+  }
+  if (a === 'proceed') { if ($('#brief')) cur.brief = $('#brief').value.trim(); cur.skipFrames = true; cur.phase = 'approved'; save(); project(); return pushStep(); } // non-API fallback only; the API flow uses "renderdraft" now
+  if (a === 'cancelrun') { jf('POST', '/api/projects/' + cur.id + '/cancel').catch(() => {}); return; }
+  if (a === 'standin') { frames = []; frameBusy = false; await makeFrames(); return; }
+  if (a === 'sendbrief') { cur.brief = $('#brief').value.trim(); save(); $('#mtitle').textContent = 'First instruction'; $('#prompt').textContent = briefPrompt(); $('#modal').hidden = false; return; }
+  if (a === 'toframes') { cur.brief = ($('#brief') || {}).value || cur.brief; cur.phase = 'frames'; frames = []; save(); project(); return pushStep(); }
+  if (a === 'approve') { cur.phase = 'approved'; save(); toast('Frames approved. The finished app would now start the full render.'); project(); return pushStep(); }
+  if (a === 'cancelsnap') return closeAnnot();
+  if (a === 'addnote') {
+    const text = $('#ntext').value.trim(), byLink = $('#nsty').value === '__link', refLink = byLink ? $('#nlink').value.trim() : '';
+    if (byLink && !/^https?:\/\/\S+$/i.test(refLink)) return toast('Paste a full link that starts with https://');
+    if (!text && !snap && !pendingRefs.length && !pendingBroll.length && !refLink && !scriptPick) return toast('Type a note, annotate a frame, add an image or B-roll, or select a phrase in Script first');
+    let range = $('#nrange').value;
+    if (range === 'Custom' && !scriptPick) return toast('Select a phrase in Script to use Custom');
+    const t = scriptPick ? scriptPick.start : snap ? snap.t : v ? v.currentTime : 0, styleId = byLink ? '' : $('#nsty').value;
+    const note = {id: 'n' + Date.now(), t, text, styleId, refLink, range, img: snap ? merged() : '', full: snap && API ? mergedFull() : '', refs: pendingRefs.slice(), broll: pendingBroll.slice()};
+    if (scriptPick) { note.range = 'Custom'; note.rangeStart = scriptPick.start; note.rangeEnd = scriptPick.end; note.quote = scriptPick.text; }
+    cur._t = t; cur.notes.push(note); pendingRefs = []; pendingBroll = []; paintBroll(); scriptPick = null; paintPick(); save(); if (history.state && history.state.annot) { snap = null; history.back(); } snap = null; return project();
+  }
+  if (a === 'send') { if (!cur.notes.length) return toast('Add at least one note first'); $('#mtitle').textContent = 'Revision request'; $('#prompt').textContent = buildPrompt(); $('#modal').hidden = false; return; }
+  if (a === 'closemodal') return ($('#modal').hidden = true);
+  if (a === 'closestymodal') { cur.styleProposalSeen = true; save(); return paintStyModal(); }
+  if (a === 'copyprompt') { try { await navigator.clipboard.writeText($('#prompt').textContent); toast('Prompt copied. Paste it into your BOSS chat'); } catch { toast('Select the text and copy it'); } }
+});
+document.addEventListener('change', (e) => {
+  if (e.target.id === 'reflink' && cur) {
+    const u = e.target.value.trim();
+    if (!u) return;
+    if (!/^https?:\/\/\S+$/i.test(u)) return toast('Paste a full link that starts with https://');
+    if ($('#brief')) cur.brief = $('#brief').value;
+    (cur.refLinks ||= []).push(u); e.target.value = '';
+    save(); project(); return toast('Link saved. BOSS will copy its editing style.');
+  }
+  if (e.target.id === 'nsty') { $('#nlinkrow').hidden = e.target.value !== '__link'; if (!$('#nlinkrow').hidden) $('#nlink').focus(); return; }
+  if (e.target.dataset.opt && cur) { cur.opts = {...optsOf(cur), [e.target.dataset.opt]: e.target.checked}; return save(); } if (e.target.id === 'psty') return restyle(e.target.value); if (e.target.id === 'pformat') { keepNewFormText(); draftNew.format = e.target.value; draftNew.formatTouched = true; return; }
+  if (e.target.id === 'filemedia') { keepNewFormText(); handleMediaFiles(e.target.files); }
+});
+// shared by the file picker (#filemedia change) and dragging files onto #dropmedia
+function handleMediaFiles(fileList) {
+  const files = [...fileList], AUDIO = /\.(mp3|wav)$/i, VIDEO = /\.(mp4|avi|mov)$/i;
+  const vids = files.filter((f) => VIDEO.test(f.name) || f.type.startsWith('video/'));
+  const auds = files.filter((f) => AUDIO.test(f.name) || f.type.startsWith('audio/'));
+  if (vids.length) { draftNew.files = (draftNew.files || []).concat(vids); draftNew.file = draftNew.files[0]; }
+  if (auds.length) draftNew.vofile = auds[0];
+  if (!vids.length && !auds.length) toast('Choose a video or audio file: mp4, avi, mov, wav or mp3');
+  render();
+}
+document.addEventListener('dragover', (e) => { if (e.target.closest('#dropmedia')) { e.preventDefault(); $('#dropmedia').classList.add('dragover'); } });
+document.addEventListener('dragleave', (e) => { if (e.target.closest('#dropmedia')) $('#dropmedia').classList.remove('dragover'); });
+document.addEventListener('drop', (e) => {
+  const el = e.target.closest('#dropmedia'); if (!el || !e.dataTransfer.files.length) return;
+  e.preventDefault(); el.classList.remove('dragover'); keepNewFormText(); handleMediaFiles(e.dataTransfer.files);
+});
+document.addEventListener('input', (e) => {
+  if (e.target.id === 'pname' && view === 'new') {
+    const dis = !e.target.value.trim() || !(draftNew.file || draftNew.vofile);
+    const c = $('#btncreate'), m = $('#btnmagic'); if (c) c.disabled = dis; if (m) m.disabled = dis;
+  }
+});
+window.addEventListener('unhandledrejection', () => toast('Saving projects is blocked in this view. Open the local copy to save.'));
+if (FR) { // inside the hub: use its header, size to the content, send style clicks up
+  $('.top').style.display = 'none';
+  const tell = () => parent.postMessage({studioH: document.documentElement.scrollHeight}, '*');
+  new ResizeObserver(tell).observe(document.body); tell();
+  document.addEventListener('click', (e) => { const a = e.target.closest('[data-hubstyle]'); if (a) { e.preventDefault(); parent.location.hash = '#style-' + a.dataset.hubstyle; } });
+}
+(async () => {
+  try { API = (await fetch('/api/ping', {headers: H})).ok; } catch {}
+  if (API) { try { projects = await jf('GET', '/api/projects'); } catch { projects = []; } }
+  $('.badge').textContent = API ? 'Saving to projects/ folder' : 'Draft · saves in this browser only';
+  document.addEventListener('fullscreenchange', () => { const v = $('#v'); if (v) v.controls = !!document.fullscreenElement; });
+history.replaceState({view: 'list'}, ''); render();
+})();
+</script>
+</body>
+</html>

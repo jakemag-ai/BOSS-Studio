@@ -1,0 +1,55 @@
+# Installed by setup.mjs on each computer
+kit/
+node_modules/
+
+# The Windows app: downloaded portable Node and build output
+app/src-tauri/binaries/
+app/dist/
+
+# Private notes behind the public docs
+docs/private/
+
+# Your footage, renders, and keys stay local (but my-style.md/my-rules.md DO go
+# into boss-editing-studio, so a teammate's BOSS renders the same way yours does)
+.env
+inbox/*
+outbox/*
+my-sounds/*
+!inbox/.gitkeep
+!outbox/.gitkeep
+!my-sounds/.gitkeep
+*.transcribe.mp3
+
+# Sync tools
+*.sync-conflict-*
+~syncthing~*
+.stfolder/
+.stversions/
+.DS_Store
+Thumbs.db
+__pycache__/
+
+my-assets/
+
+# Local video-matting environment and model
+tools/.venv-matte/
+tools/matte/*.pth
+tools/matte/*.torchscript
+
+# Editing Hub: the build output only (hub/assets, the small web-sample images
+# and videos the hub and the artifact actually show, DOES go into the repo)
+hub/online/
+hub/_archive/
+
+# BOSS Studio: your own footage, drafts and voiceovers stay local, never in git
+projects/
+
+# Remotion: reinstallable deps, rendered output, and one past project's raw
+# source footage (253MB, not needed to match any style, just that old video)
+remotion/node_modules/
+remotion/out/
+remotion/public/
+
+# A different, unrelated project that happens to live in this folder
+ai-agents-before-after/
+check02/

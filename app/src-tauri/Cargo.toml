@@ -1,0 +1,23 @@
+[package]
+name = "bossstudio"
+version = "0.1.0"
+description = "Free video editor: drop a raw video, get an edited draft"
+authors = ["Krista Mashore"]
+license = "MIT"
+repository = "https://github.com/vincentkmc2023/BOSSStudio"
+edition = "2021"
+rust-version = "1.77.2"
+
+[lib]
+name = "bossstudio_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+tauri = { version = "2", features = ["protocol-asset"] }
+tauri-plugin-shell = "2"
+tauri-plugin-single-instance = "2"
+tauri-plugin-dialog = "2"
+keyring = { version = "3", features = ["windows-native"] }

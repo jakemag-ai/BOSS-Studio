@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Punch-In Split (formerly BOSS Editing - Vertical01)</title>
+<style>
+:root{--bg:#07070a;--panel:#121216;--line:#26262d;--text:#f2f2f4;--mute:#9a9aa6;--red:#c4121a;--green:#2bff3a;--yellow:#f5e500}
+@media (prefers-color-scheme: light){:root{--bg:#f6f4f0;--panel:#fff;--line:#e2ded6;--text:#16161a;--mute:#6a6a74}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.6 Inter,system-ui,Segoe UI,Arial,sans-serif}
+.wrap{max-width:980px;margin:0 auto;padding:0 16px 80px}
+header{padding:56px 0 24px}
+h1{font-size:clamp(34px,6vw,60px);line-height:1.05;margin:0 0 12px;letter-spacing:-.02em}
+h1 em{font-family:Georgia,"Times New Roman",serif;font-weight:400}
+h1 .hl{background:var(--red);color:#fff;padding:0 .2em}
+h2{font-size:26px;margin:56px 0 12px;letter-spacing:-.01em}
+h2 small{display:block;font-size:13px;color:var(--red);text-transform:uppercase;letter-spacing:.12em;margin-bottom:4px}
+h3{font-size:17px;margin:22px 0 6px}
+p{margin:8px 0;color:var(--mute)} p b,li b{color:var(--text)}
+.lead{font-size:18px;color:var(--text)}
+.grid{display:grid;gap:14px}.g2{grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}.g3{grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px}
+.card h3{margin-top:0}
+.stat{font-size:28px;font-weight:700;color:var(--text)}.stat span{display:block;font-size:12px;color:var(--mute);font-weight:400;text-transform:uppercase;letter-spacing:.08em}
+img{max-width:100%;border-radius:10px;border:1px solid var(--line);display:block}
+.fig{margin:0}.fig figcaption{font-size:13px;color:var(--mute);margin-top:6px}
+table{width:100%;border-collapse:collapse;font-size:14px}th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:top}th{color:var(--mute);font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:.08em}
+.sw{display:flex;gap:10px;flex-wrap:wrap}.sw div{width:96px;border-radius:10px;border:1px solid var(--line);overflow:hidden;font-size:12px;background:var(--panel)}.sw i{display:block;height:48px}.sw span{display:block;padding:6px 8px;color:var(--mute)}
+pre{background:#0c0c10;color:#e8e8ee;border:1px solid var(--line);border-radius:12px;padding:14px;overflow:auto;font:13px/1.5 ui-monospace,Consolas,monospace}
+code{font-family:ui-monospace,Consolas,monospace;font-size:.92em;background:var(--panel);border:1px solid var(--line);padding:1px 5px;border-radius:5px}
+pre code{background:none;border:0;padding:0}
+.pill{display:inline-block;border:1px solid var(--line);border-left:4px solid var(--red);background:var(--panel);border-radius:6px;padding:3px 10px;font-weight:700;font-size:14px;margin:2px}
+.layout{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px;align-items:start}
+.phone{aspect-ratio:9/16;max-width:230px;margin:0 auto;background:#000;border:1px solid var(--line);border-radius:18px;position:relative;overflow:hidden;font-size:11px;color:#fff;width:100%}
+.phone .t{position:absolute;top:5%;left:0;right:0;text-align:center;font-weight:800}
+.phone .t u{display:inline-block;background:var(--red);text-decoration:none;padding:0 6px}
+.phone .gfx{position:absolute;top:26%;left:8%;right:8%;height:40%;border:1px dashed #555;border-radius:8px;display:grid;place-items:center;color:#aaa}
+.phone .cap{position:absolute;top:72%;left:0;right:0;text-align:center;font-weight:800;font-size:13px}
+.phone .face{position:absolute;bottom:3%;left:6%;right:6%;height:22%;background:#2a2a33;border-radius:10px;display:grid;place-items:center;color:#aaa}
+.phone.full .face{inset:0;border-radius:0;height:auto}
+.phone.full .cap{top:62%}
+ul{padding-left:20px;color:var(--mute)}li{margin:4px 0}
+.note{border-left:4px solid var(--yellow);background:var(--panel);padding:10px 14px;border-radius:0 10px 10px 0;color:var(--mute);font-size:14px}
+a{color:inherit}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <p style="color:var(--red);text-transform:uppercase;letter-spacing:.14em;font-size:13px;margin:0">Remotion + Free247 · BOSS Editing Style Guide</p>
+  <h1><em>BOSS Editing</em> <span class="hl">Vertical01</span></h1>
+  <p class="lead">A breakdown of a Kallaway Marketing reel (“Desire Hook Method”, ~100 s, 1080×1920): a talking head that keeps cutting between full-screen punch-ins and a split layout where bold motion graphics carry each idea. Use this as a spec to rebuild the look in Remotion.</p>
+  <div class="grid g3" style="margin-top:18px">
+    <div class="card stat">1080×1920<span>Canvas (9:16)</span></div>
+    <div class="card stat">23.976 fps<span>Source frame rate</span></div>
+    <div class="card stat">100.7 s<span>Duration</span></div>
+    <div class="card stat">~20 hard cuts<span>Detected cuts, ≈1 per 5 s</span></div>
+  </div>
+  <p class="note" style="margin-top:14px">Source analysed: video frames, cut detection and the reel’s caption/transcript. Audio (music, SFX, mix) was <b>not</b> analysed, so audio notes below are suggestions. “Free247” is treated as your brand/channel; swap its colours and fonts into the tokens in section 7.</p>
+</header>
+
+<h2><small>01 · The big idea</small>Two modes, swapped constantly</h2>
+<p>The edit never lets the viewer rest on one image. Every 2–12 seconds it flips between two layouts, and a persistent word-by-word caption ties both together.</p>
+<div class="layout">
+  <div><div class="phone full"><div class="face">Talking head · punch-in (zoomed ~1.5×)</div><div class="cap">demographics,</div></div><p style="text-align:center"><b>Mode A — Punch-in</b><br>Face fills the frame for emphasis, jokes, transitions. Slow push-in while speaking.</p></div>
+  <div><div class="phone"><div class="t">3 Elements Of A Hook<br><u>That Drives More Sales</u></div><div class="gfx">Motion graphic zone</div><div class="cap">conversion rate</div><div class="face">Head in rounded card</div></div><p style="text-align:center"><b>Mode B — Split</b><br>Black dotted-grid canvas. Graphic on top, caption in the middle, the speaker in a rounded card at the bottom.</p></div>
+  <div class="card"><h3>Why it works</h3><ul><li><b>Show every claim.</b> Each spoken term gets a visual within ~0.3 s (avatar grid for “identity”, revenue chart for “sales”).</li><li><b>Face never disappears</b> in Mode B, so trust and eye contact stay.</li><li><b>Fixed top title</b> reminds viewers what the video is about, so late-joiners don’t leave.</li><li><b>Progress rail:</b> the section pill (Identity Callout → Desire Frame → Proof Anchor) shows where you are.</li></ul></div>
+</div>
+
+<h2><small>02 · What it looks like</small>Contact sheets (one frame every 2 s)</h2>
+<div class="grid g2">
+  <figure class="fig"><img src="sheets/sheet_1.jpg" alt="Seconds 0–40"><figcaption>0–40 s: hook, pill list builds, identity callout.</figcaption></figure>
+  <figure class="fig"><img src="sheets/sheet_2.jpg" alt="Seconds 40–80"><figcaption>40–80 s: desire frame diagram, script card, proof cards.</figcaption></figure>
+  <figure class="fig"><img src="sheets/sheet_3.jpg" alt="Seconds 80–100"><figcaption>80–100 s: radial proof, comment-keyword CTA with doc stack.</figcaption></figure>
+  <figure class="fig"><img src="frames/f_graphic.png" alt="Split layout full-res"><figcaption>Mode B at full resolution: title lockup, phone mock + revenue chart, caption, rounded speaker card.</figcaption></figure>
+  <figure class="fig"><img src="frames/f_zoom.png" alt="Punch-in full-res"><figcaption>Mode A: tight punch-in, caption in an <i>italic serif</i> for the key phrase.</figcaption></figure>
+</div>
+
+<h2><small>03 · Structure</small>Timeline (approximate, from frame sampling)</h2>
+<table>
+<tr><th>Time</th><th>Beat</th><th>Layout</th><th>On-screen graphic</th></tr>
+<tr><td>0–4 s</td><td>Hook: “only 3 things you need…”</td><td>B</td><td>Title lockup + 3 pills, phone mock, revenue chart</td></tr>
+<tr><td>4–8 s</td><td>Name the method</td><td>A</td><td>Punch-in, serif-italic caption “Desire Hook Method.”</td></tr>
+<tr><td>8–20 s</td><td>Promise: 3 elements</td><td>B ↔ A</td><td>Pills appear one at a time, green-outline phone</td></tr>
+<tr><td>20–38 s</td><td><span class="pill">Identity Callout</span></td><td>B ↔ A</td><td>5×5 avatar grid, one avatar ringed with dashed line + red label; Demographic / Psychographic cards</td></tr>
+<tr><td>38–50 s</td><td><span class="pill">Desire Frame</span></td><td>B ↔ A</td><td>Vertical flow: Viewer → Pain point → Desire; hook outline with red/yellow bars</td></tr>
+<tr><td>50–60 s</td><td>Example sentence</td><td>B ↔ A</td><td>“Video Script” card, red-highlighted hook lines, dashed callout labels</td></tr>
+<tr><td>60–76 s</td><td><span class="pill">Proof Anchor</span></td><td>B ↔ A</td><td>Proof stat card, Instagram-style profile cards, phone mock</td></tr>
+<tr><td>76–84 s</td><td>Rule of thumb</td><td>B</td><td>Radial orbit of red/green dots around phone, red label “Better the proof…”</td></tr>
+<tr><td>84–100 s</td><td>CTA: comment “Lead”</td><td>B ↔ A</td><td>Header “Comment ‘Lead’ To Get This Doc”, stack of doc pages, label chip</td></tr>
+</table>
+<p>Hard cut times found (s): 4.4, 8.0, 16.6, 19.1, 25.4, 27.6, 29.1, 31.2, 33.3, 38.0, 50.7, 55.9, 64.4, 67.3, 68.9, 70.4, 78.3, 84.0, 88.5, 91.8. Other changes are animated transitions inside a layout.</p>
+
+<h2><small>04 · Captions</small>Word-by-word, one or two words at a time</h2>
+<ul>
+  <li><b>Position:</b> horizontally centred; in Mode B it sits in the gap between graphic and speaker card (~y 1290 of 1920); in Mode A about two-thirds down (~y 1270) over the chest.</li>
+  <li><b>Font:</b> heavy grotesk (Inter/Helvetica Black feel), white, tight tracking, ~60–70 px, slight drop shadow on Mode A.</li>
+  <li><b>Emphasis:</b> key phrases switch to an <b>italic serif</b> (“Desire Hook Method.”). Pair one display serif italic with one grotesk for the whole video.</li>
+  <li><b>Behaviour:</b> each word replaces the last (no karaoke fill, no big pop). Phrase breaks follow the speech rhythm; punctuation is kept.</li>
+</ul>
+
+<h2><small>05 · Graphics library</small>Reusable components to build</h2>
+<div class="grid g3">
+  <div class="card"><h3>Title lockup</h3><p>Top-centre, two lines. Line 1: serif italic + grotesk bold. Line 2: white bold text on a solid red bar, serif italic for the last words. Stays on screen throughout Mode B.</p></div>
+  <div class="card"><h3>Section pill</h3><p><span class="pill">Identity Callout</span> Dark rounded rect, 1px light border, red left edge. In lists, the active pill is bright and the others are dimmed.</p></div>
+  <div class="card"><h3>Dotted grid bg</h3><p>Near-black (#050505) with a very faint dot grid, vignette to black. Keeps the black from feeling flat.</p></div>
+  <div class="card"><h3>Phone mock</h3><p>Rounded black device with a screenshot inside and a mini speaker clip at the bottom. Used for “content” references. Also appears with green UI icons (like/comment/share).</p></div>
+  <div class="card"><h3>Stat card</h3><p>Glass-dark rounded card, small label (“Revenue”), large number, neon-green line chart that draws left to right with glow.</p></div>
+  <div class="card"><h3>Avatar grid + ring</h3><p>5×5 grey person icons, one gets a red dashed ring, a dashed leader line and a red gradient label chip (“The identity of the person you want to buy”).</p></div>
+  <div class="card"><h3>Flow diagram</h3><p>Icon nodes (viewer → warning → target) joined by a vertical line that draws down. Text labels sit right of each node.</p></div>
+  <div class="card"><h3>Doc card</h3><p>Dark card with serif-italic heading, grey skeleton lines, red highlight bars and yellow underlines. Dashed line to a red label chip.</p></div>
+  <div class="card"><h3>Orbit burst</h3><p>Concentric rings of small red and green dots around a centrepiece, expanding outward for the “better proof” payoff.</p></div>
+</div>
+
+<h2><small>06 · Motion</small>How things move</h2>
+<ul>
+  <li><b>Graphics in:</b> fade + 20–40 px slide/scale-up with a spring (damping ~14–18, no big overshoot), 8–12 frames. Blur-in on text is used in places.</li>
+  <li><b>Graphics out:</b> short fade or slide-off, often replaced by the next card within the same beat (cards “hand off” to each other).</li>
+  <li><b>Sequential build:</b> lists reveal an item every ~0.5–0.8 s, in sync with the spoken word.</li>
+  <li><b>Punch-ins:</b> hard cut to a ~1.4–1.6× crop, then a slow scale drift (1.0 → 1.05) until the next cut. No whip pans or glitches.</li>
+  <li><b>Line draws:</b> chart lines, connectors and dashed leaders animate with a path-length progress (<code>strokeDashoffset</code>).</li>
+  <li><b>Rhythm:</b> never more than ~12 s on one graphic; the face punches back in every 2–4 s of speech.</li>
+</ul>
+
+<h2><small>07 · Tokens</small>Colour and type (estimated from frames)</h2>
+<div class="sw">
+  <div><i style="background:#050505"></i><span>#050505 canvas</span></div>
+  <div><i style="background:#c4121a"></i><span>#C4121A red</span></div>
+  <div><i style="background:#2bff3a"></i><span>#2BFF3A neon green</span></div>
+  <div><i style="background:#f5e500"></i><span>#F5E500 yellow</span></div>
+  <div><i style="background:#ffffff"></i><span>#FFFFFF text</span></div>
+  <div><i style="background:#1b1b20"></i><span>#1B1B20 card</span></div>
+</div>
+<p>Fonts: a heavy grotesk (Inter Black / Helvetica Now) + a high-contrast serif italic (Instrument Serif / Newsreader Italic / Playfair Italic). Colours are approximate; for Free247, replace red with your brand accent and keep green/yellow only as small “data” accents.</p>
+
+<h2><small>08 · Build it</small>Remotion implementation</h2>
+<h3>Composition</h3>
+<pre><code>// Root.tsx
+&lt;Composition id="DesireHook" component={Explainer}
+  width={1080} height={1920} fps={30} durationInFrames={30 * 100}
+  defaultProps={{ src: staticFile('head.mp4'), captions, scenes }} /&gt;</code></pre>
+<h3>Scene data drives everything</h3>
+<pre><code>type Scene = {
+  from: number; dur: number;            // frames
+  mode: 'punch' | 'split';
+  section?: string;                      // pill label
+  graphic?: 'avatars' | 'flow' | 'script' | 'proof' | 'orbit' | 'docs' | 'stat';
+};</code></pre>
+<h3>Layout switch</h3>
+<pre><code>const Layout: React.FC&lt;{scene: Scene; src: string}&gt; = ({scene, src}) =&gt; {
+  const f = useCurrentFrame();
+  const drift = interpolate(f, [0, scene.dur], [1.45, 1.52]);
+  if (scene.mode === 'punch')
+    return &lt;OffthreadVideo src={src} style={{width:'100%',height:'100%',objectFit:'cover',
+      transform:`scale(${drift})`}} /&gt;;
+  return (
+    &lt;AbsoluteFill style={{background:'#050505'}}&gt;
+      &lt;DotGrid /&gt;&lt;TitleLockup /&gt;
+      &lt;div style={{position:'absolute',top:360,left:60,right:60,height:820}}&gt;
+        {renderGraphic(scene.graphic)}
+      &lt;/div&gt;
+      &lt;div style={{position:'absolute',left:70,right:70,top:1408,bottom:0,
+        borderRadius:36,overflow:'hidden'}}&gt;
+        &lt;OffthreadVideo src={src} style={{width:'100%',height:'100%',objectFit:'cover'}} /&gt;
+      &lt;/div&gt;
+    &lt;/AbsoluteFill&gt;
+  );
+};</code></pre>
+<h3>Spring-in helper</h3>
+<pre><code>export const useIn = (delay = 0) =&gt; {
+  const f = useCurrentFrame(); const {fps} = useVideoConfig();
+  const p = spring({frame: f - delay, fps, config:{damping:16, stiffness:140}});
+  return {opacity: p, transform: `translateY(${(1 - p) * 30}px) scale(${0.96 + 0.04 * p})`};
+};</code></pre>
+<h3>Captions</h3>
+<pre><code>// words: {text, start, end} in seconds, from Whisper (@remotion/captions)
+const word = words.find(w =&gt; t &gt;= w.start &amp;&amp; t &lt; w.end);
+&lt;div style={{position:'absolute',top: mode==='split' ? 1290 : 1270, width:'100%',
+  textAlign:'center', font:'900 64px Inter', color:'#fff'}}&gt;
+  {word?.text}
+&lt;/div&gt;
+// italic serif for emphasised words: add an `em: true` flag to those entries</code></pre>
+<h3>Workflow</h3>
+<ol style="color:var(--mute)">
+  <li>Record the talking head in 9:16 (or crop 16:9 to 9:16) with a dark, practical-lit background.</li>
+  <li>Transcribe with Whisper → word timestamps → caption JSON.</li>
+  <li>Mark scenes: for each key term, set a graphic and alternate <code>punch</code> / <code>split</code>.</li>
+  <li>Build each graphic as its own component; keep them 6–12 s max.</li>
+  <li>Render: <code>npx remotion render DesireHook out.mp4 --codec h264</code>.</li>
+</ol>
+
+<h2><small>09 · Checklist</small>Before you export</h2>
+<ul>
+  <li>Layout flips at least every 12 s; punch-ins every 2–4 s of speech.</li>
+  <li>Every spoken term has a visual in the first 10 frames of the word.</li>
+  <li>One accent colour for emphasis, one data colour (green) for charts.</li>
+  <li>Captions stay inside safe zones (not under the Reels UI at the bottom ~250 px or the right 120 px).</li>
+  <li>The CTA beat uses a keyword comment (“Lead”) with a visual of the thing they get.</li>
+  <li>Add a soft music bed and light whooshes on graphic hand-offs (not verified in the source).</li>
+</ul>
+<p style="margin-top:40px;font-size:13px">Study notes only. Re-create the structure and feel with your own copy, assets and brand rather than copying the original’s graphics or text.</p>
+</div>
+</body>
+</html>

@@ -1,0 +1,50 @@
+# My rules
+
+Lasting rules from my notes. These beat `my-style.md`.
+
+- Section-break frames (the full orange-red slates with the halftone dots) always use HUGE text: the word at 235 to 400px, filling most of the frame width, with a large section number above it. Never small centred text.
+  - My words: "make fonts Huge for these type of frames" (2026-11-11)
+- Drafts are rendered fast at 940p (1672x940, 24 fps). Render in full resolution (1080p, 30 fps) only after I approve and say "final".
+  - My words: "use 940p res first to run fast then we render in full res once final and I say so" (2026-11-11)
+- Vertical videos (Reels/Stories): no small slide-style labels. No top tag bar like "WHY REVIEWS MATTER 01 / 04", no section counters, no tiny footnote lines like "example shops, not real businesses". They only work on slides.
+  - My words: "remove all of these. as they dont work in a vertical video. that's only good for slides presentation" (2026-11-11)
+- Vertical videos: keep the bottom of the frame empty for the app's caption and buttons. Nothing in the lowest ~23% (about 440 of 1920px). Keep the top ~10% clear too. Text always centred in the frame.
+  - My words: "this area should be left empty. I dont' think its a safe zone" and "Make Texts align center in frame" (2026-11-11)
+- Named style: "BOSS Motion Graphics - 01" (the Why Reviews Matter Reels look, editing, sound design and output style). When I say "use BOSS Motion Graphics - 01", read `my-style-presets/motion-graphics-reels/type-and-wipe/Type-and-Wipe_style-guide.md` and follow it. Rules above still win.
+  - My words: "save this style of Editing, Motion graphics, and this output style. name this BOSS Motion Graphics - 01" (2026-11-11)
+- Motion graphics frames: never let text get cut off at the frame edge (the huge slate words included). Auto-fit or resize the text until it sits fully inside the frame with a margin.
+  - My words: "make sure that no texts are cut out. resize when necessary" (2026-11-11)
+- Cards, rounded boxes and chips must have clear contrast from the background. A white card on a near-white background looks over-exposed, so use a slightly darker warm background, a visible border and a stronger shadow.
+  - My words: "when revealing small cards, or rounded boxes, make sure there's contrast from the background... it looks like its over exposed" (2026-11-11)
+- Sound: no whoosh or swish sound effects. Use soft clicks or a clean high-tech ding instead.
+  - My words: "I don't like the woosh sound effect, replace with clicks or hightech ding" (2026-11-11)
+- Named style: "BOSS Motion Graphics - 01 + Split Cutout" is BOSS Motion Graphics - 01 plus the presenter split: the talking head in a rounded box at the bottom with a cut-out of her head popping out over the graphics, used only in some scenes. When I say "use BOSS Motion Graphics - 01 + Split Cutout", follow sections 1 to 8 of `my-style-presets/motion-graphics-reels/type-and-wipe/Type-and-Wipe_style-guide.md`. Always bake the presenter into frame images before rendering.
+  - My words: "update the style with this new skill of having a split screen and cutout video. maybe add a suffix about that new feature" (2026-11-11)
+- Named style: "BOSS Motion Graphics - 02" (beige, navy and hot pink carousel look, big pink step numbers, never a dead frame). When I say "use BOSS Motion Graphics - 02", read `my-style-presets/motion-graphics-reels/pink-carousel/Pink-Carousel_style-guide.md` and follow it. Rules above still win.
+  - My words: "name this style/preset - BOSS Motion Graphics - 02" (2026-11-11)
+- Style library: all saved style guides live in `my-style-presets/<category>/<style>/<Style-Name>_<kind-of-document>.md`, listed in `my-style-presets/INDEX.md`. `my-style.md` stays at the repo root under that exact name because the editor reads it.
+  - My words: "rename the mds of all these style accordingly to what they do" (2026-11-11)
+- Style names (renamed 2026-11-11 to say what they do). Either name works when I say it:
+  - **Type & Wipe** = BOSS Motion Graphics - 01 (typewriter headlines, iris wipes with huge slate words)
+  - **Type & Wipe + Head Pop-Out** = BOSS Motion Graphics - 01 + Split Cutout (adds the presenter box with the head popping out, in some scenes only)
+  - **Carousel Style V1** (was Pink Carousel) = BOSS Motion Graphics - 02 (beige, navy, hot pink, big pink step numbers)
+  - **Carousel Style V2** (was Pink and Cream Reel Recreate) = the pink and cream reel recreate look When I say "use Carousel Style V2", read `my-style-presets/motion-graphics-reels/carousel-style-v2/Carousel-Style-V2_style-guide.md` and follow it. Rules above still win.
+  - **Punch-In + Split** (also: Punch-In Split) = BOSS Editing - Vertical01 (hard-cut face punch-ins and a split layout; see the 4 reference analyses in `my-style-presets/talking-head-edits/punch-in-split/`)
+  - **The BOSS** (was Onyx & Gold Walkthrough) = BOSS UI Short: Onyx and Gold (app-screen walkthrough short)
+  - My words: "lets rename that Says BOSS Style to something more Easy to remember based on its features" and "i want this organize and self explanatory in terms of naming" (2026-11-11)
+- Style names (renamed again 2026-11-15; the older names still work when I say them): Type & Wipe (+ Head Pop-Out) = **Kinetic Type**; Carousel Style V1 = **Pastel Punch**; Viral Style v1 = **Hype Cam**; Clean Motion Explainer = **Light Explainer**; Carousel Style V2 = **Skill Score**; The BOSS = **Dark Terminal**; Cobalt Cards = **Cobalt Captions**; Explainer Video = **Neon Explainer**; Personalized = **Custom**. Style ids and file paths did not change.
+  - My words: "apply please. also make sure in all places they are named or labeled correctly" (2026-11-15)
+- Website mockups in explainer videos: use a generic business site (for example a lender) with a text-free, minimalist symbol logo. No people or profile placeholder images, no company name as a logo.
+  - My words: "make a simple logo, maybe just a symbolic logo... not a logo type" and "I don't like that profile like placeholder image" (2026-11-12)
+- Small items (pills, chips, nav links, labels under a card) must be big enough to read on a phone. Put short titles like "About Me." on one line and size them to fit.
+  - My words: "make about me one line so you can adjust sizing. and the small items under it make a bit bigger. apply the same principle to other frames" (2026-11-12)
+- Split layout: the presenter sits in a wide rounded box near the bottom with the head popping out above the box, over the graphics. Dark scenes get an animated grid, pale scenes a grid too.
+  - My words: "it should look like this when you place the video at the bottom" and "add some elements behind it, like a grid... animated" (2026-11-12)
+- Show stills of the graphics first. Do not render a video until I say so.
+  - My words: "dont render video yet" and "do all frames and let's see first" (2026-11-12)
+- Sound: typing effects use a soft, deep, mechanical "creamy" keyboard thock and stay quiet under the voice. Mouse clicks are a normal mouse click. Background music is corporate upbeat, never funk, and subtle.
+  - My words: "use a mechanical creamy sound. and lower the volume down" and "change to corporate upbeat" (2026-11-12)
+- Voice: no "ah/uh" fillers or breath and mouth blips between words.
+  - My words: "i can hear ah's .... fix that" and "theres a glitch after the word stranger. like a half ah" (2026-11-12)
+- When the speaker tells a story (what happened to someone), show B-roll that follows the story behind her instead of graphic illustrations. She stays in the speaker box with her head popping out, and the B-roll fills the stage behind her.
+  - My words: "I need some Brolls about what happened behind her still.... follow the story of what happen with broll instead of graphic illustrations on this section" and "change the scene to a b-roll videos relating to the script on this part forward" (2026-11-13)

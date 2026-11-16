@@ -1,0 +1,51 @@
+# My style: Cobalt Cards (from the "Magic Edit Mode" draft v2, First AI Team Hire)
+
+Written from draft v2 of magic-edit-mode (1:59, 16:9) and the composition that rendered it (`kit/video-projects/magic-edit-mode/build.mjs` and `style.css`), so the hex values and sizes are exact. Use it for talking-head YouTube explainers and list videos ("5 steps", "how I'd start").
+
+- Format: horizontal 16:9, 1920x1080 at 25 fps. Drafts are scaled down to 1728x972 at crf 24.
+- Rhythm: the video switches between two kinds of shot, about 50/50.
+  - **Talking head:** the presenter is pushed to the right third (scale 1.36, shifted right about 300px, zoomed from about 28% down the frame so the head stays in). A navy glow covers the left half so white text reads over any background.
+  - **Full-screen graphic:** a cobalt or pale-blue stage with white UI cards, which covers the presenter completely.
+- Pacing: a new shot or a new punch-in every 2 to 6 seconds. Each full-screen graphic stays up for one spoken idea (about 3 to 10 seconds), and each step of a list gets its own graphic. Dead air is trimmed to a short breath (pauses over 0.4s cut down to 0.14–0.24s), and emphatic repeats ("one, just one, one") are kept.
+- Hook (first 5 seconds): a headline on the talking head, then a full-screen giant number that counts up ("145+") with small avatar bubbles popping around it. Lead with the biggest number in the script.
+- Punch-ins: hard cuts between three framings (scale 1.36, 1.52 and 1.70). Punch in on the payoff line or a turn ("Here's where I'd start instead", "Your AI is exactly the same"). Never slow-zoom.
+- Captions: no running subtitles. Only keyword headlines, revealed word by word on the exact spoken word (each word fades and rises 26px from a 6px blur in 0.28s).
+  - **On the talking head:** top-left, column 840px wide starting 100px from the left and 90px from the top, Poppins ExtraBold 112px, line height 1.02, white with a soft navy shadow. Up to 4 lines.
+  - **On full-screen graphics:** centred, Poppins ExtraBold 100px, up to 1550px wide.
+- Accent words: one or two key words per headline in periwinkle (#A9B8FF) on dark backgrounds and royal blue (#3346D3) on light ones. For the single most important phrase, use a royal-blue highlight box instead (white text, 12px radius, grows in with its first word).
+- Typography: Poppins only. ExtraBold 800 for headlines, Bold 700 for card titles (34px; about 41px on talking-head cards), Medium 500 for small grey sub-labels (24px, #6A74A8).
+- Colour:
+  - Dark stage: navy #0A1150 with a cobalt glow (#4A5CF0) at the top right and a deep blue glow (#2536B8) at the bottom left.
+  - Light stage: pale blue #E3E8FA with a white glow at the top left and a periwinkle glow (#BFCAF8) at the bottom right.
+  - Text: white on dark, navy ink #121A4A on light.
+  - Ticks and the call-to-action button: green #2FBF71. "Wrong" marks: red #E5484D.
+  - Use soft radial glows only, never a full-screen linear gradient. A faint glow drifts slowly sideways across each graphic.
+- Dark and light graphics alternate, roughly one each, so it never gets monotonous.
+- Cards:
+  - White, 26px radius, padding about 30 by 36px, with a deep navy shadow.
+  - On light stages, cards get a 2px #C9D1F3 border so they stand out from the pale background.
+  - Every card has a line icon: blue stroke on a #E7EBFF rounded square (76px).
+  - Small round badges sit on the corner: green tick or red cross.
+- Graphic building blocks:
+  - **Step tag:** a pill reading "STEP N" in 28px Bold, letter-spaced, above the headline.
+  - **Tile row:** 3 or 4 square cards, one per listed item.
+  - **Checklist card:** icon rows; the key row has a pale-blue background.
+  - **Flow:** 3 cards joined by arrows that draw themselves.
+  - **Progress bars:** two bars, grey vs. blue-to-green gradient, with percentages.
+  - **Document card:** a file name in the header, then a row with a tick for each rule.
+  - **Org chart:** column cards with a blue "Manager" pill on top.
+  - **Dot grid:** 145 dots that fade back while one grows and turns blue ("you need one").
+  - **Comment-box CTA:** "TEAM" types into the box and a green button sits underneath.
+- Talking-head extras: under the headline, a card (scaled up 1.22x) or a white pill chip with a green tick ("Works for any business", "Clear and simple").
+- Motion:
+  - Every element appears on the word it belongs to.
+  - Cards pop in (y 34, scale 0.9, 0.38s), with the ease rotating between back.out(1.7), power3.out and expo.out.
+  - Bars fill in 0.7s and arrows draw in 0.25s.
+  - Nothing exits early: a graphic stays complete until the transition.
+- Transitions:
+  - **Into a full-screen graphic:** fade in from blur(14px) and scale 1.06 in 0.3s.
+  - **Out of it:** fade to blur(10px) and scale 0.98 in 0.22s, back to the talking head.
+  - **Talking head to talking head:** hard cut with a punch-in change.
+  - No whooshes, swipes or flashes.
+- Ending: the last beat stays on the talking head with the call to action: headline, comment-box card, then a chip with a tick. No outro card.
+- Sound: voice only. The voice is cleaned (high-pass at 80 Hz, hum cut, noise reduction, gentle compression) and normalised to about -14 LUFS. No music and no sound effects unless asked. If sound effects are added later, follow my-rules (soft clicks or a clean ding, never whooshes).

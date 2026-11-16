@@ -110,9 +110,9 @@
       ['#skills', 'Skills', route === 'skills'],
       ['#connectors', 'Connectors', route === 'connectors'],
       ['#repos', 'Repos', route === 'repos'],
+      ['#guide', 'How it works', route === 'guide'],
       ['#case-study', 'Case study', route === 'case-study'],
-      ['#studio', 'Editing App', route === 'studio'],
-    ];
+      ['#studio', 'Editing App', route === 'studio'],    ];
     let html = '';
     links.forEach(([href, label, on], i) => {
       if (i === 1 || label === 'Skills' || label === 'Editing App') html += '<span class="sep"></span>';
@@ -290,8 +290,8 @@
       <p class="lede">Do this once. After that, starting the studio is one double-click.</p>
       <div class="steps">
         <div class="step"><h3>Get what you need</h3><p>An AI agent that runs terminal commands (Claude Code, signed in), plus <b>Node.js 22+</b>, <b>Git</b>, <b>FFmpeg</b> and <b>Chrome</b>. About 1 GB of disk. Setup tells you what is missing.</p></div>
-        <div class="step"><h3>Download it</h3><p>Run <code>git clone https://github.com/vincentkmc2023/BOSSStudio.git</code> or use <b>Code &gt; Download ZIP</b> on GitHub and unzip it.</p></div>
-        <div class="step"><h3>Open the folder in your agent</h3><p>In a terminal: <code>cd BOSSStudio</code> then <code>claude</code>. In the Claude desktop app, open the Code tab, pick Local and the folder.</p></div>
+        <div class="step"><h3>Download it</h3><p>Run <code>git clone https://github.com/vincentkmc2023/BOSS-Studio.git</code> or use <b>Code &gt; Download ZIP</b> on GitHub and unzip it.</p></div>
+        <div class="step"><h3>Open the folder in your agent</h3><p>In a terminal: <code>cd BOSS-Studio</code> then <code>claude</code>. In the Claude desktop app, open the Code tab, pick Local and the folder.</p></div>
         <div class="step"><h3>Type <code>start</code></h3><p>The agent checks your computer, installs what is missing (with your OK), renders a test video and asks a few questions about your style.</p></div>
         <div class="step"><h3>Add transcription</h3><p>Free either way: a Groq key in <code>.env</code> as <code>GROQ_API_KEY</code> (copy <code>.env.example</code>), or leave it blank and use local faster-whisper (<code>pip install faster-whisper</code>).</p></div>
         <div class="step"><h3>Start the studio</h3><p>Double-click <code>hub/open-studio.bat</code>. It opens this hub at <b>http://localhost:1988/hub/</b>; click <b>Editing App</b> to work on your projects. Keep that window open; close it to stop. Projects are saved as folders in <code>projects/</code>.</p></div>
@@ -504,10 +504,120 @@
     </section>`;
   }
 
+  // ---------- how the Editing App works (step-by-step guide) ----------
+  function guide() {
+    const flow = [
+      ['Script', 'Read the transcript and strike what you do not want.', 'ti-text-caption'],
+      ['Instructions', 'Tell BOSS what you want, pick a style.', 'ti-message-2'],
+      ['Editing', 'Review frames and drafts, add notes, render.', 'ti-movie'],
+      ['Gallery', 'Every version, ready to open or download.', 'ti-library-photo'],
+    ];
+    const before = [
+      ['Start the studio', 'Double-click <code>hub/open-studio.bat</code>. It opens the hub at <b>localhost:1988</b>. Keep that window open while you work; close it to stop.', 'ti-player-play'],
+      ['Sign in to Claude Code', 'BOSS does the editing through Claude Code on your computer, so it needs to be signed in.', 'ti-key'],
+      ['Transcription', 'Words come from a free Groq key, or from a model that runs privately on your computer. Setup asks which one you prefer.', 'ti-microphone'],
+    ];
+    const steps = [
+      { n: 0, t: 'Start a new project', sub: 'Everything starts from the Editing App tab.', ul: [
+        'Press <b>New project</b> and give it a name.',
+        'Choose where the video is going, such as <b>TikTok, Reels, Shorts, YouTube or LinkedIn</b>. This sets the shape and size of the final video.',
+        'Pick a <b>style</b>, or leave it on Custom. Styles are the looks saved in this hub.',
+        'Attach your <b>raw video</b> (or a voiceover file, if you are making a faceless video).',
+        'Optional: paste <b>reference links</b> to videos you want BOSS to learn from, and write your first instructions.',
+      ], tip: 'Not sure what you want? Use Magic Edit and BOSS will pick the style and the cuts itself. You can still revise everything after.' },
+      { n: 1, t: 'Script', sub: 'Your transcript is the edit.', ul: [
+        'The words appear with their timing. Click a word and the video jumps to it.',
+        'Drag, or shift-click, to select a span of words. Press delete to strike them. Struck words become cuts in the video.',
+        '<b>Suggest cleanup</b> highlights filler words and long pauses. Check them, then delete.',
+        'Changed your mind? Select struck words and restore them. The preview skips the cuts so you can hear the result.',
+        'Press <b>Save script</b> when it reads the way you want.',
+      ], tip: 'Making a faceless video from a voiceover? You can paste a new script here and have the voiceover regenerated. BOSS asks before using any paid service.' },
+      { n: 2, t: 'Instructions', sub: 'Tell BOSS what you want.', ul: [
+        'Write your first instruction in plain words, in any language you use. For example: open with the strongest line and use the style on every section.',
+        'Check the <b>project style</b>. You can change it here before anything is made.',
+        'Add reference images, logos or links if you have them.',
+        'Press <b>Render Draft</b>. BOSS makes still frames first, so you can check the look before the full video is rendered.',
+      ], tip: 'You can only change the instructions here before the first render. After that, use notes in the Editing step.' },
+      { n: 3, t: 'Editing', sub: 'This is where you review and give notes.', hot: true, ul: [
+        '<b>Frames first.</b> BOSS shows still frames from the video. Click one to open it big, then draw on it with the pen, arrow, circle, box or text tool. Scroll to zoom in.',
+        '<b>Notes.</b> Type what to change and press Add note. You can add several notes to the same frame. Notes with a drawing keep the drawing.',
+        '<b>Snapshot.</b> Once there is a draft, play the video and press Snapshot on any moment to draw on it. Or pick words in the script to point a note at an exact phrase.',
+        '<b>More options.</b> Use a different style for just one part, add an image or logo, or add B-roll at that moment.',
+        '<b>Render Draft</b> sends all your notes to BOSS in one batch. A new version appears. Repeat until you like it.',
+        '<b>Render Final Version</b> makes the full-resolution video. Press it only when you are happy.',
+      ], tip: 'Drafts are low resolution so they render fast. Full resolution happens only when you press Render Final Version.' },
+      { n: 4, t: 'Gallery', sub: 'Every version you have made.', ul: [
+        'Versions are listed from oldest to latest. Play any of them right there.',
+        '<b>Open in editing</b> brings a version back so you can keep giving notes on it.',
+        'The folder button shows the video file in File Explorer or Finder.',
+        'Deleted versions move to a trash folder in the project, so they can be recovered.',
+      ], tip: 'Liked how it turned out? Press Save As New Style in the Editing step to reuse the look on your next video.' },
+    ];
+    const rules = [
+      'Nothing is posted or uploaded for you. The studio only makes files on your computer.',
+      'Your projects are saved as folders inside the BOSS Studio folder on your computer, in its <code>projects/</code> folder. Each project has its own subfolder with your raw video, frames and every rendered version. Nothing is lost if you close the window.',
+      'Paid tools, such as voice or music generation, are never used without asking you first.',
+      'Notes are sent in one batch, so you can review the whole video and then press Render Draft once.',
+    ];
+    return `
+    <div class="band hero-band cs-hero"><div class="eyebrow">Guide</div><h1>How the <i>Editing App</i> works</h1>
+      <p class="lede">From raw footage to a finished video in four steps. You talk and point, BOSS edits, and you review what it made.</p></div>
+
+    <section class="cs g">
+      <div class="eyebrow">Before you start</div><h2>Three <i>things</i> to know</h2>
+      <div class="flow" role="list">${before.map((f) => `<div class="fnode wide" role="listitem"><i class="ti ${f[2]}" aria-hidden="true"></i><h3>${esc(f[0])}</h3><p>${f[1]}</p></div>`).join('')}</div>
+    </section>
+
+    <section class="cs g">
+      <div class="eyebrow">The big picture</div><h2>Four steps, <i>one loop</i></h2>
+      <div class="flow" role="list">${flow.map((f, i) => `<div class="fnode" role="listitem"><span class="fnum">${i + 1}</span><i class="ti ${f[2]}" aria-hidden="true"></i><h3>${esc(f[0])}</h3><p>${esc(f[1])}</p></div>${i < flow.length - 1 ? '<span class="farrow" aria-hidden="true">&#8594;</span>' : ''}`).join('')}</div>
+      <div class="floop"><svg viewBox="0 0 700 56" aria-hidden="true"><path d="M630 4v22a14 14 0 0 1-14 14H84a14 14 0 0 1-14-14V12" fill="none" stroke="var(--accent)" stroke-width="3" stroke-dasharray="7 6" stroke-linecap="round"/><path d="M62 18l8-10 8 10z" fill="var(--accent)"/></svg><span>Notes and new drafts repeat until you approve</span></div>
+    </section>
+
+    <section class="cs g">
+      <div class="eyebrow">Step by step</div><h2>What to <i>do</i>, in order</h2>
+      <div class="gsteps">${steps.map((s) => `<div class="gstep${s.hot ? ' hot' : ''}"><div class="gnum">${s.n === 0 ? '+' : s.n}</div><div><h3>${esc(s.t)}</h3><p class="gsub">${esc(s.sub)}</p><ul>${s.ul.map((u) => '<li>' + u + '</li>').join('')}</ul><div class="gtip"><b>Tip</b>${esc(s.tip)}</div></div></div>`).join('')}</div>
+    </section>
+
+    <section class="cs g">
+      <div class="eyebrow">Good to know</div><h2>The <i>ground rules</i></h2>
+      <div class="kc"><div class="panel"><h3>How it behaves</h3><ul>${rules.map((r) => '<li>' + r + '</li>').join('')}</ul></div></div>
+      <p style="margin-top:26px"><a class="btn" href="#studio">Open the Editing App</a> <a class="btn" href="#case-study">See a real run</a></p>
+    </section>`;
+  }
+
+  // ---------- hosted site: the studio runs on the user's own computer, so the hosted hub explains how to get it ----------
+  function getApp() {
+    const steps = [
+      ['Get BOSS Studio', 'Download it free from GitHub: press <b>Code</b>, then <b>Download ZIP</b>, and unzip it into your Documents folder. Or clone it with Git.'],
+      ['Open the folder in your AI agent', 'Open the BOSS Studio folder in Claude Code, Codex, Cursor or another agent that supports Agent Skills, then type <code>start</code>. It sets everything up and asks a few questions about your style.'],
+      ['Open the Editing App', 'Double-click <code>hub/open-studio.bat</code>. The hub opens on your own computer, and the Editing App tab becomes the full studio.'],
+    ];
+    const why = [
+      'Your footage never leaves your computer.',
+      'It is free and open source. You use your own AI agent.',
+      'Every project is a folder you can open, copy or back up.',
+      'Nothing is posted or uploaded for you.',
+    ];
+    return `
+    <div class="band hero-band cs-hero"><div class="eyebrow">The Editing App</div><h1>It runs on <i>your</i> computer</h1>
+      <p class="lede">The Editing App edits your raw footage with your own AI agent, so your videos stay private. Here is how to get it running in three steps.</p></div>
+    <section class="cs g">
+      <div class="eyebrow">Get started</div><h2>Three steps, <i>once</i></h2>
+      <div class="gsteps">${steps.map((s, i) => `<div class="gstep${i === 2 ? ' hot' : ''}"><div class="gnum">${i + 1}</div><div><h3>${esc(s[0])}</h3><p class="gsub" style="font-size:1.1rem;color:var(--ink)">${s[1]}</p></div></div>`).join('')}</div>
+    </section>
+    <section class="cs g">
+      <div class="eyebrow">Why local</div><h2>Built to <i>stay</i> with you</h2>
+      <div class="kc"><div class="panel"><h3>What that means</h3><ul>${why.map((r) => '<li>' + r + '</li>').join('')}</ul></div></div>
+      <p style="margin-top:26px"><a class="btn app-cta" href="https://github.com/vincentkmc2023/BOSS-Studio" target="_blank" rel="noopener">Get it on GitHub</a> <a class="btn" href="#guide">How the Editing App works</a> <a class="btn" href="#case-study">See a real run</a></p>
+    </section>`;
+  }
+
   // ---------- lists ----------
   const pages = {
+    guide,
     'case-study': caseStudy,
-    studio: () => '<iframe id="studio" title="BOSS Studio" allowfullscreen style="width:100%;border:0;min-height:80vh;display:block" ' + (window.HUB_STUDIO_DOC ? 'srcdoc="' + window.HUB_STUDIO_DOC.replace(/&/g, '&amp;').replace(/"/g, '&quot;') + '"' : 'src="studio/index.html"') + '></iframe>',
+    studio: () => window.HUB_HOSTED ? getApp() : '<iframe id="studio" title="BOSS Studio" allowfullscreen style="width:100%;border:0;min-height:80vh;display:block" ' + (window.HUB_STUDIO_DOC ? 'srcdoc="' + window.HUB_STUDIO_DOC.replace(/&/g, '&amp;').replace(/"/g, '&quot;') + '"' : 'src="studio/index.html"') + '></iframe>',
     skills: () => `<div class="band hero-band"><div class="eyebrow">Skills</div><h1>All <i>skills</i></h1><p class="lede">Agent Skills the editor and the sessions rely on. "Used" means a session actually used it.</p></div><section>${skillTable(false)}</section>`,
     connectors: () => `<div class="band hero-band"><div class="eyebrow">Connectors and tools</div><h1>Connectors <i>and tools</i></h1><p class="lede">What is plugged in, what it did, and how it is set up. Keys are never shown here.</p></div><section>${connTable(false)}</section>`,
     repos: () => `<div class="band hero-band"><div class="eyebrow">Repos</div><h1>Repos <i>and sources</i></h1><p class="lede">The code and models behind the editing setup.</p></div><section>${repoTable()}</section>`,
@@ -518,6 +628,7 @@
     const raw = location.hash.replace(/^#\/?/, '') || 'overview';
     const h = raw.startsWith('style/') ? 'style-' + raw.slice(6) : raw;
     renderNav(h);
+    document.body.classList.toggle('on-studio', h === 'studio'); // lets the nav scroll away on the Editing App
     app.classList.add('wide');
     $('#reader').hidden = true;
     if (h === 'overview') app.innerHTML = overview();
@@ -550,7 +661,18 @@
   window.addEventListener('scroll', closeDd, {passive: true});
   window.addEventListener('resize', closeDd);
   window.addEventListener('hashchange', route);
-  window.addEventListener('message', (e) => { const f = $('#studio'); if (f && e.data && e.data.studioH) f.style.height = e.data.studioH + 'px'; });
+  // studioFull: the studio's floating snapshot canvas asks the hub to cover the whole browser (nav included)
+  let studioH = 0;
+  window.addEventListener('message', (e) => {
+    const f = $('#studio'); if (!f || !e.data) return;
+    if ('studioFull' in e.data) {
+      const on = !!e.data.studioFull; f.dataset.full = on ? '1' : '';
+      // a fixed iframe leaves the page flow, which would shrink the page and lose the scroll spot: hold the height, restore the scroll on close
+      if (on) { f.dataset.sy = scrollY; f.parentNode.style.minHeight = f.offsetHeight + 'px'; }
+      else { f.parentNode.style.minHeight = ''; setTimeout(() => scrollTo(0, +f.dataset.sy || 0)); }
+      Object.assign(f.style, on ? {position: 'fixed', inset: '0', width: '100vw', height: '100vh', zIndex: '1000'} : {position: '', inset: '', width: '100%', height: studioH ? studioH + 'px' : '', zIndex: ''});
+    } else if (e.data.studioH) { studioH = e.data.studioH; if (!f.dataset.full) f.style.height = studioH + 'px'; }
+  });
 
   // lightbox + copy
   document.addEventListener('click', (e) => {

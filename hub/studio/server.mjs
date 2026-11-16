@@ -273,6 +273,18 @@ async function api(req, res, url) {
   const ls = (dir, re) => { try { return readdirSync(join(pdir(id), dir)).filter((f) => re.test(f)); } catch { return []; } };
   if (b === 'voiceover') { const f = ls('voiceover', /\.(mp3|wav|m4a|ogg)$/i).map((file) => ({ file, v: statSync(join(pdir(id), 'voiceover', file)).mtimeMs })).sort((x, y) => y.v - x.v); return send(res, 200, f); }
   if (b === 'frames') { const f = ls('frames', /\.(jpe?g|png)$/i).map((file) => ({ file, t: +(/_t(\d+(?:\.\d+)?)/.exec(file) || [0, 0])[1], v: statSync(join(pdir(id), 'frames', file)).mtimeMs })).sort((x, y) => x.t - y.t); return send(res, 200, f); }
+  if (b === 'reveal' && req.method === 'POST') { // show a rendered version in Explorer / Finder
+    const f = safeName(url.searchParams.get('file')), src = join(pdir(id), 'drafts', f);
+    if (!existsSync(src)) return send(res, 404, { error: 'no such file' });
+    const [exe, args] = process.platform === 'win32' ? ['explorer.exe', ['/select,"' + src + '"']] : process.platform === 'darwin' ? ['open', ['-R', src]] : ['xdg-open', [dirname(src)]];
+    try { const c = spawn(exe, args, { detached: true, stdio: 'ignore', windowsVerbatimArguments: true }); c.on('error', () => {}); c.unref(); } catch { return send(res, 500, { error: 'could not open the folder' }); }
+    // a new Explorer/Finder window can open behind the browser: ask the OS to bring it to the front
+    // Windows blocks background apps from taking focus, so tap Alt first (that lifts the lock), then restore and focus the window
+    const winFront = `Add-Type -Namespace W -Name U -MemberDefinition '[DllImport("user32.dll")] public static extern bool SetForegroundWindow(IntPtr h); [DllImport("user32.dll")] public static extern bool ShowWindow(IntPtr h,int n); [DllImport("user32.dll")] public static extern void keybd_event(byte k,byte s,uint f,UIntPtr e);'; $d=([Uri]$env:BS_DIR).AbsoluteUri.TrimEnd('/'); for($i=0;$i -lt 25;$i++){ $w=(New-Object -ComObject Shell.Application).Windows() | Where-Object { $_.LocationURL.TrimEnd('/') -ieq $d } | Select-Object -First 1; if($w){ $h=[IntPtr]$w.HWND; [W.U]::keybd_event(0x12,0,0,[UIntPtr]::Zero); [W.U]::keybd_event(0x12,0,2,[UIntPtr]::Zero); [void][W.U]::ShowWindow($h,9); [void][W.U]::SetForegroundWindow($h); break }; Start-Sleep -Milliseconds 120 }`;
+    const front = process.platform === 'win32' ? ['powershell.exe', ['-NoProfile', '-WindowStyle', 'Hidden', '-Command', winFront]] : process.platform === 'darwin' ? ['osascript', ['-e', 'tell application "Finder" to activate']] : null;
+    if (front) try { const c = spawn(front[0], front[1], { detached: true, stdio: 'ignore', windowsHide: true, env: { ...process.env, BS_DIR: dirname(src) } }); c.on('error', () => {}); c.unref(); } catch {}
+    return send(res, 200, { ok: true });
+  }
   if (b === 'drafts' && req.method === 'DELETE') {
     const f = safeName(url.searchParams.get('file')), src = join(pdir(id), 'drafts', f);
     if (!existsSync(src)) return send(res, 404, { error: 'no such file' });

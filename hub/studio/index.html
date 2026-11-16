@@ -135,7 +135,7 @@ main.wide3.landwide{max-width:none}
 .galgrid{display:grid;gap:16px;grid-template-columns:repeat(auto-fill,minmax(230px,1fr))}
 .gc{background:var(--tint);border-radius:16px;overflow:hidden}.gc video{width:100%;max-height:340px;background:#000;display:block}
 .gb{padding:10px 12px 12px;display:flex;flex-direction:column;gap:2px}.gb small{color:var(--muted);font-size:.72rem;overflow-wrap:anywhere}
-.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:12px 18px;border-radius:14px;font-weight:700;font-size:.85rem;z-index:20;max-width:90vw}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:12px 18px;border-radius:14px;font-weight:700;font-size:.85rem;z-index:50;max-width:90vw}
 .toast[hidden]{display:none}
 /* First instruction: editing option checkboxes */
 .opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:8px;margin:0 0 12px}
@@ -171,7 +171,7 @@ main.wide3{max-width:1680px}
 .scr .sug{background:#FCEFC7;box-shadow:inset 0 -2px #E0A800}
 .scr .cut{text-decoration:line-through;text-decoration-thickness:2px;color:#B4ADA3;background:#FBE3DD}
 .scr .sel{background:var(--ink)!important;color:var(--bg)!important}
-.scr .now{outline:2px solid var(--accent);outline-offset:1px}
+.scr .now{background:var(--accent);color:#fff;text-decoration:none}
 .scrub .cx{position:absolute;top:8px;height:10px;background:#E24B4A;opacity:.75;border-radius:2px;pointer-events:none}
 .modal{position:fixed;inset:0;background:rgba(20,17,15,.6);display:flex;align-items:center;justify-content:center;padding:20px;z-index:30}
 .modal[hidden]{display:none}
@@ -181,10 +181,25 @@ main.wide3{max-width:1680px}
 @media(min-width:901px){
   .ws:not(.land)>section.c,.ws3.land>section.c,.ws2.land>section.c{display:flex;flex-direction:column}
   .ws:not(.land) .stage,.ws3.land .stage,.ws2.land .stage{flex:1;min-height:0}
-  .ws:not(.land) .stage:has(video),.ws3.land .stage:has(video),.ws2.land .stage:has(video){position:relative;min-height:440px;max-height:min(60vh,640px)}
+  .ws:not(.land) .stage:has(video),.ws3.land .stage:has(video),.ws2.land .stage:has(video){position:relative;min-height:700px;max-height:700px}
   .ws:not(.land) .stage video,.ws3.land .stage video,.ws2.land .stage video{position:absolute;left:14px;top:14px;width:calc(100% - 28px);height:calc(100% - 28px);max-height:none;max-width:none;object-fit:contain;background:transparent}
-  .ws:not(.land) .stage canvas,.ws:not(.land) .stage .cv,.ws3.land .stage canvas,.ws3.land .stage .cv,.ws2.land .stage canvas,.ws2.land .stage .cv{max-height:min(60vh,640px)}
+  .ws:not(.land) .stage canvas,.ws:not(.land) .stage .cv,.ws3.land .stage canvas,.ws3.land .stage .cv,.ws2.land .stage canvas,.ws2.land .stage .cv{max-height:700px}
 }
+/* annotating a snapshot: the whole workspace becomes a full-screen overlay — big frame on the left, the same
+   draw tools + note form on the right — so nothing is moved in the DOM and every handler keeps working */
+button.g{background:var(--green);border-color:var(--green);color:#fff}button.g:disabled{opacity:.45}
+details.more{margin:0 0 4px}details.more>summary{cursor:pointer;font-size:.8rem;font-weight:700;color:var(--muted);padding:4px 0;list-style-position:inside}
+.annx{position:absolute;top:22px;right:24px;z-index:3;width:34px;height:34px;padding:0;border-radius:50%;background:#fff;border:1px solid var(--line)}
+.annx:hover{background:var(--ink);color:#fff}
+body.annot{overflow:hidden}
+body.annot .stage{overflow:hidden}
+body.annot .top{display:none}
+body.annot .ws{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);width:max-content;max-width:calc(100vw - 24px);max-height:calc(100vh - 24px);z-index:25;background:var(--bg);border-radius:22px;box-shadow:0 0 0 100vmax rgba(20,17,15,.6);overflow:auto;padding:14px;gap:14px;grid-template-columns:max-content 420px !important}
+body.annot .ws>section.c:first-child{padding:0;border:0;background:none;box-shadow:none}
+body.annot .stage canvas{max-width:calc(100vw - 520px) !important}
+body.annot .ws>#editmid,body.annot .ws .scrub,body.annot .ws .col>section:not(:has(#tools)){display:none}
+body.annot .stage canvas,body.annot .stage .cv{max-height:820px !important}
+@media(max-width:900px){body.annot .ws{grid-template-columns:1fr !important;width:calc(100vw - 24px)}body.annot .stage canvas{max-width:100% !important}}
 /* subtle drifting grid behind the projects list and new-project page */
 body.gridbg::before{content:'';position:fixed;inset:0;z-index:-1;pointer-events:none;background-image:linear-gradient(color-mix(in srgb,var(--line) 70%,transparent) 1px,transparent 1px),linear-gradient(90deg,color-mix(in srgb,var(--line) 70%,transparent) 1px,transparent 1px);background-size:42px 42px;animation:gridshift 70s linear infinite}
 /* New-project page: dark stage, light text for everything that is not inside a card */
@@ -258,6 +273,7 @@ const rangeLabel = (n) => n.range === 'Custom' && Number.isFinite(n.rangeStart) 
 const load = () => { try { return JSON.parse(localStorage.getItem('studio.projects') || '[]'); } catch { return []; } };
 let API = false; // true when the local studio server is running: projects live in projects/<name>/
 const H = {'x-studio': '1'};
+const FILEMGR = /Mac/i.test(navigator.platform) ? 'Finder' : 'File Explorer';
 const jf = async (m, u, b) => { const r = await fetch(u, {method: m, headers: b ? {...H, 'content-type': 'application/json'} : H, body: b ? JSON.stringify(b) : undefined}); if (!r.ok) throw new Error((await r.json().catch(() => ({}))).error || r.status); return r.json(); };
 const voUrl = (p) => (API && p.voiceoverFile ? '/projects/' + p.id + '/voiceover/' + encodeURIComponent(p.voiceoverFile) : null);
 const voCut = (p) => /voiceover-edited/.test(p.cutFile || ''); // the Script step cut the voiceover, not the video
@@ -318,10 +334,13 @@ async function confirmFacelessMismatch() {
 function toast(m) { const t = $('#toast'); t.textContent = m; t.hidden = false; clearTimeout(toast.h); toast.h = setTimeout(() => (t.hidden = true), 2600); }
 const pushStep = () => history.pushState({view, pid: cur && cur.id, phase: cur && (cur.phase || 'brief'), annot: !!snap}, '');
 function go(v, p, pop) { pendingRefs = []; clearInterval(poller); poller = null; runSt = null; runLabel = ''; view = v; cur = p || null; snap = null; $('#crumb').textContent = p ? p.name : ''; render(); window.scrollTo(0, 0); if (!pop) pushStep(); }
-function closeAnnot() { annotating = false; if (history.state && history.state.annot) history.back(); else { snap = null; stage(); } }
+let notesDirty = false; // notes were added while the floating canvas stayed open: re-render once it closes so buttons and counts catch up
+function finishAnnot() { snap = null; stage(); if (notesDirty) { notesDirty = false; project(); } }
+function closeAnnot() { annotating = false; if (history.state && history.state.annot) history.back(); else finishAnnot(); }
+addEventListener('keydown', (e) => { if (e.key === 'Escape' && snap && annotating && !/INPUT|TEXTAREA|SELECT/.test(e.target.tagName) && !document.querySelector('.modal:not([hidden])')) closeAnnot(); });
 window.addEventListener('popstate', async (e) => {
   const st = e.state || {view: 'list'}, ph = st.phase || 'brief';
-  if (st.view === 'project' && cur && cur.id === st.pid && (cur.phase || 'brief') === ph) { if (snap && !st.annot) { snap = null; stage(); } return; }
+  if (st.view === 'project' && cur && cur.id === st.pid && (cur.phase || 'brief') === ph) { if (snap && !st.annot) finishAnnot(); return; }
   if (st.view !== 'project') return go(st.view || 'list', null, true);
   const p = projects.find((y) => y.id === st.pid); if (!p) return go('list', null, true);
   vurl = await openUrl(p); await ensureOrient(p); p.phase = ph; save(); frames = []; go('project', p, true);
@@ -403,7 +422,7 @@ async function restyle(id) {
   const ph = cur.phase || 'brief';
   if ($('#brief')) cur.brief = $('#brief').value;
   if (!API || ph === 'brief') { cur.styleId = id; save(); return project(); }
-  if (!confirm((!id ? 'Remove the style and edit as is? ' : 'Change the whole video to "' + styName(id) + '"? ') + (ph === 'frames' ? 'BOSS will redo the still frames in the new style.' : 'BOSS will render a new version in the new style. The current version stays in the gallery.'))) return project();
+  if (!await askConfirm((!id ? 'Remove the style and edit as is? ' : 'Change the whole video to "' + styName(id) + '"? ') + (ph === 'frames' ? 'BOSS will redo the still frames in the new style.' : 'BOSS will render a new version in the new style. The current version stays in the gallery.'), 'Yes, change it', 'Keep current style')) return project();
   const sty = STY.find((x) => x.id === id) || {}, guide = (sty.guides && sty.guides[0] && sty.guides[0].path) || '';
   const withNotes = cur.notes.length ? '\n\nAlso apply these notes:\n' + noteLinesText() : '', images = sentPack();
   const text = (!id ? 'Stop using a style: show the video as it is, and keep only the changes I asked for' : 'Change the whole video to the style "' + styName(id) + '"') + (guide ? ' (read its guide first: ' + guide + ')' : '') + '. Keep the content, the cuts and all my earlier notes. Only the look changes.' + withNotes + (ph === 'frames' ? ' Update the still frames in projects/' + cur.id + '/frames/ only.' : versionNote());
@@ -428,12 +447,12 @@ function project() {
   const styCard = '<div class="stybar">' + '<div><small>Project style</small><b>' + esc(styName(p.styleId)) + '</b></div>' + (ph !== 'brief' ? '' : '<select id="psty" title="Change the project style"' + (briefLocked ? ' disabled' : '') + '><option value=""' + (p.styleId ? '' : ' selected') + '>Custom</option>' + STY.map((s) => '<option value="' + s.id + '"' + (s.id === p.styleId ? ' selected' : '') + '>' + esc(s.name) + '</option>').join('') + '</select>') + '</div>';
   const video = '<p class="h"><i class="ti ti-movie"></i><span id="vname">' + esc(ph === 'approved' && API && viewLabel ? viewLabel : (p.rawName || p.voiceoverFile || 'No media attached')) + '</span></p><div class="stage" id="stage"></div>' +
     '<div class="scrub" id="scrub"><div class="tr"></div><div class="fl" id="fl"></div><div class="ph" id="ph" style="left:0"></div>' + p.notes.map((n) => '<div class="mk" data-t="' + n.t + '" style="left:' + (n.t / (p.dur || 1)) * 100 + '%"></div>').join('') + '</div>' +
-    '<div class="r" style="justify-content:space-between"><div class="r"><button class="i" data-act="seek" data-d="-5" title="Back 5 seconds"><i class="ti ti-rewind-backward-5"></i></button><button class="p i" data-act="play" title="Play or pause"><i class="ti ti-player-play" id="pi"></i></button><button class="i" data-act="seek" data-d="5" title="Forward 5 seconds"><i class="ti ti-rewind-forward-5"></i></button><button data-act="seek" data-d="0.0334"><i class="ti ti-player-track-next"></i>1 frame</button><button class="i" data-act="fs" title="Full screen"><i class="ti ti-arrows-maximize"></i></button></div><span class="mut" style="margin:0" id="tm">0:00 / 0:00</span></div>';
+    '<div class="r" style="justify-content:space-between"><div class="r"><button data-act="seek" data-d="-0.0334"><i class="ti ti-player-track-prev"></i>1 frame</button><button class="i" data-act="seek" data-d="-5" title="Back 5 seconds"><i class="ti ti-rewind-backward-5"></i></button><button class="p i" data-act="play" title="Play or pause"><i class="ti ti-player-play" id="pi"></i></button><button class="i" data-act="seek" data-d="5" title="Forward 5 seconds"><i class="ti ti-rewind-forward-5"></i></button><button data-act="seek" data-d="0.0334"><i class="ti ti-player-track-next"></i>1 frame</button><button class="i" data-act="fs" title="Full screen"><i class="ti ti-arrows-maximize"></i></button></div><span class="mut" style="margin:0" id="tm">0:00 / 0:00</span></div>';
   const frames_ = '<p class="h"><i class="ti ti-layout-grid"></i>Frame preview · still images, not a full render</p><div class="stage" id="stage" style="min-height:240px"></div><p class="mut">Click a frame to annotate it. Frames with a note have an orange edge. The full video is only rendered after you approve the frames.</p>';
   const styleRange = '<label class="l" style="margin-top:16px"><i class="ti ti-palette" style="vertical-align:-2px;margin-right:4px"></i>Use a style here</label><div class="r" style="margin:0 0 6px"><select id="nsty" style="flex:1;min-width:160px"><option value="">Keep the project style (' + esc(styName(p.styleId)) + ')</option>' + STY.map((s) => '<option value="' + s.id + '">' + esc(s.name) + '</option>').join('') + '<option value="__link">Copy a style from a link…</option></select><select id="nrange" style="width:170px">' + RANGES.map((r) => '<option>' + r + '</option>').join('') + '</select></div>' +
     '<div id="nlinkrow" hidden><input type="text" id="nlink" placeholder="Paste a YouTube, TikTok or Instagram link" style="margin:0 0 4px"><p class="mut" style="margin:0 0 6px">Say what to copy in the note, like "the zoom on each key word". Leave it empty to copy the whole look.</p></div>' +
     '<p class="mut" style="margin:0 0 14px">Attached to the note as "use this style from this time".</p>';
-  const notes = '<section class="c"><p class="h"><i class="ti ti-message"></i>Revision notes</p>' + styleRange + '<textarea id="ntext" rows="6" style="margin:4px 0 16px" placeholder="Make the captions bigger and move them up"></textarea><div class="r" style="margin-top:8px"><button data-act="addref"><i class="ti ti-photo-plus"></i>Add image or logo</button><span class="mut" style="margin:0">or paste one into the box</span></div><div id="refs" class="r" style="margin-top:8px"></div><div class="r" style="margin-top:8px"><button data-act="addbroll"><i class="ti ti-video-plus"></i>Add B-roll video</button><span class="mut" style="margin:0">cut in at this note\'s point or range</span></div><div id="broll" class="r" style="margin-top:8px"></div><div id="pick" style="margin-top:8px"></div><div class="r" style="margin-top:8px"><button class="p" data-act="addnote"><i class="ti ti-plus"></i>Add note at <span id="nt">0:00</span></button></div><div id="notes" style="display:flex;flex-direction:column;gap:8px;margin-top:12px"></div><div class="r" style="margin-top:14px;justify-content:space-between"><span class="mut" style="margin:0;font-weight:700" id="nc"></span><button class="a" data-act="send">Send to BOSS for revision ↗</button></div></section>';
+  const notes = '<section class="c"><p class="h"><i class="ti ti-message"></i>Revision notes</p><textarea id="ntext" rows="6" style="margin:4px 0 10px" placeholder="Make the captions bigger and move them up"></textarea><details class="more"><summary>More options · style, image, B-roll</summary>' + styleRange + '<div class="r" style="margin-top:8px"><button data-act="addref"><i class="ti ti-photo-plus"></i>Add image or logo</button><span class="mut" style="margin:0">or paste one into the box</span></div><div class="r" style="margin-top:8px"><button data-act="addbroll"><i class="ti ti-video-plus"></i>Add B-roll video</button><span class="mut" style="margin:0">cut in at this note\'s point or range</span></div></details><div id="refs" class="r" style="margin-top:8px"></div><div id="broll" class="r" style="margin-top:8px"></div><div id="pick" style="margin-top:8px"></div><div class="r" style="margin-top:8px"><button class="p" data-act="addnote"><i class="ti ti-plus"></i>Add note for <span id="nt">0:00</span></button></div><div id="notes" style="display:flex;flex-direction:column;gap:8px;margin-top:12px"></div><div class="r" style="margin-top:14px;justify-content:space-between"><span class="mut" style="margin:0;font-weight:700" id="nc"></span><button class="a" data-act="send">Send to BOSS for revision ↗</button></div></section>';
   // voiceover: for edits that need audio beyond the raw video — an existing file, or a script BOSS turns into one
   // revising an existing voiceover (there's no upload here: the video/MP3 choice at creation is final)
   const voGenCard = p.voiceoverFile ? '<section class="c"><p class="h"><i class="ti ti-wand"></i>Revise the voiceover</p><p class="mut" style="margin:0 0 10px">Current file: ' + esc(p.voiceoverFile) + '</p><label class="l" style="margin-top:0">Paste a new script and have BOSS regenerate it</label><textarea id="voscript" rows="3" placeholder="Paste the voiceover script here">' + esc(p.voScript || '') + '</textarea><div class="r" style="margin-top:8px"><button class="a" data-act="genvo"><i class="ti ti-wand"></i>Generate voiceover with ElevenLabs</button></div><p class="mut">Needs the ElevenLabs connector. If it isn\'t connected yet, BOSS will tell you to connect it first. This replaces the current file and restarts the Script step.</p></section>' : '';
@@ -455,17 +474,17 @@ function project() {
     const sendLocked = !p.notes.length || !!(runSt && runSt.running), finalLocked = !viewFile || !!(runSt && runSt.running);
     let captureInNotes = notes.replace(
       '<p class="h"><i class="ti ti-message"></i>Revision notes</p>',
-      '<p class="h"><i class="ti ti-message"></i>Revision notes · <span id="ct">0:00</span></p><div class="r"><button class="a" data-act="snap"><i class="ti ti-camera"></i>Snapshot</button><button data-editmode="frames"><i class="ti ti-layout-grid"></i>View frames</button></div>' + toolRow.replace('Back to frames', 'Cancel')
+      '<p class="h"><i class="ti ti-message"></i>Revision notes · <span id="ct">0:00</span></p><div class="r"><button class="a" data-act="snap"><i class="ti ti-camera"></i>Snapshot</button><button data-editmode="frames"><i class="ti ti-layout-grid"></i>View frames</button></div>' + toolRow.replace('Back to frames', 'Close')
     );
     captureInNotes = captureInNotes.replace(
       '<button class="a" data-act="send">Send to BOSS for revision ↗</button>',
-      '<button class="a" data-act="send"' + (sendLocked ? ' disabled' : '') + '>Render Draft</button>'
+      '<button class="a" data-act="send"' + (sendLocked ? ' disabled' : '') + '>' + (!sendLocked ? 'Render Draft' : runSt && runSt.running ? 'Rendering…' : 'Add a note to render') + '</button>'
     );
     const addStyleLocked = !viewFile || !!(runSt && runSt.running);
     const styleProposalHtml = cur.styleProposalReady
       ? '<section class="c" style="border:2px solid var(--accent)">' + styleProposalBody(cur.styleProposalReady) + '<div class="r"><button class="a" data-act="approvestyle">Approve — add to style picker</button><button data-act="discardstyle">Discard</button></div></section>'
       : cur.pendingStyleSlug ? '<section class="c"><p class="h"><i class="ti ti-sparkles"></i>New style proposal</p><p class="mut" style="margin:0">BOSS is studying this edit and drafting a new style…</p></section>' : '';
-    right = (API && viewV && recFor(viewV) ? '<section class="c"><p class="h"><i class="ti ti-history"></i>This version was made from</p>' + versionInfo(viewV) + '</section>' : '') + captureInNotes + styleProposalHtml + '<section class="c" style="border:2px solid var(--green)"><p class="h"><i class="ti ti-circle-check" style="color:var(--green)"></i>Final version</p><div class="r"><button data-act="addstyle"' + (addStyleLocked ? ' disabled' : '') + '><i class="ti ti-sparkles"></i>Save As New Style</button><button class="a" data-act="final"' + (finalLocked ? ' disabled' : '') + '>Render Final Version</button></div><p class="mut">Drafts are always low resolution so they render fast. Full resolution (1080×1920) only happens when you press this.</p></section>';
+    right = (API && viewV && recFor(viewV) ? '<section class="c"><p class="h"><i class="ti ti-history"></i>This version was made from</p>' + versionInfo(viewV) + '</section>' : '') + captureInNotes + styleProposalHtml + '<section class="c" style="border:2px solid var(--green)"><p class="h"><i class="ti ti-circle-check" style="color:var(--green)"></i>Final version</p><div class="r" style="justify-content:center"><button data-act="addstyle"' + (addStyleLocked ? ' disabled' : '') + '><i class="ti ti-sparkles"></i>Save As New Style</button><button class="' + (p.notes.length ? '' : 'g') + '" data-act="final"' + (finalLocked ? ' disabled' : '') + '>Render Final Version</button></div><p class="mut">Drafts are always low resolution so they render fast. Full resolution (1080×1920) only happens when you press this.</p></section>';
   }
   app.classList.toggle('wide3', ph === 'approved'); // the Editing page runs wider, to fit video + Script + notes
   app.classList.toggle('landwide', ph === 'approved' && showLandscape); // a landscape draft keeps all three columns full width instead of the usual 1680px cap
@@ -495,6 +514,11 @@ function notesHtml() {
 // ---- player + snapshot/annotation
 function stage() {
   const st = $('#stage'), ph = cur.phase || 'brief';
+  const on = !!(snap && annotating);
+  if (on !== document.body.classList.contains('annot') && parent !== window) parent.postMessage({studioFull: on}, '*');
+  document.body.classList.toggle('annot', on);
+  const ws = document.querySelector('.ws'), x = document.querySelector('.annx');
+  if (on && ws && !x) ws.insertAdjacentHTML('beforeend', '<button class="annx i" data-act="cancelsnap" title="Close (Esc)" aria-label="Close"><i class="ti ti-x"></i></button>'); else if (!on && x) x.remove();
   if (snap) {
     st.innerHTML = '<div class="cv"><canvas id="base" width="' + snap.w + '" height="' + snap.h + '"></canvas><canvas class="ink" id="ink" width="' + snap.w + '" height="' + snap.h + '"></canvas></div>';
     $('#base').getContext('2d').drawImage(snap.c, 0, 0); draw(); $('#nt') && ($('#nt').textContent = fmt(snap.t));
@@ -597,7 +621,7 @@ async function loadGallery() {
   let d = []; try { d = await jf('GET', '/api/projects/' + cur.id + '/drafts'); } catch {}
   if (!$('#gal')) return; d.sort((a, b) => a.v - b.v);
   if (!d.length) { el.innerHTML = '<span class="mut" style="margin:0">No rendered versions yet. Approve the frames and BOSS will render the first one.</span>'; return; }
-  el.innerHTML = '<div class="galgrid">' + d.map((x, i) => { const u = '/projects/' + cur.id + '/drafts/' + encodeURIComponent(x.file) + '?v=' + x.v; return '<div class="gc"><video src="' + u + '#t=1" preload="metadata" controls playsinline></video><div class="gb"><b>V' + (i + 1) + (i === d.length - 1 ? ' · latest' : '') + (/^final/i.test(x.file) ? ' · final' : '') + '</b><small>' + esc(x.file) + '</small><small>' + new Date(x.v).toLocaleString() + (x.size ? ' · ' + (x.size / 1e6).toFixed(1) + ' MB' : '') + '</small>' + versionInfo(x.v) + '<div class="r" style="margin-top:8px"><button data-opendraft="' + esc(x.file) + '">Open in editing</button><button class="i" data-deldraft="' + esc(x.file) + '" title="Delete this version"><i class="ti ti-trash"></i></button></div></div></div>'; }).join('') + '</div>';
+  el.innerHTML = '<div class="galgrid">' + d.map((x, i) => { const u = '/projects/' + cur.id + '/drafts/' + encodeURIComponent(x.file) + '?v=' + x.v; return '<div class="gc"><video src="' + u + '#t=1" preload="metadata" controls playsinline></video><div class="gb"><b>V' + (i + 1) + (i === d.length - 1 ? ' · latest' : '') + (/^final/i.test(x.file) ? ' · final' : '') + '</b><small>' + esc(x.file) + '</small><small>' + new Date(x.v).toLocaleString() + (x.size ? ' · ' + (x.size / 1e6).toFixed(1) + ' MB' : '') + '</small>' + versionInfo(x.v) + '<div class="r" style="margin-top:8px"><button data-opendraft="' + esc(x.file) + '">Open in editing</button><button class="i" data-revealdraft="' + esc(x.file) + '" title="Show in ' + FILEMGR + '"><i class="ti ti-folder-open"></i></button><button class="i" data-deldraft="' + esc(x.file) + '" title="Delete this version"><i class="ti ti-trash"></i></button></div></div></div>'; }).join('') + '</div>';
 }
 function paintRun() {
   const el = $('#run'); if (!el) return;
@@ -676,7 +700,7 @@ function takeSnap() {
     if (snap) { annotating = true; stage(); return; } // already previewing a frame with nothing to capture from — just start drawing on it
     return toast(runSt && runSt.running ? 'Wait for the render to finish' : 'Attach a video first');
   }
-  v.pause(); const k = Math.min(1, 720 / v.videoWidth), c = document.createElement('canvas'); c.width = Math.round(v.videoWidth * k); c.height = Math.round(v.videoHeight * k);
+  v.pause(); const k = Math.min(1, 1280 / v.videoWidth), c = document.createElement('canvas'); c.width = Math.round(v.videoWidth * k); c.height = Math.round(v.videoHeight * k);
   c.getContext('2d').drawImage(v, 0, 0, c.width, c.height); snap = {c, w: c.width, h: c.height, t: v.currentTime}; shapes = []; annotating = true; stage(); pushStep();
 }
 function draw(cur2) {
@@ -693,6 +717,18 @@ function draw(cur2) {
     else if (s.k === 'text') g.fillText(s.t, s.a[0], s.a[1]);
   });
 }
+// in-page replacement for prompt(): the browser's own box can't be centred on the page, this one can
+function askText(label) {
+  return new Promise((ok) => {
+    const m = document.createElement('div'); m.className = 'modal'; m.style.zIndex = 40;
+    m.innerHTML = '<div class="c" style="max-width:420px"><p style="margin:0 0 2px;font-weight:800;font-size:1.05rem">Write on the frame</p><p class="mut" style="margin:0 0 12px"></p><input type="text" placeholder="Type what you want to show here" style="width:100%;box-sizing:border-box;margin:0 0 14px"><div class="r" style="justify-content:flex-end"><button data-n>Never mind</button><button class="a" data-y>Add text</button></div></div>';
+    m.querySelector('.mut').textContent = label; const inp = m.querySelector('input');
+    const done = (v) => { m.remove(); ok(v); };
+    m.querySelector('[data-y]').onclick = () => done(inp.value.trim()); m.querySelector('[data-n]').onclick = () => done('');
+    inp.onkeydown = (e) => { if (e.key === 'Enter') done(inp.value.trim()); else if (e.key === 'Escape') done(''); };
+    document.body.appendChild(m); inp.focus();
+  });
+}
 function inkEvents() {
   const ink = $('#ink'); let cs = null, drag = null;
   const pt = (e) => { const r = ink.getBoundingClientRect(); return [(e.clientX - r.left) * ink.width / r.width, (e.clientY - r.top) * ink.height / r.height]; };
@@ -707,21 +743,31 @@ function inkEvents() {
     }
     return null;
   };
+  // scroll = zoom toward the cursor (1x to 6x); middle-mouse drag = pan. pt() reads the transformed
+  // bounding box, so drawing stays exact while zoomed. Applied to .cv, so merged()/mergedFull() are unaffected.
+  const cv = ink.parentElement; let z = 1, tx = 0, ty = 0, pan = null;
+  const applyZ = () => { cv.style.transformOrigin = '0 0'; cv.style.transform = z === 1 ? '' : 'translate(' + tx + 'px,' + ty + 'px) scale(' + z + ')'; };
+  cv.onwheel = (e) => {
+    e.preventDefault(); const r = cv.getBoundingClientRect(), z2 = Math.min(6, Math.max(1, z * (e.deltaY < 0 ? 1.15 : 1 / 1.15)));
+    tx += (e.clientX - r.left) / z * (z - z2); ty += (e.clientY - r.top) / z * (z - z2); z = z2; if (z === 1) tx = ty = 0; applyZ();
+  };
   ink.onpointerdown = (e) => {
+    if (e.button === 1) { e.preventDefault(); pan = {x: e.clientX - tx, y: e.clientY - ty}; ink.setPointerCapture(e.pointerId); return; }
     const q = pt(e);
     if (tool === 'text') {
       const hit = hitText(q);
       if (hit) { drag = {s: hit, dx: q[0] - hit.a[0], dy: q[1] - hit.a[1]}; ink.setPointerCapture(e.pointerId); return; }
-      const t = prompt('Text on the frame'); if (t) { shapes.push({k: 'text', a: q, t, color: inkColor, lw: INK_SIZES[inkSize]}); draw(); }
+      askText('Click Add text and it lands where you clicked. You can drag it afterwards.').then((t) => { if (t) { shapes.push({k: 'text', a: q, t, color: inkColor, lw: INK_SIZES[inkSize]}); draw(); } });
       return;
     }
     ink.setPointerCapture(e.pointerId); cs = tool === 'pen' ? {k: 'pen', p: [q], color: inkColor, lw: INK_SIZES[inkSize]} : {k: tool, a: q, b: q, color: inkColor, lw: INK_SIZES[inkSize]}; draw(cs);
   };
   ink.onpointermove = (e) => {
+    if (pan) { tx = e.clientX - pan.x; ty = e.clientY - pan.y; applyZ(); return; }
     if (drag) { const q = pt(e); drag.s.a = [q[0] - drag.dx, q[1] - drag.dy]; draw(); return; }
     if (!cs) return; const q = pt(e); cs.k === 'pen' ? cs.p.push(q) : (cs.b = q); draw(cs);
   };
-  ink.onpointerup = () => { if (drag) { drag = null; return; } if (cs) { shapes.push(cs); cs = null; draw(); } };
+  ink.onpointerup = () => { if (pan) { pan = null; return; } if (drag) { drag = null; return; } if (cs) { shapes.push(cs); cs = null; draw(); } };
 }
 function mergedFull() { const c = document.createElement('canvas'); c.width = snap.w; c.height = snap.h; const g = c.getContext('2d'); g.drawImage($('#base'), 0, 0); g.drawImage($('#ink'), 0, 0); return c.toDataURL('image/jpeg', 0.82); }
 function merged() { const c = document.createElement('canvas'); c.width = snap.w; c.height = snap.h; const g = c.getContext('2d'); g.drawImage($('#base'), 0, 0); g.drawImage($('#ink'), 0, 0); const o = document.createElement('canvas'); o.width = 270; o.height = Math.round(270 * snap.h / snap.w); o.getContext('2d').drawImage(c, 0, 0, o.width, o.height); return o.toDataURL('image/jpeg', 0.7); }
@@ -1042,6 +1088,10 @@ document.addEventListener('click', async (e) => {
     if (r && r.style !== cur.styleId) { cur.styleId = r.style; toast('Project style set to ' + styName(r.style) + ', the style of this version'); }
     save(); project(); return pushStep();
   }
+  if ((x = q('[data-revealdraft]'))) {
+    try { await jf('POST', '/api/projects/' + cur.id + '/reveal?file=' + encodeURIComponent(x.dataset.revealdraft)); toast('Opened in ' + FILEMGR); } catch (err) { toast('Could not open the folder: ' + err.message); }
+    return;
+  }
   if ((x = q('[data-deldraft]'))) {
     if (!(await askConfirm('Delete this version (' + x.dataset.deldraft + ')? It moves to projects/.trash, so it can be recovered.'))) return;
     try { await jf('DELETE', '/api/projects/' + cur.id + '/drafts?file=' + encodeURIComponent(x.dataset.deldraft)); } catch (err) { return toast('Could not delete: ' + err.message); }
@@ -1255,7 +1305,10 @@ document.addEventListener('click', async (e) => {
     const t = scriptPick ? scriptPick.start : snap ? snap.t : v ? v.currentTime : 0, styleId = byLink ? '' : $('#nsty').value;
     const note = {id: 'n' + Date.now(), t, text, styleId, refLink, range, img: snap ? merged() : '', full: snap && API ? mergedFull() : '', refs: pendingRefs.slice(), broll: pendingBroll.slice()};
     if (scriptPick) { note.range = 'Custom'; note.rangeStart = scriptPick.start; note.rangeEnd = scriptPick.end; note.quote = scriptPick.text; }
-    cur._t = t; cur.notes.push(note); pendingRefs = []; pendingBroll = []; paintBroll(); scriptPick = null; paintPick(); save(); if (history.state && history.state.annot) { snap = null; history.back(); } snap = null; return project();
+    const keep = !!(snap && annotating); // in the floating canvas: stay open so more notes can go on the same frame
+    cur._t = t; cur.notes.push(note); pendingRefs = []; pendingBroll = []; paintBroll(); scriptPick = null; paintPick(); save();
+    if (keep) { notesDirty = true; shapes = []; $('#ntext').value = ''; paintRefs(); draw(); notesHtml(); return toast('Note added (' + cur.notes.length + ' total). Add another, or press Close.'); }
+    if (history.state && history.state.annot) { snap = null; history.back(); } snap = null; return project();
   }
   if (a === 'send') { if (!cur.notes.length) return toast('Add at least one note first'); $('#mtitle').textContent = 'Revision request'; $('#prompt').textContent = buildPrompt(); $('#modal').hidden = false; return; }
   if (a === 'closemodal') return ($('#modal').hidden = true);

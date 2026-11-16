@@ -173,25 +173,12 @@
     const nVideos = D.styles.reduce((n, s) => n + (s.samples ? s.samples.length : 0), 0);
     return `
     <div class="band hero-band">
-    <div class="hslider" aria-roledescription="carousel" aria-label="Highlights">
-      <div class="hslides">
-        <div class="hslide on" data-hs="0">
     <div class="ovhero">
       <div>
-        <div class="eyebrow">Everything editing, in one place</div>
-        <h1>BOSS <i>Studio</i></h1>
-        <p class="lede">${esc(D.intro)}</p>
-      </div>
-      <div class="studio"><img class="studio-art" src="assets/img/studio-hero.gif" width="780" height="600" alt="Animated illustration of an editing studio: a playhead sweeps a timeline while the waveform ripples under a preview monitor"></div>
-    </div>
-        </div>
-        <div class="hslide" data-hs="1" aria-hidden="true">
-    <div class="ovhero">
-      <div>
-        <div class="eyebrow">New · the Editing App</div>
+        <div class="eyebrow">BOSS Studio</div>
         <h1>Your vision. <i>BOSS</i> does the editing.</h1>
-        <p class="lede">Turn raw footage into polished content on your own computer. Upload your video, choose a style, and tell BOSS what you want. Review your script and video side by side, then point to any word or frame to request changes. Send your notes in one batch, and let BOSS handle the edits.</p>
-        <div class="app-steps"><span>1 · Script</span><span>2 · Instructions</span><span>3 · Editing</span><span>4 · Gallery</span></div>
+        <p class="lede">Turn your raw footage into polished videos with AI-powered editing. Upload your video, choose a style, and tell BOSS what you want. Review your edit and request changes in plain language.</p>
+        <p style="margin-top:22px"><a class="btn app-cta" href="#studio">Start creating</a></p>
       </div>
       <div class="studio"><svg class="app-art" viewBox="0 0 780 600" role="img" aria-label="The Editing App: four steps, a video player beside capture, style, notes and final-version modules" xmlns="http://www.w3.org/2000/svg">
         <rect x="10" y="10" width="760" height="580" rx="34" fill="#EDE6D9"/>
@@ -226,11 +213,6 @@
         <rect x="408" y="490" width="120" height="9" rx="4" fill="#1E9E5A"/>
         <rect class="a-final" x="408" y="512" width="220" height="38" rx="19" fill="#DC2E0A"/>
       </svg></div>
-    </div>
-        </div>
-      </div>
-      <button class="hb hb-prev" data-sdir="-1" aria-label="Previous slide">&#8249;</button><button class="hb hb-next" data-sdir="1" aria-label="Next slide">&#8250;</button>
-
     </div>
     </div>
     <div class="band stats-band">

@@ -389,3 +389,5 @@ main.wide>.stats-band{background:#E7E3DA;padding-top:34px;padding-bottom:42px;bo
 .cs-wide{padding-left:clamp(16px,3vw,48px)!important;padding-right:clamp(16px,3vw,48px)!important}
 .cs-wide .vs{max-width:1700px;margin-left:auto;margin-right:auto}
 @media(max-width:900px){.vs{grid-template-columns:1fr}}
+.cs-hero{text-align:center}
+.cs-hero .lede{margin-left:auto;margin-right:auto}

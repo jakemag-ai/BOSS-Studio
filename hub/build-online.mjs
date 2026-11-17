@@ -70,7 +70,7 @@ writeFileSync(join(out, 'robots.txt'), bots.map((b) => `User-agent: ${b}\nDisall
 writeFileSync(join(out, '_headers'), '/*\n  X-Robots-Tag: noindex, nofollow, noarchive, nosnippet, noimageindex\n  Referrer-Policy: no-referrer\n');
 
 // sample images and videos
-cpSync(join(hub, 'assets'), join(out, 'assets'), { recursive: true, filter: (s) => !/[\\/]mine([\\/]|$)/.test(s) }); // assets/mine = personal styles, never published
+cpSync(join(hub, 'assets'), join(out, 'assets'), { recursive: true, filter: (s) => !/[\\/](mine|mascot-loop)([\\/]|$)/.test(s) }); // assets/mine = personal styles, never published; mascot-loop = source files of the hero animation (the hero uses img/boss-hero-loop.webm)
 
 // the Artifact host accepts files up to 15 MB: shrink any bigger sample video in the published copy only (needs ffmpeg)
 if (process.env.NOEMBED) {

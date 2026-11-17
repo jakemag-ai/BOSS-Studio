@@ -204,13 +204,9 @@
         <p class="lede">Turn your raw footage into polished videos with AI-powered editing. Upload your video, choose a style, and tell BOSS what you want. Review your edit and request changes in plain language.</p>
         <p style="margin-top:22px"><a class="btn app-cta" href="#studio">Start creating</a></p>
       </div>
-      <div class="studio mascot-wrap"><img class="mascot" src="assets/img/boss-hero.webp" width="1293" height="1173" alt="BOSS, the studio mascot: a French bulldog in an orange hoodie, cap and headphones, holding a video camera, surrounded by AI, clapperboard, film and timeline icons" fetchpriority="high"></div>
+      <div class="studio mascot-wrap">${matchMedia('(prefers-reduced-motion:reduce)').matches ? '<img class="mascot" src="assets/img/boss-hero.webp?v=2" width="415" height="379" alt="BOSS, the studio mascot: a French bulldog in an orange hoodie, cap and headphones, holding a video camera, surrounded by AI, clapperboard, film and timeline icons" fetchpriority="high">' : '<video class="mascot" autoplay muted loop playsinline poster="assets/img/boss-hero.webp?v=2" aria-label="BOSS, the studio mascot, bobbing and waving" width="800" height="731"><source src="assets/img/boss-hero-loop.webm?v=1" type="video/webm"></video>'}</div>
     </div>
     </div>
-    <section id="developed-by">
-      <div class="eyebrow">The team</div><h2>Developed <i>by</i></h2>
-      <div class="devs">${[['Jeff', 'jeff'], ['Vincent', 'vincent'], ['Ivryn', 'ivryn']].map(([n, f]) => `<figure class="dev"><div class="ph"><img src="assets/img/dev-${f}.webp?v=3" width="360" height="360" alt="${n}" loading="lazy"></div><figcaption><b>${n}</b></figcaption></figure>`).join('')}</div>
-    </section>
     <div class="band stats-band">
     <nav class="jump" aria-label="Jump to a section">
       ${[['styles', 'Styles'], ['samples', 'Samples'], ['library', 'Style files'], ['pipeline', 'Pipeline'], ['setup', 'Setup'], ['appworks', 'The app'], ['cheat', 'Cheat sheet'], ['skills-o', 'Skills'], ['conn-o', 'Connectors'], ['repos-o', 'Repos'], ['rules', 'Rules']]
@@ -320,6 +316,11 @@
       <div class="eyebrow">Lasting rules</div><h2>Rules the editor <i>always follows</i></h2>
       <p class="lede">From <code>my-rules.md</code>. These beat every style.</p>
       <div class="cols">${D.rules.map((r) => `<div class="panel"><h3>${esc(r.t)}</h3><p>${md(r.d)}</p><p><small style="color:var(--muted)">${esc(r.quote)}</small></p></div>`).join('')}</div>
+    </section>
+
+    <section id="developed-by">
+      <div class="eyebrow">The team</div><h2>Developed by <i>Real Video Editors</i></h2>
+      <div class="devs">${[['Jeff', 'jeff'], ['Vincent', 'vincent'], ['Ivryn', 'ivryn']].map(([n, f]) => `<figure class="dev"><div class="ph"><img src="assets/img/dev-${f}.webp?v=3" width="360" height="360" alt="${n}" loading="lazy"></div><figcaption><b>${n}</b></figcaption></figure>`).join('')}</div>
     </section>
 
     `;
@@ -742,8 +743,8 @@
   }, true);
   // hero headline typewriter: the last word types and deletes through the steps of an edit (the HTML keeps "edits" as the fallback)
   if (!matchMedia('(prefers-reduced-motion:reduce)').matches) {
-    const words = ['script', 'voice', 'cutting', 'sound', 'music', 'style', 'edits', 'renders'];
-    const colors = ['#4d8dff', '#ff3fb4', '#ff6a2b', '#35d6ee', '#a874ff', '#ffc83a', '#ff6a2b', '#4d8dff']; // picked from the mascot graphic
+    const words = ['script', 'voice', 'cutting', 'sound', 'music', 'color', 'motion', 'design', 'style', 'clips', 'edits', 'renders'];
+    const colors = ['#4d8dff', '#ff3fb4', '#ff6a2b', '#35d6ee', '#a874ff', '#ff3fb4', '#35d6ee', '#ff6a2b', '#ffc83a', '#a874ff', '#ff6a2b', '#4d8dff']; // picked from the mascot graphic
     let i = -1, n = 'edits'.length, erasing = true, started = false;
     const tw = () => document.querySelector('.tw');
     (function step() {

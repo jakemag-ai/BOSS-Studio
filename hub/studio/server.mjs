@@ -4,7 +4,7 @@
 // (a page on another website can't add it), so other sites can't drive it.
 import http from 'node:http';
 import { spawn } from 'node:child_process';
-import { cpSync, createReadStream, createWriteStream, existsSync, mkdirSync, readdirSync, readFileSync, renameSync, rmSync, statSync, writeFileSync } from 'node:fs';
+import { copyFileSync, cpSync, createReadStream, createWriteStream, existsSync, mkdirSync, readdirSync, readFileSync, renameSync, rmSync, statSync, writeFileSync } from 'node:fs';
 import { homedir } from 'node:os';
 import { basename, dirname, extname, join, normalize, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -177,10 +177,27 @@ async function thumbOf(q) {
 }
 const dataUrl = (u) => { const m = /^data:image\/(jpeg|png);base64,(.+)$/.exec(u || ''); return m ? { buf: Buffer.from(m[2], 'base64'), ext: m[1] === 'png' ? 'png' : 'jpg' } : null; };
 
+// ---- Upload to Drive: copies a render into a folder the user picks once (a folder inside Google Drive for desktop, so Drive syncs it)
+const DRIVE_CFG = join(PROJECTS, '.drive.json');
+const driveFolder = () => { try { return JSON.parse(readFileSync(DRIVE_CFG, 'utf8')).folder || ''; } catch { return ''; } };
+const pickFolder = () => new Promise((ok, no) => {
+  const [exe, args] = process.platform === 'win32'
+    ? ['powershell.exe', ['-NoProfile', '-STA', '-Command', "Add-Type -AssemblyName System.Windows.Forms; $f=New-Object System.Windows.Forms.FolderBrowserDialog; $f.Description='Choose your Google Drive folder'; $o=New-Object System.Windows.Forms.Form -Property @{TopMost=$true}; if($f.ShowDialog($o) -eq 'OK'){$f.SelectedPath}"]]
+    : process.platform === 'darwin' ? ['osascript', ['-e', 'POSIX path of (choose folder with prompt "Choose your Google Drive folder")']] : [null];
+  if (!exe) return no(new Error('The folder picker is not available on this system'));
+  let out = ''; const c = spawn(exe, args, { windowsHide: true }); c.stdout.on('data', (d) => (out += d)); c.on('error', no); c.on('close', () => ok(out.trim()));
+});
+
 // ---- API
 async function api(req, res, url) {
   const parts = url.pathname.split('/').filter(Boolean).slice(1); // after /api
   const [a, id, b] = parts;
+  if (a === 'drive') { // the upload folder: GET shows it, POST /api/drive/pick opens a folder dialog and saves the choice
+    if (id !== 'pick' || req.method !== 'POST') return send(res, 200, { folder: driveFolder() });
+    let f; try { f = await pickFolder(); } catch (e) { return send(res, 500, { error: String(e.message) }); }
+    if (!f || !existsSync(f) || !statSync(f).isDirectory()) return send(res, 400, { error: 'No folder chosen' });
+    writeFileSync(DRIVE_CFG, JSON.stringify({ folder: f })); return send(res, 200, { folder: f });
+  }
   if (a === 'ping') return send(res, 200, { ok: true, maintainer: existsSync(join(ROOT, '.maintainer')) });
   if (a === 'style-proposals') {
     const dir = pendingDir(id);
@@ -284,6 +301,14 @@ async function api(req, res, url) {
     const front = process.platform === 'win32' ? ['powershell.exe', ['-NoProfile', '-WindowStyle', 'Hidden', '-Command', winFront]] : process.platform === 'darwin' ? ['osascript', ['-e', 'tell application "Finder" to activate']] : null;
     if (front) try { const c = spawn(front[0], front[1], { detached: true, stdio: 'ignore', windowsHide: true, env: { ...process.env, BS_DIR: dirname(src) } }); c.on('error', () => {}); c.unref(); } catch {}
     return send(res, 200, { ok: true });
+  }
+  if (b === 'drive' && req.method === 'POST') { // copy a rendered version into the Drive folder
+    const f = safeName(url.searchParams.get('file')), src = join(pdir(id), 'drafts', f), folder = driveFolder();
+    if (!existsSync(src)) return send(res, 404, { error: 'no such file' });
+    if (!folder || !existsSync(folder)) return send(res, 409, { error: 'NEEDS_FOLDER' });
+    const to = join(folder, safeName(p.name) + ' - ' + f);
+    try { copyFileSync(src, to); } catch (e) { return send(res, 500, { error: 'Could not copy: ' + e.message }); }
+    return send(res, 200, { ok: true, folder, to });
   }
   if (b === 'drafts' && req.method === 'DELETE') {
     const f = safeName(url.searchParams.get('file')), src = join(pdir(id), 'drafts', f);

@@ -44,6 +44,7 @@ button:hover{border-color:var(--ink)}
 button.p{background:var(--ink);color:var(--bg);border-color:var(--ink)}
 button.a{background:var(--accent);color:#fff;border-color:var(--accent)}
 button.i{padding:9px 11px}
+.gb .r{gap:5px;flex-wrap:nowrap}.gb .r button.i{padding:9px 8px}.gb .r button:not(.i){padding-left:11px;padding-right:11px;white-space:nowrap}
 button.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
 button i{font-size:16px}
 button:disabled{opacity:.4;cursor:not-allowed}
@@ -640,7 +641,7 @@ async function loadGallery() {
   let d = []; try { d = await jf('GET', '/api/projects/' + cur.id + '/drafts'); } catch {}
   if (!$('#gal')) return; d.sort((a, b) => a.v - b.v);
   if (!d.length) { el.innerHTML = '<span class="mut" style="margin:0">No rendered versions yet. Approve the frames and BOSS will render the first one.</span>'; return; }
-  el.innerHTML = '<div class="galgrid">' + d.map((x, i) => { const u = '/projects/' + cur.id + '/drafts/' + encodeURIComponent(x.file) + '?v=' + x.v; return '<div class="gc"><video src="' + u + '#t=1" preload="metadata" controls playsinline></video><div class="gb"><b>V' + (i + 1) + (i === d.length - 1 ? ' · latest' : '') + (/^final/i.test(x.file) ? ' · final' : '') + '</b><small>' + esc(x.file) + '</small><small>' + new Date(x.v).toLocaleString() + (x.size ? ' · ' + (x.size / 1e6).toFixed(1) + ' MB' : '') + '</small>' + versionInfo(x.v) + '<div class="r" style="margin-top:8px"><button data-opendraft="' + esc(x.file) + '">Open in editing</button><button class="i" data-revealdraft="' + esc(x.file) + '" title="Show in ' + FILEMGR + '"><i class="ti ti-folder-open"></i></button><button class="i" data-deldraft="' + esc(x.file) + '" title="Delete this version"><i class="ti ti-trash"></i></button></div></div></div>'; }).join('') + '</div>';
+  el.innerHTML = '<div class="galgrid">' + d.map((x, i) => { const u = '/projects/' + cur.id + '/drafts/' + encodeURIComponent(x.file) + '?v=' + x.v; return '<div class="gc"><video src="' + u + '#t=1" preload="metadata" controls playsinline></video><div class="gb"><b>V' + (i + 1) + (i === d.length - 1 ? ' · latest' : '') + (/^final/i.test(x.file) ? ' · final' : '') + '</b><small>' + esc(x.file) + '</small><small>' + new Date(x.v).toLocaleString() + (x.size ? ' · ' + (x.size / 1e6).toFixed(1) + ' MB' : '') + '</small>' + versionInfo(x.v) + '<div class="r" style="margin-top:8px"><button data-opendraft="' + esc(x.file) + '">Open in editing</button><button class="i" data-revealdraft="' + esc(x.file) + '" title="Show in ' + FILEMGR + '"><i class="ti ti-folder-open"></i></button><button class="i" data-drivedraft="' + esc(x.file) + '" title="Upload to Drive" aria-label="Upload to Drive"><i class="ti ti-cloud-upload"></i></button><button class="i" data-deldraft="' + esc(x.file) + '" title="Delete this version"><i class="ti ti-trash"></i></button></div></div></div>'; }).join('') + '</div>';
 }
 function paintRun() {
   const el = $('#run'); if (!el) return;
@@ -1187,6 +1188,19 @@ document.addEventListener('click', async (e) => {
   }
   if ((x = q('[data-revealdraft]'))) {
     try { await jf('POST', '/api/projects/' + cur.id + '/reveal?file=' + encodeURIComponent(x.dataset.revealdraft)); toast('Opened in ' + FILEMGR); } catch (err) { toast('Could not open the folder: ' + err.message); }
+    return;
+  }
+  if ((x = q('[data-drivedraft]'))) {
+    const up = () => jf('POST', '/api/projects/' + cur.id + '/drive?file=' + encodeURIComponent(x.dataset.drivedraft));
+    try {
+      let r; try { r = await up(); } catch (err) {
+        if (err.message !== 'NEEDS_FOLDER') throw err;
+        // first time (or the folder is gone): ask where the Drive folder is, then upload
+        if (!(await askConfirm('Where should uploads go? Choose a folder inside Google Drive (Google Drive for desktop syncs it to the cloud). You only do this once.', 'Choose folder', 'Cancel'))) return;
+        await jf('POST', '/api/drive/pick'); r = await up();
+      }
+      toast('Copied to ' + r.folder + '. Drive will sync it.');
+    } catch (err) { toast('Could not upload: ' + err.message); }
     return;
   }
   if ((x = q('[data-deldraft]'))) {

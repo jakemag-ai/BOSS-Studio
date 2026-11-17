@@ -641,7 +641,7 @@ async function loadGallery() {
   let d = []; try { d = await jf('GET', '/api/projects/' + cur.id + '/drafts'); } catch {}
   if (!$('#gal')) return; d.sort((a, b) => a.v - b.v);
   if (!d.length) { el.innerHTML = '<span class="mut" style="margin:0">No rendered versions yet. Approve the frames and BOSS will render the first one.</span>'; return; }
-  el.innerHTML = '<div class="galgrid">' + d.map((x, i) => { const u = '/projects/' + cur.id + '/drafts/' + encodeURIComponent(x.file) + '?v=' + x.v; return '<div class="gc"><video src="' + u + '#t=1" preload="metadata" controls playsinline></video><div class="gb"><b>V' + (i + 1) + (i === d.length - 1 ? ' · latest' : '') + (/^final/i.test(x.file) ? ' · final' : '') + '</b><small>' + esc(x.file) + '</small><small>' + new Date(x.v).toLocaleString() + (x.size ? ' · ' + (x.size / 1e6).toFixed(1) + ' MB' : '') + '</small>' + versionInfo(x.v) + '<div class="r" style="margin-top:8px"><button data-opendraft="' + esc(x.file) + '">Open in editing</button><button class="i" data-revealdraft="' + esc(x.file) + '" title="Show in ' + FILEMGR + '"><i class="ti ti-folder-open"></i></button><button class="i" data-drivedraft="' + esc(x.file) + '" title="Upload to Drive" aria-label="Upload to Drive"><i class="ti ti-cloud-upload"></i></button><button class="i" data-deldraft="' + esc(x.file) + '" title="Delete this version"><i class="ti ti-trash"></i></button></div></div></div>'; }).join('') + '</div>';
+  el.innerHTML = '<div class="galgrid">' + d.map((x, i) => { const u = '/projects/' + cur.id + '/drafts/' + encodeURIComponent(x.file) + '?v=' + x.v; return '<div class="gc"><video src="' + u + '#t=1" preload="metadata" controls playsinline></video><div class="gb"><b>V' + (i + 1) + (i === d.length - 1 ? ' · latest' : '') + (/^final/i.test(x.file) ? ' · final' : '') + '</b><small>' + esc(x.file) + '</small><small>' + new Date(x.v).toLocaleString() + (x.size ? ' · ' + (x.size / 1e6).toFixed(1) + ' MB' : '') + '</small>' + versionInfo(x.v) + '<div class="r" style="margin-top:8px"><button data-opendraft="' + esc(x.file) + '">Open in editing</button><button class="i" data-revealdraft="' + esc(x.file) + '" title="Show in ' + FILEMGR + '"><i class="ti ti-folder-open"></i></button><button class="i" data-drivedraft="' + esc(x.file) + '" title="Upload to Drive: opens Drive and shows the file" aria-label="Upload to Drive"><i class="ti ti-cloud-upload"></i></button><button class="i" data-deldraft="' + esc(x.file) + '" title="Delete this version"><i class="ti ti-trash"></i></button></div></div></div>'; }).join('') + '</div>';
 }
 function paintRun() {
   const el = $('#run'); if (!el) return;
@@ -745,11 +745,11 @@ function draw(cur2) {
   });
 }
 // in-page replacement for prompt(): the browser's own box can't be centred on the page, this one can
-function askText(label) {
+function askText(label, title = 'Write on the frame', ph = 'Type what you want to show here', yes = 'Add text') {
   return new Promise((ok) => {
     const m = document.createElement('div'); m.className = 'modal'; m.style.zIndex = 40;
-    m.innerHTML = '<div class="c" style="max-width:420px"><p style="margin:0 0 2px;font-weight:800;font-size:1.05rem">Write on the frame</p><p class="mut" style="margin:0 0 12px"></p><input type="text" placeholder="Type what you want to show here" style="width:100%;box-sizing:border-box;margin:0 0 14px"><div class="r" style="justify-content:flex-end"><button data-n>Never mind</button><button class="a" data-y>Add text</button></div></div>';
-    m.querySelector('.mut').textContent = label; const inp = m.querySelector('input');
+    m.innerHTML = '<div class="c" style="max-width:420px"><p class="tt" style="margin:0 0 2px;font-weight:800;font-size:1.05rem"></p><p class="mut" style="margin:0 0 12px"></p><input type="text" style="width:100%;box-sizing:border-box;margin:0 0 14px"><div class="r" style="justify-content:flex-end"><button data-n>Never mind</button><button class="a" data-y>Add text</button></div></div>';
+    m.querySelector('.mut').textContent = label; m.querySelector('.tt').textContent = title; m.querySelector('[data-y]').textContent = yes; const inp = m.querySelector('input'); inp.placeholder = ph;
     const done = (v) => { m.remove(); ok(v); };
     m.querySelector('[data-y]').onclick = () => done(inp.value.trim()); m.querySelector('[data-n]').onclick = () => done('');
     inp.onkeydown = (e) => { if (e.key === 'Enter') done(inp.value.trim()); else if (e.key === 'Escape') done(''); };
@@ -1190,17 +1190,28 @@ document.addEventListener('click', async (e) => {
     try { await jf('POST', '/api/projects/' + cur.id + '/reveal?file=' + encodeURIComponent(x.dataset.revealdraft)); toast('Opened in ' + FILEMGR); } catch (err) { toast('Could not open the folder: ' + err.message); }
     return;
   }
-  if ((x = q('[data-drivedraft]'))) {
-    const up = () => jf('POST', '/api/projects/' + cur.id + '/drive?file=' + encodeURIComponent(x.dataset.drivedraft));
+  if ((x = q('[data-drivedraft]'))) { // upload straight into the Drive folder whose link was pasted once (rclone does the upload; Google sign-in once)
+    const idOf = (u) => (new RegExp('folders/([A-Za-z0-9_-]{10,})').exec(u) || [])[1];
+    let dest = ''; try { dest = localStorage.getItem('drive-folder') || ''; } catch {}
+    if (!dest || !idOf(dest) || e.shiftKey) {
+      const v = await askText('In Google Drive, open the folder where uploads should go, then paste its link here. You only do this once (Shift-click the upload button to change it later).', 'Where should uploads go?', 'https://drive.google.com/drive/folders/…', 'Save folder');
+      if (!v) return;
+      if (!idOf(v)) return toast('That link has no Drive folder in it. Open the folder in Drive and copy the address from the browser.');
+      dest = v; try { localStorage.setItem('drive-folder', dest); } catch {}
+    }
+    const up = () => jf('POST', '/api/projects/' + cur.id + '/drive?file=' + encodeURIComponent(x.dataset.drivedraft) + '&folder=' + idOf(dest));
+    const tab = window.open('about:blank', '_blank'); // opened now (while the click still counts), pointed at the folder once the upload is done
     try {
-      let r; try { r = await up(); } catch (err) {
-        if (err.message !== 'NEEDS_FOLDER') throw err;
-        // first time (or the folder is gone): ask where the Drive folder is, then upload
-        if (!(await askConfirm('Where should uploads go? Choose a folder inside Google Drive (Google Drive for desktop syncs it to the cloud). You only do this once.', 'Choose folder', 'Cancel'))) return;
-        await jf('POST', '/api/drive/pick'); r = await up();
+      toast('Uploading to your Drive folder…');
+      try { await up(); } catch (err) {
+        if (err.message !== 'NEEDS_CONNECT') throw err;
+        if (!(await askConfirm('Connect Google Drive once: a browser window opens, you sign in to Google and allow access. After that, uploads happen by themselves.', 'Connect', 'Cancel'))) return;
+        toast('Waiting for you to allow access in the browser…');
+        await jf('POST', '/api/drive/connect'); toast('Connected. Uploading…'); await up();
       }
-      toast('Copied to ' + r.folder + '. Drive will sync it.');
-    } catch (err) { toast('Could not upload: ' + err.message); }
+      toast('Uploaded to your Drive folder');
+      if (tab) tab.location.href = dest; else window.open(dest, '_blank'); // show the folder so the new file is right there
+    } catch (err) { if (tab) tab.close(); toast(err.message === 'NEEDS_RCLONE' ? 'The upload tool (rclone) is not installed on this computer yet.' : 'Could not upload: ' + err.message); }
     return;
   }
   if ((x = q('[data-deldraft]'))) {

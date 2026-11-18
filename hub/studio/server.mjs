@@ -61,6 +61,12 @@ How to edit: use the bossstudio pipeline in this repo, not Remotion and not a cu
 - Cuts: the kit's cut-silences and cut-mistakes scripts.
 - Motion graphics and rendering: HyperFrames (the kit's hyperframes, hyperframes-video-beats and hyperframes-cli skills; render with npx hyperframes render from kit/). Take the look (colours, fonts, timing, layouts) from the style guide; the Remotion code in remotion/src/ is only a visual reference.
 - Frames for review: hyperframes snapshot, saved to frames/ as above.
+Rendering rules (important, they stop duplicate renders and slow renders):
+- Never run \`npx hyperframes render\` directly. Always start it through the guard, in the background: \`node tools/render-guard.mjs kit/video-projects/${id} -- npx hyperframes render -o renders/<name>.mp4 -q draft --crf 24\`. The guard refuses to start a second render for the same project, and it writes progress to kit/video-projects/${id}/renders/render.log.
+- Never run a render in the foreground. A tool time-out does NOT stop a render: it keeps running unseen, and starting it again makes two renders that slow each other down. If a command with a render in it times out, assume the render is still running and check \`node tools/render-guard.mjs kit/video-projects/${id} --status\` before doing anything else.
+- If the guard says a render is already running, do NOT start another one. Wait, and check with \`node tools/render-guard.mjs kit/video-projects/${id} --status\` every 2 to 3 minutes.
+- A long render (HDR footage, lots of B-roll) can take 30 to 60+ minutes and print nothing for a long time. Silence is normal, not a failure. Only call a render stuck when --status says it is no longer running and no video file was produced.
+- Speed: iPhone or other HDR clips (ffprobe shows color_transfer arib-std-b67 or smpte2084) push the renderer onto its slow 16-bit HDR path. Before you build the composition, convert such a clip, and every B-roll clip, to SDR bt709 with ffmpeg (zscale tonemap) and use that copy. Keep B-roll clips short and small.
 Reply briefly when done.\n\n`;
 };
 function startRun(id, prompt) {

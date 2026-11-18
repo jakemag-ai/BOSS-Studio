@@ -137,7 +137,9 @@
       ['#install', 'Setup', route === 'install'],
       ['#guide', 'How it works', route === 'guide'],
       ['#case-study', 'Case study', route === 'case-study'],
-      ['#studio', 'Editing App', route === 'studio'],    ];
+      ['#studio', 'Editing App', route === 'studio'],
+      ...(window.HUB_HOSTED ? [] : [['http://localhost:1986/', 'Editing App V2', false]]),
+    ];
     let html = '';
     links.forEach(([href, label, on], i) => {
       if (i === 1 || label === 'Skills' || label === 'Editing App') html += '<span class="sep"></span>';
@@ -146,6 +148,7 @@
           D.styles.map((s) => '<a role="menuitem" href="#style-' + s.id + '"' + (route === 'style-' + s.id ? ' aria-current="page"' : '') + '>' + esc(s.short || s.name) + '</a>').join('') + '</div></div>';
         return;
       }
+      if (label === 'Editing App V2') { html += `<a class="v2" href="${href}" target="_blank" rel="noopener" title="The new simpler editing app. Opens in a new tab.">${esc(label)} <span aria-hidden="true">&#8599;</span></a>`; return; }
       html += `<a href="${href}" ${on ? 'aria-current="page"' : ''}${label === 'Editing App' ? ' class="cta"' : ''}>${esc(label)}</a>`;
     });
     $('#nav').innerHTML = html;

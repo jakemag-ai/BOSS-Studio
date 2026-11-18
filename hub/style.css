@@ -284,6 +284,9 @@ main.wide>.hero-band{background:var(--hero-bg);color:var(--hero-fg);padding-top:
 /* Editing App tab: orange button, white text */
 #nav a.cta,#nav a.cta:hover,#nav a.cta[aria-current="page"]{background:var(--accent);color:#fff;border-color:var(--accent)}
 #nav a.cta:hover{filter:brightness(1.08)}
+/* Editing App V2: outlined in the accent colour, opens the new app (port 1986) in a new tab */
+#nav a.v2{border:2px solid var(--accent);color:var(--accent);font-weight:800;background:transparent}
+#nav a.v2:hover{background:var(--accent);color:#fff}
 
 /* hero slider */
 .hslides{display:grid}

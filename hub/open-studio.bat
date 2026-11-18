@@ -7,5 +7,10 @@ for /f "tokens=5" %%p in ('netstat -ano ^| findstr /r /c:"127.0.0.1:1988 .*LISTE
   echo Stopping the studio that was already running ^(process %%p^)...
   taskkill /PID %%p /F >nul 2>&1
 )
+for /f "tokens=5" %%p in ('netstat -ano ^| findstr /r /c:"127.0.0.1:1986 .*LISTENING"') do (
+  taskkill /PID %%p /F >nul 2>&1
+)
+rem V2 (the simpler editing app) runs in the background of this same window; the hub's Editing App V2 button opens it.
+start "" /b node hub\studio-v2\server.mjs
 start "" http://localhost:1988/hub/index.html
 node hub\studio\server.mjs

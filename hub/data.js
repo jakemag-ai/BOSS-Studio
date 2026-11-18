@@ -457,14 +457,14 @@ window.HUB = {
   ],
 
   pipeline: [
-    {t: "Create the project", d: "Name it, drop in a video (several clips join in order) or just a voiceover, write your first prompt, pick a style and a format, and add reference links if you want. Or press **Magic Edit** and BOSS decides everything."},
-    {t: "Script", d: "Read the transcript word by word. Click a word to jump there, cut what you don't want, undo or redo. A voiceover-only project can generate its voiceover here."},
+    {t: "Get started", d: "Name it, drop in a video (several clips join in order) or just a voiceover, pick where it will be posted, say what you want, tick the extras (audio, music, sound effects) and pick a look. Then press **Magic Edit** and BOSS decides the rest, or **Edit manually** to go step by step."},
+    {t: "Cutting", d: "Read the transcript word by word. Click or drag words and press Cut, or let BOSS find mistakes. Undo any time. A voiceover-only project can generate its voiceover here."},
     {t: "Instructions", d: "Your first instruction, the project style, references and options. BOSS reads it before it starts."},
     {t: "Still frames first", d: "BOSS builds still frames of the graphics. **No video is rendered yet.** Click a frame and draw on it to leave a note."},
     {t: "Approve the frames", d: "Happy? Approve and BOSS renders the first draft. Drafts are always small and fast (940p, 24 fps)."},
-    {t: "Editing", d: "Watch the draft, take a snapshot of any moment, write revision notes, then press **Render Draft**. You can also change the style or save the look as a new style."},
-    {t: "Render the final", d: "When the draft is right, press **Render Final Version** for full resolution (1080p, 30 fps)."},
-    {t: "Gallery", d: "Every rendered version, oldest to latest, so you can compare and go back to any of them."},
+    {t: "Editing & Revision", d: "Watch the draft, find the moment in the words or pictures, take a snapshot, write notes, then press **Render Draft**. You can also change the style or save the look as a new style."},
+    {t: "Make the final video", d: "When the draft is right, press **Make the final video** for full resolution (1080p, 30 fps)."},
+    {t: "Gallery and Scheduling", d: "Every rendered version, latest first, so you can compare and go back to any of them. Then pick the apps, the day and the time to post it."},
   ],
 
   cheat: [

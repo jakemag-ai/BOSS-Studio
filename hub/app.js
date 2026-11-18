@@ -272,24 +272,26 @@
         <div class="step"><h3>Open the folder in your agent</h3><p>In a terminal: <code>cd BOSS-Studio</code> then <code>claude</code>. In the Claude desktop app, open the Code tab, pick Local and the folder.</p></div>
         <div class="step"><h3>Type <code>start</code></h3><p>The agent checks your computer, installs what is missing (with your OK), renders a test video and asks a few questions about your style.</p></div>
         <div class="step"><h3>Add transcription</h3><p>Free either way: a Groq key in <code>.env</code> as <code>GROQ_API_KEY</code> (copy <code>.env.example</code>), or leave it blank and use local faster-whisper (<code>pip install faster-whisper</code>).</p></div>
-        <div class="step"><h3>Start the studio</h3><p>Double-click <code>hub/open-studio.bat</code>. It opens this hub at <b>http://localhost:1988/hub/</b>; click <b>Editing App</b> to work on your projects. Keep that window open; close it to stop. Projects are saved as folders in <code>projects/</code>.</p></div>
-        <div class="step"><h3>Make your first video</h3><p>Press <b>New project</b>, drop a video or voiceover, write your first prompt, pick a style and a format, then press <b>Create project</b> (or <b>Magic Edit</b>).</p></div>
+        <div class="step"><h3>Start the studio</h3><p>Double-click <code>hub/open-studio.bat</code>. It opens this hub at <b>http://localhost:1988/hub/</b> and also starts the new <b>Editing App V2</b> on port 1986. Click <b>Editing App V2</b> in the top bar to open it in a new tab. Keep that window open; close it to stop. Projects are saved as folders in <code>projects/</code>.</p></div>
+        <div class="step"><h3>Make your first video</h3><p>On the V2 home screen press <b>New project</b>. On <b>Get Started</b> answer five quick things: name it, drop your video, pick where it will be posted, say what you want (and tick the extras), pick a look. Then press <b>Magic Edit</b>, or <b>Edit manually</b> to go step by step.</p></div>
       </div>
       <p class="lede" style="margin-top:22px">Voiceover, music and sound effects use ElevenLabs. BOSS asks before it calls any paid service. If the studio says it saves in this browser only, the server is not running: start it with <code>open-studio.bat</code>.</p>
     </section>
 
     <section id="appworks">
       <div class="eyebrow">BOSS Studio</div><h2>How the <i>app</i> works</h2>
-      <p class="lede">Four steps across the top of every project: Script, Instructions, Editing, Gallery. You review and send notes; BOSS (Claude) does the editing.</p>
+      <p class="lede">Five steps across the top of every project: Cutting, Instructions, Editing &amp; Revision, Gallery, Scheduling. You review and send notes; BOSS (Claude) does the editing.</p>
       <div class="shots">
-        <figure><img src="assets/img/app-1-new.jpg" alt="New project screen in BOSS Studio" loading="lazy"><figcaption><b>1 · Create a project.</b> Name it, drop a video or just a voiceover, write your first prompt, pick a style and a format. Add reference links to copy another video's editing, or press <b>Magic Edit</b> to let BOSS decide everything.</figcaption></figure>
-        <figure><img src="assets/img/app-2-editing.jpg?v=2" alt="Editing step in BOSS Studio with video, script or frames, and revision notes" loading="lazy"><figcaption><b>2 · Edit with notes.</b> Watch the draft, switch between <b>Script</b> and <b>Frames</b>, take a <b>Snapshot</b>, write revision notes (add an image or B-roll to any note), then press <b>Render Draft</b>.</figcaption></figure>
+        <figure><img src="assets/img/app-v2-home.jpg" alt="BOSS Studio V2 home screen with New project and My projects buttons" loading="lazy"><figcaption><b>1 · Start here.</b> The home screen has two big buttons: <b>New project</b> and <b>My projects</b>. A <b>Continue</b> card takes you back to the last video you worked on.</figcaption></figure>
+        <figure><img src="assets/img/app-v2-start.jpg" alt="Get Started page in BOSS Studio V2 with numbered steps" loading="lazy"><figcaption><b>2 · Get Started.</b> Five quick things: name it, add your video, pick where it will be posted, say what you want (and tick <b>Clean up my audio</b>, <b>background music</b> or <b>sound effects</b>), and pick a look. Then press <b>Magic Edit</b>, or <b>Edit manually</b>.</figcaption></figure>
+        <figure><img src="assets/img/app-v2-editing.jpg" alt="Editing and Revision step in BOSS Studio V2 with video, words and pictures, and Fix things notes" loading="lazy"><figcaption><b>3 · Editing &amp; Revision.</b> Watch the video, find the moment in the <b>Words</b> or <b>Pictures</b>, write what to change (or take a <b>Snapshot</b> and draw on it), then press <b>Render Draft</b>.</figcaption></figure>
       </div>
       <div class="steps appnotes">
-        <div class="step"><h3>Script</h3><p>Click any word to jump there and cut what you don't want. Voiceover-only projects generate the voice here.</p></div>
-        <div class="step"><h3>Instructions</h3><p>Your first prompt, the project style, references and options. It locks once frames exist; change things in Editing.</p></div>
-        <div class="step"><h3>Editing</h3><p>Frames first (no video yet), then drafts. Change the whole style, or <b>Save As New Style</b> to add the look to the style picker.</p></div>
-        <div class="step"><h3>Gallery</h3><p>Every version, oldest to latest. <b>Render Final Version</b> gives full resolution (1080p, 30 fps); drafts stay small and fast.</p></div>
+        <div class="step"><h3>Cutting</h3><p>Click or drag words, press <b>Cut selected</b>, or let BOSS find mistakes. Your original video is never changed.</p></div>
+        <div class="step"><h3>Instructions</h3><p>Say what you want, tick the extras (audio, music, sound effects), check the look. It locks once a draft exists; change things in Editing.</p></div>
+        <div class="step"><h3>Editing &amp; Revision</h3><p>Add notes (with a drawing if you like), press <b>Render Draft</b>, repeat. <b>Make the final video</b> gives full quality.</p></div>
+        <div class="step"><h3>Gallery</h3><p>Your latest video big, older versions below. Download it, edit it again, or send it to <b>Scheduling</b>.</p></div>
+        <div class="step"><h3>Scheduling</h3><p>Pick the apps, write the post, choose a day and time, then save it as a draft. Posting turns on once the Mashore Method connector is set up.</p></div>
       </div>
     </section>
 
@@ -487,61 +489,70 @@
   // ---------- how the Editing App works (step-by-step guide) ----------
   function guide() {
     const flow = [
-      ['Script', 'Read the transcript and strike what you do not want.', 'ti-text-caption'],
-      ['Instructions', 'Tell BOSS what you want, pick a style.', 'ti-message-2'],
-      ['Editing', 'Review frames and drafts, add notes, render.', 'ti-movie'],
+      ['Cutting', 'Click words, cut what you do not want.', 'ti-scissors'],
+      ['Instructions', 'Say what you want, pick the extras and the look.', 'ti-message-2'],
+      ['Editing & Revision', 'Review, add notes, render drafts.', 'ti-movie'],
       ['Gallery', 'Every version, ready to open or download.', 'ti-library-photo'],
+      ['Scheduling', 'Pick the apps, the day and the time.', 'ti-calendar-time'],
     ];
     const before = [
-      ['Start the studio', 'Double-click <code>hub/open-studio.bat</code>. It opens the hub at <b>localhost:1988</b>. Keep that window open while you work; close it to stop.', 'ti-player-play'],
+      ['Start the studio', 'Double-click <code>hub/open-studio.bat</code>. It opens the hub at <b>localhost:1988</b> and starts the Editing App V2 on <b>localhost:1986</b>. Click <b>Editing App V2</b> in the top bar. Keep that window open while you work; close it to stop.', 'ti-player-play'],
       ['Sign in to Claude Code', 'BOSS does the editing through Claude Code on your computer, so it needs to be signed in.', 'ti-key'],
       ['Transcription', 'Words come from a free Groq key, or from a model that runs privately on your computer. Setup asks which one you prefer.', 'ti-microphone'],
     ];
     const steps = [
-      { n: 0, t: 'Start a new project', sub: 'Everything starts from the Editing App tab.', ul: [
-        'Press <b>New project</b> and give it a name.',
-        'Choose where the video is going, such as <b>TikTok, Reels, Shorts, YouTube or LinkedIn</b>. This sets the shape and size of the final video.',
-        'Pick a <b>style</b>, or leave it on Custom. Styles are the looks saved in this hub.',
-        'Attach your <b>raw video</b> (or a voiceover file, if you are making a faceless video).',
-        'Optional: paste <b>reference links</b> to videos you want BOSS to learn from, and write your first instructions.',
-      ], tip: 'Not sure what you want? Use Magic Edit and BOSS will pick the style and the cuts itself. You can still revise everything after.' },
-      { n: 1, t: 'Script', sub: 'Your transcript is the edit.', ul: [
+      { n: 0, t: 'Get Started', sub: 'Everything starts from the home screen.', ul: [
+        'Press <b>New project</b>. Answer five quick things, in order.',
+        '<b>1. Name it.</b> Anything you want, so you can find it later.',
+        '<b>2. Add your video.</b> Drag it in, or press Browse. A voiceover-only file works too.',
+        '<b>3. Where will you post it?</b> Pick the app, such as <b>TikTok, Reels, Shorts, YouTube or LinkedIn</b>. BOSS sets the right video size.',
+        '<b>4. Tell BOSS what you want</b>, in your own words. Tap an idea button if you are not sure, and tick the extras: <b>Clean up my audio</b>, <b>Add background music</b>, <b>Add sound effects</b>.',
+        '<b>5. Pick a look.</b> Tap a style. Press the full-screen icon on a card to watch it first.',
+        'Then press the big orange <b>Magic Edit</b> button, or the small <b>Edit manually</b> button to go step by step. Under <b>More options</b> you can paste a link to copy another video\'s editing.',
+      ], tip: 'Not sure? Press Magic Edit. BOSS does the cuts, the style and the first video, using your extras. You can still revise everything after.' },
+      { n: 1, t: 'Cutting', sub: 'Your transcript is the edit.', ul: [
         'The words appear with their timing. Click a word and the video jumps to it.',
-        'Drag, or shift-click, to select a span of words. Press delete to strike them. Struck words become cuts in the video.',
-        '<b>Suggest cleanup</b> highlights filler words and long pauses. Check them, then delete.',
-        'Changed your mind? Select struck words and restore them. The preview skips the cuts so you can hear the result.',
-        'Press <b>Save script</b> when it reads the way you want.',
-      ], tip: 'Making a faceless video from a voiceover? You can paste a new script here and have the voiceover regenerated. BOSS asks before using any paid service.' },
+        'Click or drag across words, then press <b>Cut selected</b>. Cut words are struck through and skipped when you play the video.',
+        '<b>Let BOSS find mistakes</b> marks filler words and long pauses. Press <b>Select them</b>, check them, then cut.',
+        'Changed your mind? Press <b>Undo</b>, or open the <b>...</b> menu to bring words back or start over.',
+        'Press <b>Next</b> when it reads the way you want. If you do not want to cut anything, the same button just moves on.',
+      ], tip: 'Your original video is never changed. You can always undo.' },
       { n: 2, t: 'Instructions', sub: 'Tell BOSS what you want.', ul: [
-        'Write your first instruction in plain words, in any language you use. For example: open with the strongest line and use the style on every section.',
-        'Check the <b>project style</b>. You can change it here before anything is made.',
-        'Add reference images, logos or links if you have them.',
-        'Press <b>Render Draft</b>. BOSS makes still frames first, so you can check the look before the full video is rendered.',
-      ], tip: 'You can only change the instructions here before the first render. After that, use notes in the Editing step.' },
-      { n: 3, t: 'Editing', sub: 'This is where you review and give notes.', hot: true, ul: [
-        '<b>Frames first.</b> BOSS shows still frames from the video. Click one to open it big, then draw on it with the pen, arrow, circle, box or text tool. Scroll to zoom in.',
-        '<b>Notes.</b> Type what to change and press Add note. You can add several notes to the same frame. Notes with a drawing keep the drawing.',
-        '<b>Snapshot.</b> Once there is a draft, play the video and press Snapshot on any moment to draw on it. Or pick words in the script to point a note at an exact phrase.',
-        '<b>More options.</b> Use a different style for just one part, add an image or logo, or add B-roll at that moment.',
-        '<b>Render Draft</b> sends all your notes to BOSS in one batch. A new version appears. Repeat until you like it.',
-        '<b>Render Final Version</b> makes the full-resolution video. Press it only when you are happy.',
-      ], tip: 'Drafts are low resolution so they render fast. Full resolution happens only when you press Render Final Version.' },
+        'Write it like you would tell a friend, or tap an idea button.',
+        'Turn the <b>extras</b> on or off, and check the <b>look</b>. You can change the look here before anything is made.',
+        'Under <b>More options</b> you can add a reference video whose editing BOSS should copy.',
+        'Press <b>Render Draft</b>. BOSS makes the first version.',
+      ], tip: 'You can only change the instructions here before the first render. After that, use notes in Editing & Revision.' },
+      { n: 3, t: 'Editing & Revision', sub: 'This is where you review and give notes.', hot: true, ul: [
+        '<b>Find the moment.</b> Click a word, or switch to <b>Pictures</b> and click a picture. Or just pause the video.',
+        '<b>Fix things.</b> Write what to change and press <b>Add note</b>. Idea buttons help you start. You can add as many notes as you like.',
+        '<b>Snapshot.</b> Take a picture of any moment and draw on it with the pen, arrow, circle, box or text tool. If you draw, a written note is required so BOSS knows what you mean.',
+        '<b>Add more.</b> Use a different style for just one part, add an image or logo, or add B-roll at that moment.',
+        '<b>Render Draft</b> sends all your notes to BOSS in one batch and makes a new version. Repeat until you like it.',
+        '<b>Make the final video</b> renders full quality. Press it only when you are happy.',
+      ], tip: 'Drafts are small so they finish fast. Full quality happens only when you press Make the final video.' },
       { n: 4, t: 'Gallery', sub: 'Every version you have made.', ul: [
-        'Versions are listed from oldest to latest. Play any of them right there.',
-        '<b>Open in editing</b> brings a version back so you can keep giving notes on it.',
-        'The folder button shows the video file in File Explorer or Finder.',
-        'Deleted versions move to a trash folder in the project, so they can be recovered.',
-      ], tip: 'Liked how it turned out? Press Save As New Style in the Editing step to reuse the look on your next video.' },
+        'The latest version is big at the top, with the older versions below.',
+        '<b>Post or schedule it</b> opens the Scheduling step. <b>Download</b> saves the file. <b>Edit this version</b> brings it back so you can keep giving notes.',
+        'The <b>...</b> menu shows the file in your folder, saves it to Google Drive, or deletes it. Deleted versions go to a trash folder inside the project, so they can be recovered.',
+      ], tip: 'Liked how it turned out? Use the ... menu in Editing & Revision to save the look as a new style.' },
+      { n: 5, t: 'Scheduling', sub: 'Plan where and when it goes out.', ul: [
+        'Tap the apps you want: Instagram, Facebook, YouTube, TikTok or LinkedIn.',
+        'Write a title and a description.',
+        'Choose <b>Post now</b>, or pick a day on the calendar and a time.',
+        'Press <b>Save as draft</b>, or <b>Schedule post</b>.',
+      ], tip: 'Real posting turns on after the Mashore Method connector is set up. Until then your plan is saved and BOSS gives you the setup instructions.' },
     ];
     const rules = [
-      'Nothing is posted or uploaded for you. The studio only makes files on your computer.',
+      'Nothing is posted or uploaded for you. Scheduling saves your plan; posting needs the Mashore Method connector, and BOSS asks before it connects anything.',
       'Your projects are saved as folders inside the BOSS Studio folder on your computer, in its <code>projects/</code> folder. Each project has its own subfolder with your raw video, frames and every rendered version. Nothing is lost if you close the window.',
       'Paid tools, such as voice or music generation, are never used without asking you first.',
       'Notes are sent in one batch, so you can review the whole video and then press Render Draft once.',
+      'A big or HDR video can take a long time to render. BOSS renders one video at a time per project and works quietly in the background. Silence is normal.',
     ];
     return `
     <div class="band hero-band cs-hero"><div class="eyebrow">Guide</div><h1>How the <i>Editing App</i> works</h1>
-      <p class="lede">From raw footage to a finished video in four steps. You talk and point, BOSS edits, and you review what it made.</p></div>
+      <p class="lede">From raw footage to a finished, scheduled video in five steps. You talk and point, BOSS edits, and you review what it made.</p></div>
 
     <section class="cs g">
       <div class="eyebrow">Before you start</div><h2>Three <i>things</i> to know</h2>
@@ -549,7 +560,7 @@
     </section>
 
     <section class="cs g">
-      <div class="eyebrow">The big picture</div><h2>Four steps, <i>one loop</i></h2>
+      <div class="eyebrow">The big picture</div><h2>Five steps, <i>one loop</i></h2>
       <div class="flow" role="list">${flow.map((f, i) => `<div class="fnode" role="listitem"><span class="fnum">${i + 1}</span><i class="ti ${f[2]}" aria-hidden="true"></i><h3>${esc(f[0])}</h3><p>${esc(f[1])}</p></div>${i < flow.length - 1 ? '<span class="farrow" aria-hidden="true">&#8594;</span>' : ''}`).join('')}</div>
       <div class="floop"><svg viewBox="0 0 700 56" aria-hidden="true"><path d="M630 4v22a14 14 0 0 1-14 14H84a14 14 0 0 1-14-14V12" fill="none" stroke="var(--accent)" stroke-width="3" stroke-dasharray="7 6" stroke-linecap="round"/><path d="M62 18l8-10 8 10z" fill="var(--accent)"/></svg><span>Notes and new drafts repeat until you approve</span></div>
     </section>
@@ -562,7 +573,7 @@
     <section class="cs g">
       <div class="eyebrow">Good to know</div><h2>The <i>ground rules</i></h2>
       <div class="kc"><div class="panel"><h3>How it behaves</h3><ul>${rules.map((r) => '<li>' + r + '</li>').join('')}</ul></div></div>
-      <p style="margin-top:26px"><a class="btn" href="#studio">Open the Editing App</a> <a class="btn" href="#case-study">See a real run</a></p>
+      <p style="margin-top:26px"><a class="btn" href="#studio">Get the Editing App</a> <a class="btn" href="#case-study">See a real run</a></p>
     </section>`;
   }
 
@@ -571,7 +582,7 @@
     const steps = [
       ['Get BOSS Studio', '<p>BOSS Studio is part of the BOSS program. Get it from the BOSS Studio page on GitHub: <a href="https://github.com/vincentkmc2023/BOSS-Studio" target="_blank" rel="noopener"><b>github.com/vincentkmc2023/BOSS-Studio</b></a></p><ul><li>With Git: open a terminal in your Documents folder and run <code>git clone https://github.com/vincentkmc2023/BOSS-Studio.git</code></li><li>Without Git: on the GitHub page press <b>Code</b>, then <b>Download ZIP</b>, and unzip it into your Documents folder.</li></ul>'],
       ['Open the folder in Claude Code and type start', '<ul><li>Open the <b>BOSS-Studio</b> folder in Claude Code: run <code>claude</code> inside that folder, or in the Claude desktop app open the <b>Code</b> tab, pick <b>Local</b> and choose the folder.</li><li>Type <code>start</code>. It checks your computer and installs anything missing (it asks you first), helps you set up free transcription (a Groq key, or the on-computer model with Python), renders a test video, and asks a few questions about your style.</li></ul><p class="gnote">Using Codex, Cursor or another agent? They can edit from the chat. The Editing App in step 3 runs on Claude Code.</p>'],
-      ['Open the Editing App', '<ul><li>Double-click <code>hub/open-studio.bat</code> (Windows). A window stays open while the studio runs. Close it to stop.</li><li>The hub opens on your computer at <code>localhost:1988</code>. Click <b>Editing App</b> and start your first project.</li></ul>'],
+      ['Open the Editing App', '<ul><li>Double-click <code>hub/open-studio.bat</code> (Windows). A window stays open while the studio runs. Close it to stop.</li><li>The hub opens on your computer at <code>localhost:1988</code> and starts the new Editing App on <code>localhost:1986</code>. Click <b>Editing App V2</b> in the top bar and press <b>New project</b>.</li></ul>'],
     ];
     const needs = [
       '<b>Claude Code</b>, signed in, on a paid Claude plan. Pro works, Max is better if you edit often.',

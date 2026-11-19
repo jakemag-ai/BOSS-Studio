@@ -19,6 +19,13 @@ Every saved style, organized by what it is for. Say a style's name to the editor
 | Motion-graphics reels | **Carousel Style V2** | Pink and Cream Reel Recreate | `motion-graphics-reels/carousel-style-v2/Carousel-Style-V2_style-guide.md` |
 | Talking-head edits | **Punch-In + Split** (also: Punch-In Split) | BOSS Editing - Vertical01 | `talking-head-edits/punch-in-split/Punch-In-Split_style-guide.html`, `…_scripts.md`, `…_reference-analysis.md` (+ `-02`, `-03`, `-04`) |
 | Talking-head edits | **Split-Card Reels** / **Viral Style v1** | (new) | `talking-head-edits/split-card-reels/viral-style-v1.md`, `…/Split-Card-Reels_reference-analysis.md` |
+| Talking-head edits | **Window Stack** | (new) | `talking-head-edits/window-stack/Window-Stack_style-guide.md` |
+| Talking-head edits | **Liquid Orange Flow** | (new) | `talking-head-edits/liquid-orange-flow/Liquid-Orange-Flow_style-guide.md` |
+| Talking-head edits | **Blue Stage Split** | (new) | `talking-head-edits/blue-stage-split/Blue-Stage-Split_style-guide.md` |
+| Talking-head edits | **Cream Card Cuts** | (new) | `talking-head-edits/cream-card-cuts/Cream-Card-Cuts_style-guide.md` |
+| Talking-head edits | **Marker Map** | (new) | `talking-head-edits/marker-map/Marker-Map_style-guide.md` |
+| Talking-head edits | **Effect Counter** | (new) | `talking-head-edits/effect-counter/Effect-Counter_style-guide.md` |
+| Talking-head edits | **Deep Blue Promo** | (new) | `talking-head-edits/deep-blue-promo/Deep-Blue-Promo_style-guide.md` |
 | YouTube explainers | **Clean Motion Explainer** | (same) | `youtube-explainers/clean-motion-explainer/Clean-Motion-Explainer_style-guide.md`, `…_reference-analysis.md` |
 | Captions-first shorts | **Bold & Energetic** | (same) | `captions-first-shorts/bold-energetic/Bold-Energetic_style-guide.md` |
 | YouTube explainers | **Cobalt Cards** | (new) | `youtube-explainers/cobalt-cards/Cobalt-Cards_style-guide.md` |

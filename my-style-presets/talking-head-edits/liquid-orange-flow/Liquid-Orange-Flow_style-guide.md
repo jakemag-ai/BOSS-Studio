@@ -19,7 +19,7 @@ Studied from a reel: 50-second Reel about a free open-source AI video studio (Op
 - Captions: **one word at a time**, centred at about 78% down the frame, in a **dark brown rounded pill** (#3A2F25 at about 85%) with white Inter 600 text around 22px. Words change on every spoken word. During graphics the pill stays in the same spot.
 - Emphasis word: one key word per Reel ("FREE") jumps to the top of the frame, white, bold, heavy black outline, with a small scale pop.
 - Motion: slight push-in on the presenter (100% to 106% over the shot), cards pop in with a soft overshoot, no bounce on the pill.
-- Sound: voice, clean and loud (about -14 LUFS), with an energetic music bed and a **soft swoosh on each orange wipe** (the one place a swoosh is allowed). Pull new music for each video (see `my-rules.md`).
+- Sound: voice, clean and loud (about -14 LUFS), with an energetic music bed and a **soft swoosh on each orange wipe** (a whoosh is part of this style; use a real recorded swoosh, not a synthetic one). Pull new music for each video (see `my-rules.md`).
 - Ending: back to the presenter full-frame for the call to action ("comment ... below"), no outro card.
 
 ## Palette (estimated)

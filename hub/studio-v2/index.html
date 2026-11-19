@@ -1379,20 +1379,27 @@ async function mashorePost(s, draft) {
     const r = await fetch('/api/mashore/post', {method: 'POST', headers: {...H, 'content-type': 'application/json'}, body: JSON.stringify(body)}), j = await r.json().catch(() => ({}));
     if (!r.ok) return askConfirm(SCHED_ERR[j.error] || j.error || 'Something went wrong. Nothing was posted.', 'OK', 'Close');
     toast(draft ? 'Draft saved in Mashore Method' : s.now ? 'Posted!' : 'Scheduled for ' + schedWhen(s));
-    s.posted = {id: j.id, status: draft ? 'draft' : s.now ? 'publish' : 'scheduled', plats: s.plats.slice(), at: Date.now(), when: body.when || '', planner: j.planner || '', links: []}; save(); schedRepaint(); window.scrollTo({top: 0, behavior: 'smooth'}); setTimeout(() => mashoreCheck(6), 4000);
+    await loadPosts(6); window.scrollTo({top: 0, behavior: 'smooth'});
   } catch { askConfirm('Could not reach the studio. Nothing was posted.', 'OK', 'Close'); }
 }
-// status card at the top of the Scheduling step: what was done, where, when, and the link to the live post
-function postedHtml() {
-  const z = cur.sched && cur.sched.posted; if (!z) return '';
-  const head = z.status === 'draft' ? ['ti-device-floppy', 'Saved as a draft', 'It is saved in Mashore Method. It has not been posted.'] : z.status === 'scheduled' ? ['ti-calendar-check', 'Scheduled', z.when ? 'It will go live ' + new Date(z.when).toLocaleString('en', {weekday: 'long', month: 'long', day: 'numeric', hour: 'numeric', minute: '2-digit'}).replace(/, (\d+:)/, ' at $1') + '.' : ''] : ['ti-circle-check', 'Posted!', 'It is live. ' + new Date(z.at).toLocaleString('en', {month: 'long', day: 'numeric', hour: 'numeric', minute: '2-digit'})];
-  const rows = (z.links && z.links.length ? z.links : z.plats.map((x) => ({platform: x, link: '', status: z.status}))).map((l) => '<div class="r" style="margin:6px 0"><b style="text-transform:capitalize">' + esc(l.platform === 'google' ? 'Mashore Method' : l.platform) + '</b><span class="mut">' + esc(l.status === 'published' ? 'live' : l.status || '') + '</span>' + (l.link ? '<a class="b" href="' + esc(l.link) + '" target="_blank" rel="noopener"><i class="ti ti-external-link"></i>Open the post</a>' : z.status === 'publish' ? '<span class="mut">link coming...</span>' : '') + '</div>').join('');
-  return '<section class="c" style="border:2px solid var(--green)"><p class="h"><i class="ti ' + head[0] + '" style="color:var(--green)"></i>' + head[1] + '</p><p class="mut" style="margin:0 0 6px">' + esc(head[2]) + '</p>' + rows + (z.planner ? '<a class="b" style="margin-top:8px" href="' + esc(z.planner) + '" target="_blank" rel="noopener"><i class="ti ti-layout-list"></i>Open in Mashore Method</a>' : '') + '</section>';
+// status cards at the top of the Scheduling step. They come from the studio's own record of each post (posts.json), so a later save of the project can never wipe them.
+let postsFor = {};
+async function loadPosts(tries) {
+  const proj = cur; if (!proj) return;
+  try { const j = await (await fetch('/api/mashore/posts?project=' + encodeURIComponent(proj.id), {headers: H})).json(); postsFor[proj.id] = j.posts || []; } catch { return; }
+  if (cur && cur.id === proj.id && cur.phase === 'schedule') schedRepaint();
+  const open = (postsFor[proj.id] || []).some((z) => z.status === 'published' && !(z.links || []).some((l) => l.link) && Date.now() - z.at < 120000);
+  if (tries > 0 && open) setTimeout(() => loadPosts(tries - 1), 6000); // the live link shows up a few seconds after posting
 }
-async function mashoreCheck(tries) { // the live link shows up a few seconds after posting, so ask again
-  const z = cur && cur.sched && cur.sched.posted; if (!z || !z.id) return;
-  try { const j = await (await fetch('/api/mashore/status?id=' + encodeURIComponent(z.id), {headers: H})).json(); if (j.posts && j.posts.length) { z.links = j.posts; z.status = j.posts.every((x) => x.status === 'draft') ? 'draft' : j.posts.some((x) => x.status === 'published') ? 'publish' : z.status; save(); if (cur.phase === 'schedule') schedRepaint(); } } catch {}
-  if (tries > 0 && z.status === 'publish' && !(z.links || []).some((x) => x.link)) setTimeout(() => mashoreCheck(tries - 1), 6000);
+function postedHtml() {
+  const list = (cur && postsFor[cur.id]) || []; if (!list.length) return '';
+  const fmt = (t) => new Date(t).toLocaleString('en', {weekday: 'long', month: 'long', day: 'numeric', hour: 'numeric', minute: '2-digit'}).replace(/, (\d+:)/, ' at $1');
+  return list.slice(0, 3).map((z, n) => {
+    const live = (z.links || []).some((l) => l.status === 'published'), st = z.status === 'draft' ? 'draft' : z.status === 'scheduled' && !live ? 'scheduled' : 'published';
+    const head = st === 'draft' ? ['ti-device-floppy', 'Saved as a draft', 'Saved in Mashore Method. It has not been posted.'] : st === 'scheduled' ? ['ti-calendar-check', 'Scheduled', z.when ? 'It will go live ' + fmt(z.when) + '.' : ''] : ['ti-circle-check', 'Posted!', 'It is live. ' + fmt(z.at)];
+    const rows = ((z.links && z.links.length) ? z.links : (z.platforms || []).map((x) => ({platform: x, link: '', status: z.status}))).map((l) => '<div class="r" style="margin:6px 0"><b style="text-transform:capitalize">' + esc(l.platform) + '</b><span class="mut">' + esc(l.status === 'published' ? 'live' : l.status || '') + '</span>' + (l.link ? '<a class="b" href="' + esc(l.link) + '" target="_blank" rel="noopener"><i class="ti ti-external-link"></i>Open the post</a>' : st === 'published' ? '<span class="mut">link coming...</span>' : '') + '</div>').join('');
+    return '<section class="c" style="border:2px solid var(--green)"><p class="h"><i class="ti ' + head[0] + '" style="color:var(--green)"></i>' + head[1] + (z.title ? ' · ' + esc(z.title) : '') + '</p><p class="mut" style="margin:0 0 6px">' + esc(head[2]) + '</p>' + rows + (n === 0 ? '<a class="b" style="margin-top:8px" href="https://app.mashoremethod.com" target="_blank" rel="noopener"><i class="ti ti-layout-list"></i>Open Mashore Method</a>' : '') + '</section>';
+  }).join('');
 }
 const sched = () => (cur.sched ||= {plats: ['Instagram', 'Facebook'], title: '', desc: '', now: false, date: '', time: '09:00'});
 const schedWhen = (s) => s.date ? new Date(s.date + 'T' + (s.time || '09:00')).toLocaleString('en', {weekday: 'long', month: 'long', day: 'numeric', hour: 'numeric', minute: '2-digit'}).replace(/, (\d+:)/, ' at $1') : '';
@@ -1415,7 +1422,7 @@ function schedUpd() {
   $$('#sleft').textContent = !viewFile ? 'You need a finished video before you can post.' : !s.plats.length ? 'Pick at least one app.' : !s.title.trim() ? 'Add a title to continue.' : (!s.now && !s.date) ? 'Pick a day on the calendar.' : 'Ready! It will post ' + (s.now ? 'right away' : 'on ' + schedWhen(s)) + ' to ' + s.plats.join(', ') + '.';
 }
 async function bindSchedule() {
-  if (cur.sched && cur.sched.posted && !(cur.sched.posted.links || []).length) mashoreCheck(2);
+  loadPosts(2);
   schedUpd(); await loadDraft(); schedUpd(); // the page may have changed while the draft list loaded, so look the elements up again
   const th = document.querySelector('#schedvid'), nm = document.querySelector('#schedvname'); if (!th || !nm) return;
   if (!viewFile) { nm.textContent = 'No video yet'; const sub = th.nextElementSibling && th.nextElementSibling.querySelector('p'); if (sub) sub.textContent = 'Finish the Editing step first. Your finished video will show up here.'; ['#sgo', '#sdraft'].forEach((i) => { const b = document.querySelector(i); if (b) b.disabled = true; }); const l = document.querySelector('#sleft'); if (l) l.textContent = 'You need a finished video before you can post.'; return; }
@@ -1759,6 +1766,8 @@ function handleMediaFiles(fileList) {
   const auds = files.filter((f) => AUDIO.test(f.name) || f.type.startsWith('audio/'));
   if (vids.length) { draftNew.files = (draftNew.files || []).concat(vids); draftNew.file = draftNew.files[0]; }
   if (auds.length) draftNew.vofile = auds[0];
+  keepNewFormText(); const first = vids[0] || auds[0]; // an empty project name takes the file's name; a name you typed is never touched
+  if (first && !draftNew.name.trim()) draftNew.name = first.name.replace(/\.[^.]+$/, '').replace(/_+/g, ' ').replace(/\s+/g, ' ').trim();
   if (!vids.length && !auds.length) toast('Choose a video or audio file: mp4, avi, mov, wav or mp3');
   render();
 }

@@ -220,6 +220,12 @@ async function mashoreApi(req, res, id) {
     if (r.status !== 200) return send(res, 200, { connected: false, error: r.body.message || 'Mashore Method said no', accounts: [] });
     return send(res, 200, { connected: true, accounts: (r.body.results?.accounts || []).filter((x) => x.active && !x.deleted).map((x) => ({ id: x.id, platform: x.platform, name: x.name, profileId: x.profileId })) });
   }
+  if (id === 'posts') { // this project's posts, newest first, with the live link of each
+    const pj = new URL(req.url, 'http://x').searchParams.get('project') || '', f = join(pdir(pj), 'posts.json'); let all = []; try { all = JSON.parse(readFileSync(f, 'utf8')); } catch {}
+    const a = all.length ? await ghl('/social-media-posting/{loc}/accounts') : { body: {} }, ids = (a.body.results?.accounts || []).map((x) => x.id).join(','); let live = [];
+    if (ids) { const r = await ghl('/social-media-posting/{loc}/posts/list', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ type: 'all', accounts: ids, skip: '0', limit: '100', fromDate: '2020-01-01T00:00:00.000Z', toDate: '2035-01-01T00:00:00.000Z', includeUsers: 'false' }) }); live = r.body.results?.posts || []; }
+    return send(res, 200, { posts: all.slice(0, 5).map((x) => ({ ...x, links: live.filter((l) => l._id === x.id || l.parentPostId === x.id).map((l) => ({ platform: l.platform, status: l.status, link: l.previewLink || '' })) })) });
+  }
   if (id === 'status') { // where a post ended up: its state per app and the link to the live post
     const pid = new URL(req.url, 'http://x').searchParams.get('id') || '', a = await ghl('/social-media-posting/{loc}/accounts');
     const ids = (a.body.results?.accounts || []).map((x) => x.id).join(',');
@@ -245,6 +251,9 @@ async function mashoreApi(req, res, id) {
     const post = { accountIds: accts.map((x) => x.id), summary: String(b.text || ''), type: 'post', media, userId: accts[0].profileId, status: b.draft ? 'draft' : b.when ? 'scheduled' : 'published' };
     if (b.when && !b.draft) post.scheduleDate = new Date(b.when).toISOString();
     const r = await ghl('/social-media-posting/{loc}/posts', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(post) });
+    if (r.status < 300) { // keep the record in its own file: it cannot be overwritten by a stale save of project.json
+      try { const f = join(pdir(String(b.project || '')), 'posts.json'); let all = []; try { all = JSON.parse(readFileSync(f, 'utf8')); } catch {} all.unshift({ id: r.body.results?.post?._id, status: post.status, platforms: b.platforms || [], when: post.scheduleDate || '', at: Date.now(), file: b.file || '', title: String(b.text || '').split(String.fromCharCode(10))[0].slice(0, 100) }); writeFileSync(f, JSON.stringify(all.slice(0, 30))); } catch {}
+    }
     return r.status < 300 ? send(res, 200, { ok: true, id: r.body.results?.post?._id, status: post.status, planner: 'https://app.mashoremethod.com/v2/location/' + mashoreEnv().MASHORE_LOCATION_ID + '/marketing/social-planner' }) : send(res, 502, { error: Array.isArray(r.body.message) ? r.body.message.join(', ') : r.body.message || 'Mashore Method said no' });
   }
   return send(res, 404, { error: 'not found' });

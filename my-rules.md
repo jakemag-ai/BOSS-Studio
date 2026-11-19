@@ -16,7 +16,7 @@ Lasting rules from my notes. These beat `my-style.md`.
   - My words: "make sure that no texts are cut out. resize when necessary" (2026-11-11)
 - Cards, rounded boxes and chips must have clear contrast from the background. A white card on a near-white background looks over-exposed, so use a slightly darker warm background, a visible border and a stronger shadow.
   - My words: "when revealing small cards, or rounded boxes, make sure there's contrast from the background... it looks like its over exposed" (2026-11-11)
-- Sound: no whoosh or swish sound effects. Use soft clicks or a clean high-tech ding instead.
+- Sound (BOSS Motion Graphics - 01 / Type & Wipe and its split-cutout version only): no whoosh or swish sound effects. Use soft clicks or a clean high-tech ding instead. Other styles keep whooshes if their guide uses them, and clicks only where the style has a click.
   - My words: "I don't like the woosh sound effect, replace with clicks or hightech ding" (2026-11-11)
 - Named style: "BOSS Motion Graphics - 01 + Split Cutout" is BOSS Motion Graphics - 01 plus the presenter split: the talking head in a rounded box at the bottom with a cut-out of her head popping out over the graphics, used only in some scenes. When I say "use BOSS Motion Graphics - 01 + Split Cutout", follow sections 1 to 8 of `my-style-presets/motion-graphics-reels/type-and-wipe/Type-and-Wipe_style-guide.md`. Always bake the presenter into frame images before rendering.
   - My words: "update the style with this new skill of having a split screen and cutout video. maybe add a suffix about that new feature" (2026-11-11)
@@ -44,7 +44,7 @@ Lasting rules from my notes. These beat `my-style.md`.
   - My words: "dont render video yet" and "do all frames and let's see first" (2026-11-12)
 - Sound: typing effects use a soft, deep, mechanical "creamy" keyboard thock and stay quiet under the voice. Mouse clicks are a normal mouse click. Background music is corporate upbeat, never funk, and subtle.
   - My words: "use a mechanical creamy sound. and lower the volume down" and "change to corporate upbeat" (2026-11-12)
-- Music is always new: choosing a style never carries over the music or sound bed that came with it (its sample video, guide or a reference). Every new project gets unique music pulled or generated for that video (ElevenLabs music), rendered into the video.
+- Music is always new: choosing a style never carries over the music or sound bed that came with it (its sample video, guide or a reference). Every new project gets music pulled for that video from the style's sound kit (`_sound-kit.md` in the style folder, real licensed tracks, a different one each time), rendered into the video. Use ElevenLabs music or effects only if I ask, because they sound too AI.
   - My words: "when selecting the styles, it should not carry over the sound music that was in the style but BOSS should pull unique music for new projects.... always have new music rendered in" (2026-11-18)
 - Voice: no "ah/uh" fillers or breath and mouth blips between words.
   - My words: "i can hear ah's .... fix that" and "theres a glitch after the word stranger. like a half ah" (2026-11-12)

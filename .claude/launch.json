@@ -4,8 +4,29 @@
     {
       "name": "editing-hub",
       "runtimeExecutable": "py",
-      "runtimeArgs": ["-m", "http.server", "1989"],
+      "runtimeArgs": [
+        "-m",
+        "http.server",
+        "1989"
+      ],
       "port": 1989
+    },
+    {
+      "name": "hyperframes-studio",
+      "runtimeExecutable": "cmd",
+      "runtimeArgs": [
+        "/c",
+        "cd kit && npx hyperframes preview --no-open --port=3002 video-projects/hyperframes-sizzle"
+      ],
+      "port": 3002
+    },
+    {
+      "name": "studio-v2",
+      "runtimeExecutable": "node",
+      "runtimeArgs": [
+        "hub/studio-v2/server.mjs"
+      ],
+      "port": 1986
     }
   ]
 }

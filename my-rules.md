@@ -44,7 +44,13 @@ Lasting rules from my notes. These beat `my-style.md`.
   - My words: "dont render video yet" and "do all frames and let's see first" (2026-11-12)
 - Sound: typing effects use a soft, deep, mechanical "creamy" keyboard thock and stay quiet under the voice. Mouse clicks are a normal mouse click. Background music is corporate upbeat, never funk, and subtle.
   - My words: "use a mechanical creamy sound. and lower the volume down" and "change to corporate upbeat" (2026-11-12)
+- Music is always new: choosing a style never carries over the music or sound bed that came with it (its sample video, guide or a reference). Every new project gets unique music pulled or generated for that video (ElevenLabs music), rendered into the video.
+  - My words: "when selecting the styles, it should not carry over the sound music that was in the style but BOSS should pull unique music for new projects.... always have new music rendered in" (2026-11-18)
 - Voice: no "ah/uh" fillers or breath and mouth blips between words.
   - My words: "i can hear ah's .... fix that" and "theres a glitch after the word stranger. like a half ah" (2026-11-12)
+- Text (headlines, captions, stamps, pills) never covers the speaker's head or face, in any frame of any video. Give the face shot headroom (push the video down) and keep punch-ins small enough that the head stays clear.
+  - My words: "Make sure that in all frames in all video... the text doesn't cover the head or the face... you can push down the video so there's more headroom" (2026-11-18)
+- When the speaker introduces herself, hide the word captions and put her name and details (company) in the caption spot instead.
+  - My words: "remove the captions from this section when she's... introducing herself and then put her name and the other details... where the captions are originally" (2026-11-18)
 - When the speaker tells a story (what happened to someone), show B-roll that follows the story behind her instead of graphic illustrations. She stays in the speaker box with her head popping out, and the B-roll fills the stage behind her.
   - My words: "I need some Brolls about what happened behind her still.... follow the story of what happen with broll instead of graphic illustrations on this section" and "change the scene to a b-roll videos relating to the script on this part forward" (2026-11-13)

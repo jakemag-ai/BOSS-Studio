@@ -61,6 +61,7 @@ How to edit: use the bossstudio pipeline in this repo, not Remotion and not a cu
 - Cuts: the kit's cut-silences and cut-mistakes scripts.
 - Motion graphics and rendering: HyperFrames (the kit's hyperframes, hyperframes-video-beats and hyperframes-cli skills; render with npx hyperframes render from kit/). Take the look (colours, fonts, timing, layouts) from the style guide; the Remotion code in remotion/src/ is only a visual reference.
 - Frames for review: hyperframes snapshot, saved to frames/ as above.
+Music rule (it beats any music line in a style guide, a style's sample video or a reference video): never reuse music that came with a style. Every new project gets NEW music made for that video. Generate it with the ElevenLabs MCP (music composition), to fit this video's mood, pace and length, and render it into the video. Never copy the music out of a style's sample or a reference video. If the ElevenLabs connector is not connected, use a my-sounds/ track that the style's sample and guide did not use and that no earlier project of mine used; if there is none, leave the music out and say so in your reply.
 Rendering rules (important, they stop duplicate renders and slow renders):
 - Never run \`npx hyperframes render\` directly. Always start it through the guard, in the background: \`node tools/render-guard.mjs kit/video-projects/${id} -- npx hyperframes render -o renders/<name>.mp4 -q draft --crf 24\`. The guard refuses to start a second render for the same project, and it writes progress to kit/video-projects/${id}/renders/render.log.
 - Never run a render in the foreground. A tool time-out does NOT stop a render: it keeps running unseen, and starting it again makes two renders that slow each other down. If a command with a render in it times out, assume the render is still running and check \`node tools/render-guard.mjs kit/video-projects/${id} --status\` before doing anything else.
@@ -75,7 +76,7 @@ function startRun(id, prompt) {
   runs.set(id, st);
   if (!exe) { st.running = false; st.error = "Can't find Claude Code. Install it and sign in first."; return st; }
   const p = readProject(id) || {};
-  const args = ['-p', '--output-format', 'stream-json', '--verbose', '--model', 'claude-opus-5-5', '--effort', 'medium', '--permission-mode', 'acceptEdits', '--allowedTools', 'Bash,PowerShell,Read,Write,Edit,Glob,Grep,Skill,mcp__ElevenLabs__text_to_speech,mcp__ElevenLabs__search_voices,mcp__ElevenLabs__text_to_voice'];
+  const args = ['-p', '--output-format', 'stream-json', '--verbose', '--model', 'claude-opus-5-5', '--effort', 'medium', '--permission-mode', 'acceptEdits', '--allowedTools', 'Bash,PowerShell,Read,Write,Edit,Glob,Grep,Skill,mcp__ElevenLabs__text_to_speech,mcp__ElevenLabs__search_voices,mcp__ElevenLabs__text_to_voice,mcp__ElevenLabs__compose_music,mcp__ElevenLabs__create_composition_plan,mcp__ElevenLabs__text_to_sound_effects'];
   if (p.session) args.push('--resume', p.session);
   const child = spawn(exe, args, { cwd: ROOT, windowsHide: true });
   st.child = child;

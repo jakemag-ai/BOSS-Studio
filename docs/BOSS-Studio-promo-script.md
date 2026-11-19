@@ -16,7 +16,7 @@ Tagline used at the end: "Your vision. BOSS does the editing."
 | 0:18 | Raw video clip, then the same clip finished, with captions and graphics. | BOSS Studio is an editing app powered by AI. You record the video. BOSS does the editing: the cuts, the captions, the graphics, and the sound. |
 | 0:30 | Mascot at a desk. | Think of it as your own video editor who never gets tired and never says, "I'm busy." |
 | 0:38 | A list appears one line at a time: Clean cuts, Captions, Graphics, Music and sound, Styles. | Here is what BOSS can do. It cleans up your talking. It finds the "ums," the repeats, and the false starts, and takes them out. |
-| 0:50 | The 8 style cards slide across the screen. | It gives your video a look. There are eight styles to pick from. Choosing one is like choosing an outfit. |
+| 0:50 | A selection of style cards slides across the screen. | It gives your video a look. You pick from a selection of styles. Choosing one is like choosing an outfit. |
 | 1:00 | Captions pop on, then cards and animated words. | It adds captions that pop, moving words, cards, and graphics. It adds music and sound effects too. |
 | 1:10 | A tall video and a wide video side by side. | And it makes the right shape for where you post: tall for Reels and TikTok, wide for YouTube. |
 | 1:16 | Text on screen: "You stay the boss." | The best part? You stay the boss. Nothing is final until you say so. |
@@ -27,20 +27,20 @@ Tagline used at the end: "Your vision. BOSS does the editing."
 
 | Time | On screen | Voiceover |
 |---|---|---|
-| 1:20 | The Editing App opens on "Your projects." | Let's take a quick tour. This is the projects page. Every project gets its own folder on your computer, so your videos stay private. |
-| 1:30 | Click **New project**. Name it, add the raw video, pick a style. | **Start a project.** Click New project. Give it a name. Add your raw video. Then pick a style. |
-| 1:40 | Point at the **Magic Edit** button. | You have two ways to go. Start the normal way and review each step. Or press Magic Edit, and BOSS decides everything and shows you the result when it's done. |
-| 1:50 | Step bar highlights **1 · Script**. The transcript appears. | **Step one: Script.** BOSS listens to your video and writes down every word. Now you can read your video like a document. |
-| 2:00 | Click words. They turn into cuts. Click the "find stutters" action. | Click any words you don't want, and they're cut. Or let BOSS hunt for stutters and retakes for you. |
-| 2:10 | Step bar highlights **2 · Instructions**. A text box is typed into. | **Step two: Instructions.** Tell BOSS what you want in plain words. For example: "Make it energetic, with big captions." |
-| 2:20 | Add a logo, a picture, and a B-roll clip to the instructions. | You can add your logo, a picture, or extra clips for the background. You can even paste a video you like as an example. |
-| 2:30 | Step bar highlights **3 · Editing**. The "BOSS is working" banner with its progress bar. | **Step three: Editing.** BOSS gets to work. A progress bar shows you it's busy. First it shows you still frames. Then it builds a fast, small draft. |
-| 2:42 | The draft plays. Toggle **Script** and **Frames**. | Watch the draft. Switch between the script and the frames to jump anywhere in the video. |
+| 1:20 | The Editing App opens on "Your projects." `03-projects-page.png` | Let's take a quick tour. This is the projects page. Every project gets its own folder on your computer, so your videos stay private. |
+| 1:30 | Click **New project**. Name it, add the raw video, write your first prompt. `04-new-project.png`, then scroll to the style picker `05-new-project-pick-a-style.png` | **Start a project.** Click New project. Give it a name. Add your raw video. Write your first idea in your own words. Then pick a style. |
+| 1:40 | Point at the **Create project** and **Magic Edit** buttons. `04-new-project.png`. Then show a Magic Edit result. `13-magic-edit-sample-gallery.png` | You have two ways to go. Press Create project to review each step yourself. Or press Magic Edit, and BOSS decides everything and shows you the result when it's done. |
+| 1:50 | Step bar highlights **1 · Script**. The transcript appears next to the video. `06-step1-script.png` | **Step one: Script.** BOSS listens to your video and writes down every word. Now you can read your video like a document. |
+| 2:00 | Select a sentence. Point at **Delete selected**, **Suggest cleanup** and **Preview edits**. `06b-step1-script-select-words.png` | Select any words you don't want, and delete them. Or press Suggest cleanup, and BOSS finds the stutters and retakes for you. Press Preview edits to watch it with those parts skipped. Your original video is never changed. |
+| 2:10 | Step bar highlights **2 · Instructions**. The first instruction box is typed into. `07-step2-instructions.png` | **Step two: Instructions.** Tell BOSS what you want in plain words. For example: "Make it energetic, with big captions." |
+| 2:20 | Tick **Enhance the audio**, **Add background music** and **Add sound effects**. Paste a reference link. `07-step2-instructions.png` | You can tick boxes to clean up the sound, add soft music, or add sound effects. You can even paste a video you like, and BOSS will copy its style. |
+| 2:30 | Step bar highlights **3 · Editing**. The "BOSS is working" banner with its progress bar. `11-boss-working-progress-bar.png` | **Step three: Editing.** BOSS gets to work. A progress bar shows you it's busy. When it's done, you get a fast, small draft to review. |
+| 2:42 | The draft plays. Toggle **Script** and **Frames**. `08-step3-editing-draft.png`, `09-step3-frames-view.png` | Watch the draft. Switch between the script and the frames to jump anywhere in the video. |
 | 2:50 | Pause. Click **Snapshot**. The big canvas opens. Draw a circle and an arrow. | See something to change? Pause and press Snapshot. The frame opens big, and you can draw right on it. Circle it. Point an arrow at it. |
-| 3:02 | Type a note: "Make this word bigger." The note pins to the time. | Then write a note, like, "Make this word bigger." Each note sticks to that exact second. Add as many as you want. |
-| 3:10 | Press **Render Draft**. A new version appears. | Press Render Draft, and BOSS fixes everything in one go. |
-| 3:16 | Step bar highlights **4 · Gallery**. V1, V2, V3 cards. | **Step four: Gallery.** Every version is saved: version one, version two, version three. Open any of them, show the file in its folder, or send it to Google Drive with one click. |
-| 3:24 | Press **Render Final Version**. The finished video plays. | When you love it, press Render Final Version. That makes the full HD video. |
+| 3:02 | Type a note: "Make this word bigger and add a pop sound." `10-snapshot-draw-and-note.png` | Then write a note, like, "Make this word bigger and add a pop sound." Each note sticks to that exact second. Add as many as you want. |
+| 3:10 | The button reads **Render Draft** once you have a note. A new version appears. `08-step3-editing-draft.png` | When you have your notes, press Render Draft, and BOSS fixes everything in one go. |
+| 3:16 | Step bar highlights **4 · Gallery**. V1 to V5 cards. `12-step4-gallery-versions.png` | **Step four: Gallery.** Every version is saved, so you can compare them. Open any of them, show the file in its folder, or send it to Google Drive with one click. |
+| 3:24 | Press **Render Final Version**. The finished video plays. `08-step3-editing-draft.png` | Drafts are small so they're fast. When you love one, press Render Final Version. That makes the full-quality video. |
 
 ---
 
@@ -56,12 +56,10 @@ Tagline used at the end: "Your vision. BOSS does the editing."
 
 ## Notes for the editor
 
-- Show real screens from the Studio, not mockups. Use a project that has a finished draft, such as Dark Terminal Test.
+- The real screenshots for every row are in `Downloads/BOSS Studio Promo Screenshots` (file names are in the On screen column; `SHOT-LIST.md` in that folder has the same list). The progress bar shot is staged, since no render was run.
 - The "7th grade" test: every sentence is short, and every tech word is explained in the same breath ("transcript" is shown as "writes down every word").
 - A 45-second cut: use the 0:00 to 1:20 pitch, then one line per step ("Pick a style. Tell BOSS what you want. Review and draw notes. Get your video.").
 
 ## Check before recording
 
-- The exact button names on the Instructions step and the "find stutters" action: confirm them on screen before the voiceover is final.
-- The number of styles on the home page (the hub currently shows 8).
-- That "Render Final Version" is full HD (1080p) on your install.
+- Say "full-quality" for the final render, not "HD": the app says full resolution (1080x1920 for vertical) only happens on Render Final Version.

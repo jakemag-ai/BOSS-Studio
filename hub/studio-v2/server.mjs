@@ -4,7 +4,7 @@
 // (a page on another website can't add it), so other sites can't drive it.
 import http from 'node:http';
 import { spawn } from 'node:child_process';
-import { cpSync, createReadStream, createWriteStream, existsSync, mkdirSync, readdirSync, readFileSync, renameSync, rmSync, statSync, writeFileSync } from 'node:fs';
+import { cpSync, createReadStream, createWriteStream, existsSync, linkSync, mkdirSync, readdirSync, readFileSync, renameSync, rmSync, statSync, writeFileSync } from 'node:fs';
 import { homedir } from 'node:os';
 import { basename, dirname, extname, join, normalize, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -61,6 +61,7 @@ How to edit: use the bossstudio pipeline in this repo, not Remotion and not a cu
 - Cuts: the kit's cut-silences and cut-mistakes scripts.
 - Motion graphics and rendering: HyperFrames (the kit's hyperframes, hyperframes-video-beats and hyperframes-cli skills; render with npx hyperframes render from kit/). Take the look (colours, fonts, timing, layouts) from the style guide; the Remotion code in remotion/src/ is only a visual reference.
 - Frames for review: hyperframes snapshot, saved to frames/ as above.
+Music rule (it beats any music line in a style guide, a style's sample video or a reference video): never reuse music that came with a style. Every new project gets NEW music made for that video. Generate it with the ElevenLabs MCP (music composition), to fit this video's mood, pace and length, and render it into the video. Never copy the music out of a style's sample or a reference video. If the ElevenLabs connector is not connected, use a my-sounds/ track that the style's sample and guide did not use and that no earlier project of mine used; if there is none, leave the music out and say so in your reply.
 Rendering rules (important, they stop duplicate renders and slow renders):
 - Never run \`npx hyperframes render\` directly. Always start it through the guard, in the background: \`node tools/render-guard.mjs kit/video-projects/${id} -- npx hyperframes render -o renders/<name>.mp4 -q draft --crf 24\`. The guard refuses to start a second render for the same project, and it writes progress to kit/video-projects/${id}/renders/render.log.
 - Never run a render in the foreground. A tool time-out does NOT stop a render: it keeps running unseen, and starting it again makes two renders that slow each other down. If a command with a render in it times out, assume the render is still running and check \`node tools/render-guard.mjs kit/video-projects/${id} --status\` before doing anything else.
@@ -75,7 +76,7 @@ function startRun(id, prompt) {
   runs.set(id, st);
   if (!exe) { st.running = false; st.error = "Can't find Claude Code. Install it and sign in first."; return st; }
   const p = readProject(id) || {};
-  const args = ['-p', '--output-format', 'stream-json', '--verbose', '--model', 'claude-opus-5-5', '--effort', 'medium', '--permission-mode', 'acceptEdits', '--allowedTools', 'Bash,PowerShell,Read,Write,Edit,Glob,Grep,Skill,mcp__ElevenLabs__text_to_speech,mcp__ElevenLabs__search_voices,mcp__ElevenLabs__text_to_voice'];
+  const args = ['-p', '--output-format', 'stream-json', '--verbose', '--model', 'claude-opus-5-5', '--effort', 'medium', '--permission-mode', 'acceptEdits', '--allowedTools', 'Bash,PowerShell,Read,Write,Edit,Glob,Grep,Skill,mcp__ElevenLabs__text_to_speech,mcp__ElevenLabs__search_voices,mcp__ElevenLabs__text_to_voice,mcp__ElevenLabs__compose_music,mcp__ElevenLabs__create_composition_plan,mcp__ElevenLabs__text_to_sound_effects'];
   if (p.session) args.push('--resume', p.session);
   const child = spawn(exe, args, { cwd: ROOT, windowsHide: true });
   st.child = child;
@@ -204,6 +205,50 @@ const findRclone = async () => {
 };
 
 // ---- API
+// ---- Mashore Method (GoHighLevel) Social Planner: token + location id live in .env (git-ignored)
+const mashoreEnv = () => { const o = {}; try { for (const l of readFileSync(join(ROOT, '.env'), 'utf8').split('\n')) { const m = l.trim().match(/^(MASHORE_\w+)\s*=\s*(.*)$/); if (m) o[m[1]] = m[2].trim(); } } catch {} return o; };
+async function ghl(path, init = {}) {
+  const e = mashoreEnv(); if (!e.MASHORE_TOKEN || !e.MASHORE_LOCATION_ID) return { status: 0, body: { message: 'NOT_CONNECTED' } };
+  const r = await fetch('https://services.leadconnectorhq.com' + path.replace('{loc}', e.MASHORE_LOCATION_ID), { ...init, headers: { Authorization: 'Bearer ' + e.MASHORE_TOKEN, Version: '2021-07-28', Accept: 'application/json', ...(init.headers || {}) } });
+  return { status: r.status, body: await r.json().catch(() => ({})) };
+}
+const readBody = (req) => new Promise((ok) => { let b = ''; req.on('data', (d) => (b += d)); req.on('end', () => { try { ok(JSON.parse(b || '{}')); } catch { ok({}); } }); });
+async function mashoreApi(req, res, id) {
+  if (id === 'accounts') { // which apps are linked in Mashore Method
+    const r = await ghl('/social-media-posting/{loc}/accounts');
+    if (r.body.message === 'NOT_CONNECTED') return send(res, 200, { connected: false, accounts: [] });
+    if (r.status !== 200) return send(res, 200, { connected: false, error: r.body.message || 'Mashore Method said no', accounts: [] });
+    return send(res, 200, { connected: true, accounts: (r.body.results?.accounts || []).filter((x) => x.active && !x.deleted).map((x) => ({ id: x.id, platform: x.platform, name: x.name, profileId: x.profileId })) });
+  }
+  if (id === 'status') { // where a post ended up: its state per app and the link to the live post
+    const pid = new URL(req.url, 'http://x').searchParams.get('id') || '', a = await ghl('/social-media-posting/{loc}/accounts');
+    const ids = (a.body.results?.accounts || []).map((x) => x.id).join(',');
+    if (!pid || !ids) return send(res, 200, { posts: [] });
+    const r = await ghl('/social-media-posting/{loc}/posts/list', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ type: 'all', accounts: ids, skip: '0', limit: '50', fromDate: '2020-01-01T00:00:00.000Z', toDate: '2035-01-01T00:00:00.000Z', includeUsers: 'false' }) });
+    return send(res, 200, { posts: (r.body.results?.posts || []).filter((x) => x._id === pid || x.parentPostId === pid).map((x) => ({ platform: x.platform, status: x.status, link: x.previewLink || '', when: x.scheduleDate || '' })) });
+  }
+  if (id === 'post' && req.method === 'POST') { // body: {platforms:['facebook'], text, draft, when (ISO) | null, project, file}
+    const b = await readBody(req), a = await ghl('/social-media-posting/{loc}/accounts');
+    if (a.body.message === 'NOT_CONNECTED') return send(res, 409, { error: 'NOT_CONNECTED' });
+    const accts = (a.body.results?.accounts || []).filter((x) => x.active && !x.deleted && (b.platforms || []).includes(x.platform));
+    if (!accts.length) return send(res, 409, { error: 'NO_ACCOUNT' });
+    let media = [];
+    if (b.file && !b.draft) { // upload the finished video to the Mashore Method media library so it can be attached
+      const f = join(PROJECTS, String(b.project || '').replace(/[^\w.-]/g, ''), 'drafts', basename(String(b.file)));
+      if (!existsSync(f)) return send(res, 404, { error: 'That video file is missing.' });
+      const fd = new FormData(); fd.append('file', new Blob([readFileSync(f)], { type: 'video/mp4' }), basename(f)); fd.append('hosted', 'false');
+      const u = await ghl('/medias/upload-file', { method: 'POST', body: fd });
+      if (u.status === 401) return send(res, 409, { error: 'NEEDS_MEDIA_SCOPE' });
+      if (u.status >= 300 || !u.body.url) return send(res, 502, { error: 'Video upload failed: ' + (u.body.message || u.status) });
+      media = [{ url: u.body.url, type: 'video/mp4' }];
+    }
+    const post = { accountIds: accts.map((x) => x.id), summary: String(b.text || ''), type: 'post', media, userId: accts[0].profileId, status: b.draft ? 'draft' : b.when ? 'scheduled' : 'published' };
+    if (b.when && !b.draft) post.scheduleDate = new Date(b.when).toISOString();
+    const r = await ghl('/social-media-posting/{loc}/posts', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(post) });
+    return r.status < 300 ? send(res, 200, { ok: true, id: r.body.results?.post?._id, status: post.status, planner: 'https://app.mashoremethod.com/v2/location/' + mashoreEnv().MASHORE_LOCATION_ID + '/marketing/social-planner' }) : send(res, 502, { error: Array.isArray(r.body.message) ? r.body.message.join(', ') : r.body.message || 'Mashore Method said no' });
+  }
+  return send(res, 404, { error: 'not found' });
+}
 async function api(req, res, url) {
   const parts = url.pathname.split('/').filter(Boolean).slice(1); // after /api
   const [a, id, b] = parts;
@@ -212,6 +257,7 @@ async function api(req, res, url) {
     const r = await exec(bin, ['config', 'create', DRIVE_REMOTE, 'drive', 'scope', 'drive'], 300000);
     return r.code === 0 ? send(res, 200, { ok: true }) : send(res, 500, { error: 'Google sign-in did not finish: ' + r.err.trim().split(/\r?\n/).pop() });
   }
+  if (a === 'mashore') return mashoreApi(req, res, id);
   if (a === 'ping') return send(res, 200, { ok: true, maintainer: existsSync(join(ROOT, '.maintainer')) });
   if (a === 'style-proposals') {
     const dir = pendingDir(id);
@@ -243,7 +289,24 @@ async function api(req, res, url) {
   const p = readProject(id); if (!p) return send(res, 404, { error: 'no such project' });
   if (!b && req.method === 'DELETE') {
     if (runs.get(id)?.running) return send(res, 409, { error: 'Claude is working on this project. Stop it first.' });
+    const kids = readdirSync(PROJECTS, { withFileTypes: true }).filter((d) => d.isDirectory()).map((d) => readProject(d.name)).filter((q) => q && !q.deleted && q.madeFrom === p.id);
+    if (kids.length) return send(res, 409, { error: 'COPIES:' + kids.map((q) => q.name).join(' | ') });
     p.deleted = true; writeProject(p); trashProject(p.id); return send(res, 200, { ok: true });
+  }
+  if (b === 'restyle' && req.method === 'POST') { // a copy of this project in a new style: same footage, no notes or old renders
+    if (runs.get(id)?.running) return send(res, 409, { error: 'Claude is working on this project. Wait for it to finish.' });
+    const j = JSON.parse(await body(req, 1e4)), nm = String(j.styleName || '').trim();
+    const root = p.baseName || p.name, ver = 1 + Math.max(p.version || 1, ...readdirSync(PROJECTS, { withFileTypes: true }).filter((d) => d.isDirectory()).map((d) => readProject(d.name)).filter((x) => x && !x.deleted && x.baseName === root).map((x) => x.version || 1)), title = root + ' - V' + ver + ' - ' + (nm || 'new style');
+    let n = slug(title), i = 2; const base = n; while (existsSync(pdir(n))) n = base + '-' + i++;
+    const share = (from, to) => { mkdirSync(to, { recursive: true }); for (const e of readdirSync(from, { withFileTypes: true })) { const f = join(from, e.name), t = join(to, e.name); if (e.isDirectory()) share(f, t); else { try { linkSync(f, t); } catch { cpSync(f, t); } } } }; // hardlink = no extra disk; copy if the drive cannot link
+    for (const e of readdirSync(pdir(id), { withFileTypes: true })) {
+      if (['drafts', 'frames', 'revisions', 'project.json', 'thumb.jpg'].includes(e.name) || e.name.startsWith('.')) continue;
+      e.isDirectory() ? share(join(pdir(id), e.name), join(pdir(n), e.name)) : cpSync(join(pdir(id), e.name), join(pdir(n), e.name));
+    }
+    for (const d of ['drafts', 'frames', 'revisions']) mkdirSync(join(pdir(n), d), { recursive: true });
+    const q = { ...p, id: n, name: title, baseName: root, version: ver, styleId: j.styleId || '', notes: [], versions: [], hiddenDrafts: [], struck: p.struck || [], created: Date.now(), phase: 'approved', madeFrom: p.id, madeFromName: p.name };
+    for (const k of ['session', 'deleted', 'reached', 'cutNotes', 'sched', 'scriptSrc', 'skipFrames', 'framesV', 'thumb', '_t']) delete q[k];
+    writeProject(q); return send(res, 200, q);
   }
   if (b === 'duplicate' && req.method === 'POST') {
     let n = slug(p.name + ' copy'), i = 2; while (existsSync(pdir(n))) n = slug(p.name + ' copy') + '-' + i++;

@@ -223,9 +223,17 @@ async function mashoreApi(req, res, id) {
     return send(res, 200, { connected: true, accounts: (r.body.results?.accounts || []).filter((x) => x.active && !x.deleted).map((x) => ({ id: x.id, platform: x.platform, name: x.name, profileId: x.profileId })) });
   }
   if (id === 'posts') { // this project's posts, newest first, with the live link of each
-    const pj = new URL(req.url, 'http://x').searchParams.get('project') || '', f = join(pdir(pj), 'posts.json'); let all = []; try { all = JSON.parse(readFileSync(f, 'utf8')); } catch {}
-    const a = all.length ? await ghl('/social-media-posting/{loc}/accounts') : { body: {} }, ids = (a.body.results?.accounts || []).map((x) => x.id).join(','); let live = [];
+    const qs = new URL(req.url, 'http://x').searchParams, pj = qs.get('project') || '', title = (qs.get('title') || '').trim().toLowerCase(), f = join(pdir(pj), 'posts.json'); let all = []; try { all = JSON.parse(readFileSync(f, 'utf8')); } catch {}
+    const a = await ghl('/social-media-posting/{loc}/accounts'), ids = (a.body.results?.accounts || []).map((x) => x.id).join(','); let live = [];
     if (ids) { const r = await ghl('/social-media-posting/{loc}/posts/list', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ type: 'all', accounts: ids, skip: '0', limit: '100', fromDate: '2020-01-01T00:00:00.000Z', toDate: '2035-01-01T00:00:00.000Z', includeUsers: 'false' }) }); live = r.body.results?.posts || []; }
+    // check Mashore Method for anything posted today with this project's title that no project has recorded yet (posts made before the studio kept a record, or from another computer)
+    if (title && live.length) {
+      const midnight = new Date(); midnight.setHours(0, 0, 0, 0); const claimed = new Set();
+      for (const d of readdirSync(PROJECTS, { withFileTypes: true })) if (d.isDirectory()) { try { for (const x of JSON.parse(readFileSync(join(PROJECTS, d.name, 'posts.json'), 'utf8'))) claimed.add(x.id); } catch {} }
+      const groups = new Map(); for (const l of live) { if (l.status === 'draft' || new Date(l.createdAt) < midnight || String(l.summary || '').split(String.fromCharCode(10))[0].trim().toLowerCase() !== title) continue; const g = l.parentPostId || l._id; if (!claimed.has(g) && !claimed.has(l._id)) (groups.get(g) || groups.set(g, []).get(g)).push(l); }
+      for (const [g, ls] of groups) all.unshift({ id: ls[0]._id, status: ls.some((l) => l.status === 'published') ? 'published' : ls[0].status, platforms: ls.map((l) => l.platform), when: ls[0].scheduleDate || '', at: new Date(ls[0].createdAt).getTime(), file: '', title: String(ls[0].summary || '').split(String.fromCharCode(10))[0].slice(0, 100), found: true });
+      if (groups.size) try { writeFileSync(f, JSON.stringify(all.slice(0, 30))); } catch {}
+    }
     return send(res, 200, { posts: all.slice(0, 5).map((x) => ({ ...x, links: live.filter((l) => l._id === x.id || l.parentPostId === x.id).map((l) => ({ platform: l.platform, status: l.status, link: l.previewLink || '' })) })) });
   }
   if (id === 'status') { // where a post ended up: its state per app and the link to the live post

@@ -1391,8 +1391,9 @@ async function mashorePost(s, draft) {
 let postsFor = {};
 async function loadPosts(tries) {
   const proj = cur; if (!proj) return;
-  try { const j = await (await fetch('/api/mashore/posts?project=' + encodeURIComponent(proj.id), {headers: H})).json(); postsFor[proj.id] = j.posts || []; } catch { return; }
-  if (cur && cur.id === proj.id && cur.phase === 'schedule') schedRepaint();
+  let changed = false;
+  try { const j = await (await fetch('/api/mashore/posts?project=' + encodeURIComponent(proj.id) + '&title=' + encodeURIComponent((proj.sched && proj.sched.title) || ''), {headers: H})).json(), next = j.posts || []; changed = JSON.stringify(next) !== JSON.stringify(postsFor[proj.id]); postsFor[proj.id] = next; } catch { return; }
+  if (changed && cur && cur.id === proj.id && cur.phase === 'schedule') schedRepaint(); // redraw only on a real change: a redraw reloads the video thumbnail and calls loadPosts again
   const open = (postsFor[proj.id] || []).some((z) => z.status === 'published' && !(z.links || []).some((l) => l.link) && Date.now() - z.at < 120000);
   if (tries > 0 && open) setTimeout(() => loadPosts(tries - 1), 6000); // the live link shows up a few seconds after posting
 }

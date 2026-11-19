@@ -458,8 +458,12 @@ const INK_SIZES = [0.6, 1, 1.8]; // thin, medium (the old fixed look), thick
 let inkColor = INK_COLORS[0], inkSize = 1;
 const app = $('#app');
 function askConfirm(msg, yesLabel, noLabel) { return new Promise((ok) => { const m = $('#cfm'); $('#cfmtext').textContent = msg; $('#cfmyes').textContent = yesLabel || 'Yes, delete'; $('#cfmno').textContent = noLabel || 'Cancel'; m.hidden = false; const done = (v) => { m.hidden = true; ok(v); }; $('#cfmyes').onclick = () => done(true); $('#cfmno').onclick = () => done(false); }); }
+const styleNeedsVideo = (id) => { const s = STY.find((x) => x.id === id); return !!(s && s.faceless === false); }; // faceless:false = built on video of a person
+const NEEDS_VIDEO_MSG = (id) => 'The "' + styName(id) + '" style is built on video of a person, so it cannot be used with only an MP3. Pick a motion-graphics style (a faceless one), or add a video.';
+const audioOnlyBlock = () => !!(draftNew.styleId && !draftNew.file && draftNew.vofile && styleNeedsVideo(draftNew.styleId));
 function isFacelessStyle(id) { const s = STY.find((x) => x.id === id); return !!(s && s.faceless); }
 async function confirmFacelessMismatch() {
+  if (audioOnlyBlock()) { await askConfirm(NEEDS_VIDEO_MSG(draftNew.styleId), 'OK', 'Close'); return false; }
   if (!draftNew.file || !isFacelessStyle(draftNew.styleId)) return true;
   return askConfirm('Heads up — this style is faceless. We\'ll pull the audio from your video as narration and build the edit around motion graphics instead of the footage itself. Your face won\'t appear in the final video.', 'Continue anyway', 'Pick a different style');
 }
@@ -528,7 +532,7 @@ function render() {
   } else if (view === 'new') {
     const multiFiles = draftNew.files && draftNew.files.length > 1;
     const fileList = draftNew.files && draftNew.files.length > 0;
-    const hasMedia = !!(draftNew.file || draftNew.vofile), nameOk = !!draftNew.name.trim(), dis = !(nameOk && hasMedia);
+    const hasMedia = !!(draftNew.file || draftNew.vofile), nameOk = !!draftNew.name.trim(), blockStyle = audioOnlyBlock(), dis = !(nameOk && hasMedia) || blockStyle;
     app.innerHTML = `<div class="hero" style="margin-bottom:22px"><div class="eb">New project</div><h1>Get <i>Started</i></h1><p class="sub" style="font-size:1.2rem">Answer 5 quick things, then press the big orange button. That's it.</p></div>
     <div class="narrow">
     <section class="stepcard"><h2><span class="num${nameOk ? ' done' : ''}" id="n1">${nameOk ? '✓' : '1'}</span>Name your project</h2><p class="say">Anything you want, so you can find it later.</p>
@@ -548,7 +552,7 @@ function render() {
       <div id="stylepick" style="width:auto;margin:0;padding:0"><div class="styles"><div class="sty ${draftNew.styleId === '' ? 'on' : ''}" data-sty=""><div class="th" style="aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:34px"><i class="ti ti-scissors"></i><div class="use"><span>Use this style</span></div></div><b>Custom</b></div>${STY.map((s) => { const sm = s.samples && s.samples[0]; return `<div class="sty ${s.id === draftNew.styleId ? 'on' : ''}" data-sty="${s.id}"><div class="th"><img src="${P}${s.cover}" alt="">${sm ? `<video muted loop playsinline preload="none" data-src="${P}${sm.src}" data-at="${sm.at || 0}"></video><button class="i" data-fsvideo="1" title="Watch the full video"><i class="ti ti-maximize"></i></button>` : ''}<div class="use"><span>Use this style</span></div></div><b>${esc(s.name)}</b></div>`; }).join('')}</div></div></section>
     <section class="stepcard go">
       <button class="bigbtn" id="btnmagic" data-act="magicedit"${dis ? ' disabled' : ''}><i class="ti ti-wand"></i>Magic Edit</button>
-      <p class="need${dis ? '' : ' ready'}" id="need">${dis ? (!nameOk && !hasMedia ? 'Add a name and a video to start.' : !nameOk ? 'Add a name to continue.' : 'Add your video to continue.') : 'All set! Press Magic Edit.'}</p>
+      <p class="need${dis ? '' : ' ready'}" id="need">${blockStyle ? esc(NEEDS_VIDEO_MSG(draftNew.styleId)) : dis ? (!nameOk && !hasMedia ? 'Add a name and a video to start.' : !nameOk ? 'Add a name to continue.' : 'Add your video to continue.') : 'All set! Press Magic Edit.'}</p>
       <p class="mut" style="margin:6px 0 0">BOSS does everything for you: cuts, style and the first video, with no review until it's done. This is the easiest way.</p>
       <p class="or">Want to do it step by step yourself?</p>
       <button type="button" id="btncreate" data-act="create"${dis ? ' disabled' : ''}><i class="ti ti-folder-plus"></i>Edit manually</button>
@@ -1363,6 +1367,7 @@ function pickRestyle() {
 async function doRestyle(id) {
   const s = STY.find((x) => x.id === id); if (!s) return;
   if (id === cur.styleId && !(await askConfirm('This project already uses ' + s.name + '. Make a copy in the same style anyway?', 'Make a copy', 'Cancel'))) return;
+  if (!cur.rawName && styleNeedsVideo(id)) return askConfirm(NEEDS_VIDEO_MSG(id), 'OK', 'Close'); // an MP3-only project cannot use a style built on video of a person
   if (!(await askConfirm('Make a copy of "' + cur.name + '" in the ' + s.name + ' style and render it now? Your notes do not carry over. The original stays as it is.', 'Make it', 'Cancel'))) return;
   let q; try { q = await jf('POST', '/api/projects/' + cur.id + '/restyle', {styleId: id, styleName: s.name}); } catch (e) { return toast(String(e.message)); }
   document.querySelector('#rsmodal')?.remove();

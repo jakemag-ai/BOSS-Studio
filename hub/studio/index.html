@@ -44,6 +44,7 @@ button:hover{border-color:var(--ink)}
 button.p{background:var(--ink);color:var(--bg);border-color:var(--ink)}
 button.a{background:var(--accent);color:#fff;border-color:var(--accent)}
 button.i{padding:9px 11px}
+.gb .r{gap:5px;flex-wrap:nowrap}.gb .r button.i{padding:9px 8px}.gb .r button:not(.i){padding-left:11px;padding-right:11px;white-space:nowrap}
 button.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
 button i{font-size:16px}
 button:disabled{opacity:.4;cursor:not-allowed}
@@ -282,6 +283,10 @@ const draftSizeText = (p) => { const f = projectFormat(p); return Math.round(f.w
 const finalSizeText = (p) => { const f = projectFormat(p); return f.w + 'x' + f.h; };
 const RANGES = ['This frame only', 'Next 5 seconds', 'Next 10 seconds', 'Whole section', 'Custom'];
 const fmtp = (t) => fmt(t) + '.' + Math.floor((t % 1) * 10); // one decimal, for a word-accurate time
+// the time window a note covers, in the video I was watching. A single moment (This frame only) gives B-roll and
+// logos a 3-second window, so they are not squeezed into one frame. null = the whole section around the moment.
+const noteSpan = (n, dflt = 3) => n.range === 'Custom' && Number.isFinite(n.rangeStart) ? [n.rangeStart, Math.max(n.rangeEnd, n.rangeStart + 0.5)] : n.range === 'Next 5 seconds' ? [n.t, n.t + 5] : n.range === 'Next 10 seconds' ? [n.t, n.t + 10] : n.range === 'Whole section' ? null : [n.t, n.t + dflt];
+const spanText = (n) => { const r = noteSpan(n); return r ? 'from ' + fmtp(r[0]) + ' to ' + fmtp(r[1]) + ' (' + Math.round((r[1] - r[0]) * 10) / 10 + ' s' + (n.range === 'This frame only' ? ', starting at the moment I marked' : '') + ')' : 'for the whole section around ' + fmtp(n.t); };
 const rangeLabel = (n) => n.range === 'Custom' && Number.isFinite(n.rangeStart) ? fmtp(n.rangeStart) + '–' + fmtp(n.rangeEnd) : n.range;
 
 // ---- storage: projects in localStorage, raw video files in IndexedDB (draft: stays inside this browser)
@@ -446,6 +451,8 @@ async function restyle(id) {
 }
 function project() {
   const p = cur, ph = p.phase || 'brief', sty = STY.find((x) => x.id === p.styleId) || {};
+  // a render starting or ending, or a transcript arriving, re-renders this page: keep a note that is half typed (same project and step only)
+  const typedNote = $('#ntext') && app.dataset.pid === p.id && app.dataset.ph === ph ? $('#ntext').value : '';
   if (ph === 'script' && API) vurl = voUrl(p) || rawUrl(p); // the script is timed to the voiceover if there is one, else the raw video
   if (ph === 'brief' && API) vurl = rawUrl(p) || voUrl(p);
   if (ph === 'approved' && API && !viewFile) vurl = ''; // no draft yet: don't show the raw video here, show the waiting state instead
@@ -475,7 +482,7 @@ function project() {
   let left, right, mid = '';
   if (ph === 'brief') {
     left = video;
-    right = '<section class="c"><p class="h"><i class="ti ti-message-2"></i>First instruction</p>' + styCard.replace('stybar', 'stybar inner') + refHtml(p, briefLocked) + optsHtml(p, briefLocked) + '<textarea id="brief" rows="6" placeholder="Tell BOSS how to edit this video. For example: open with the strongest line, use the style on every section."' + (briefLocked ? ' disabled' : '') + '>' + esc(p.brief || '') + '</textarea><p class="mut">' + (API ? (p.magic ? 'This project was made with Magic Edit — BOSS decided everything automatically, including the style and the cuts. Use Editing to revise it.' : p.reached >= 4 ? 'The draft is rendered — go to Editing to review and revise it.' : p.reached >= 2 ? 'Frames are ready — go to Editing to review them and render the first draft.' : 'BOSS makes still frames first, then the full draft — both happen on the Editing page.') : 'The first option shows you the graphics on still frames before rendering. The second skips that and renders the full draft right away.') + '</p><div class="r" style="margin-top:12px">' + (API ? '<button class="a" data-act="renderdraft"><i class="ti ' + (p.reached >= 2 ? 'ti-arrow-right' : 'ti-player-play') + '"></i>' + (p.reached >= 2 ? 'Go to Editing' : 'Render Draft') + '</button>' : '<button class="a" data-act="sendbrief">Send first instruction ↗</button><button data-act="toframes"><i class="ti ti-layout-grid"></i>Preview frames</button><button data-act="proceed"><i class="ti ti-player-play"></i>Skip frames and render draft</button>') + '</div></section>';
+    right = '<section class="c"><p class="h"><i class="ti ti-message-2"></i>First instruction</p>' + styCard.replace('stybar', 'stybar inner') + refHtml(p, briefLocked) + optsHtml(p, false) + '<textarea id="brief" rows="6" placeholder="Tell BOSS how to edit this video. For example: open with the strongest line, use the style on every section."' + (briefLocked ? ' disabled' : '') + '>' + esc(p.brief || '') + '</textarea><p class="mut">' + (API ? (p.magic ? 'This project was made with Magic Edit — BOSS decided everything automatically, including the style and the cuts. Use Editing to revise it.' : p.reached >= 4 ? 'The draft is rendered — go to Editing to review and revise it.' : p.reached >= 2 ? 'Frames are ready — go to Editing to review them and render the first draft.' : 'BOSS makes still frames first, then the full draft — both happen on the Editing page.') : 'The first option shows you the graphics on still frames before rendering. The second skips that and renders the full draft right away.') + '</p><div class="r" style="margin-top:12px">' + (API ? '<button class="a" data-act="renderdraft"><i class="ti ' + (p.reached >= 2 ? 'ti-arrow-right' : 'ti-player-play') + '"></i>' + (p.reached >= 2 ? 'Go to Editing' : 'Render Draft') + '</button>' : '<button class="a" data-act="sendbrief">Send first instruction ↗</button><button data-act="toframes"><i class="ti ti-layout-grid"></i>Preview frames</button><button data-act="proceed"><i class="ti ti-player-play"></i>Skip frames and render draft</button>') + '</div></section>';
   } else if (ph === 'script') {
     left = video;
     right = scriptCardHtml(p, 'phase') + voGenCard;
@@ -507,6 +514,7 @@ function project() {
   app.innerHTML = '<div class="hero proj" style="margin-bottom:18px"><div class="eb">' + (ph === 'script' ? 'New project' : ph === 'brief' ? 'Instructions' : ph === 'frames' ? 'Frame review' : ph === 'approved' ? 'Editing' : 'Rendered versions') + '</div><h1>' + esc(p.name) + '</h1></div>' + (ph === 'brief' ? '' : styLine) +
     '<div class="steps">' + step(1, 'Script', 'script') + step(2, 'Instructions', 'brief') + step(3, 'Editing', 'approved') + step(4, 'Gallery', 'gallery') + '</div><div id="run" class="run" hidden></div>' +
     (ph === 'gallery' ? '<section class="c"><p class="h"><i class="ti ti-library-photo"></i>Rendered versions · oldest to latest</p><div id="gal"></div></section>' : '<div class="ws' + (ph === 'approved' ? ' ws3' : '') + ((ph === 'script' || ph === 'brief') ? ' ws2' : '') + (showLandscape ? ' land' : '') + '"><section class="c' + (API && ph === 'approved' && runSt && runSt.running ? ' locked' : '') + '">' + left + '</section>' + mid + '<div class="col">' + right + '</div></div>');
+  app.dataset.pid = p.id; app.dataset.ph = ph; if (typedNote && $('#ntext')) $('#ntext').value = typedNote;
   if (ph === 'gallery') loadGallery(); else { if ($('#notes')) notesHtml(); stage(); bindVideo(); }
   paintStyModal();
   if (ph === 'script' && API && !p.magic) scriptInit();
@@ -599,8 +607,22 @@ function ensureFreshFrames() {
 // still frames from the video (stand-in for the frames BOSS will render); the full video is not played here
 let pendingRefs = [];
 function paintRefs() { const el = $('#refs'); if (el) el.innerHTML = pendingRefs.map((r, i) => '<span style="position:relative"><img src="' + r + '" alt="Reference image" style="height:54px;max-width:96px;object-fit:contain;background:var(--tint);border-radius:8px;border:1px solid var(--line)"><button class="x" data-rmref="' + i + '" title="Remove" style="position:absolute;top:-8px;right:-8px;padding:2px 5px;border-radius:50%;background:#fff;border:1px solid var(--line)"><i class="ti ti-x" style="font-size:12px"></i></button></span>').join(''); }
+let attaching = 0; // B-roll uploads and images still being read
 async function addRefFile(f) {
-  if (!f || !/^image\/(png|jpeg|webp|gif)/.test(f.type)) return toast('Choose a PNG or JPEG image');
+  if (f && f.type === 'image/svg+xml') { // SVG logos: draw them at 1024 px into a transparent PNG
+    attaching++;
+    try {
+      const u = URL.createObjectURL(f), im = new Image(); im.src = u; await im.decode();
+      const w0 = im.naturalWidth || 512, h0 = im.naturalHeight || 512, k = 1024 / Math.max(w0, h0), c = document.createElement('canvas');
+      c.width = Math.round(w0 * k); c.height = Math.round(h0 * k); c.getContext('2d').drawImage(im, 0, 0, c.width, c.height); URL.revokeObjectURL(u);
+      pendingRefs.push(c.toDataURL('image/png')); paintRefs();
+    } catch { toast('Could not read that SVG. Export it as a PNG and try again.'); } finally { attaching--; }
+    return;
+  }
+  attaching++; try { await addRefRaster(f); } catch { toast('Could not read that image'); } finally { attaching--; }
+}
+async function addRefRaster(f) {
+  if (!f || !/^image\/(png|jpeg|webp|gif)/.test(f.type)) return toast('Choose a PNG, JPEG, WebP, GIF or SVG image');
   const bm = await createImageBitmap(f), k = Math.min(1, 1024 / Math.max(bm.width, bm.height)), c = document.createElement('canvas'); c.width = Math.round(bm.width * k); c.height = Math.round(bm.height * k);
   c.getContext('2d').drawImage(bm, 0, 0, c.width, c.height); pendingRefs.push(f.type === 'image/png' || f.type === 'image/webp' || f.type === 'image/gif' ? c.toDataURL('image/png') : c.toDataURL('image/jpeg', 0.85)); paintRefs();
 }
@@ -640,7 +662,7 @@ async function loadGallery() {
   let d = []; try { d = await jf('GET', '/api/projects/' + cur.id + '/drafts'); } catch {}
   if (!$('#gal')) return; d.sort((a, b) => a.v - b.v);
   if (!d.length) { el.innerHTML = '<span class="mut" style="margin:0">No rendered versions yet. Approve the frames and BOSS will render the first one.</span>'; return; }
-  el.innerHTML = '<div class="galgrid">' + d.map((x, i) => { const u = '/projects/' + cur.id + '/drafts/' + encodeURIComponent(x.file) + '?v=' + x.v; return '<div class="gc"><video src="' + u + '#t=1" preload="metadata" controls playsinline></video><div class="gb"><b>V' + (i + 1) + (i === d.length - 1 ? ' · latest' : '') + (/^final/i.test(x.file) ? ' · final' : '') + '</b><small>' + esc(x.file) + '</small><small>' + new Date(x.v).toLocaleString() + (x.size ? ' · ' + (x.size / 1e6).toFixed(1) + ' MB' : '') + '</small>' + versionInfo(x.v) + '<div class="r" style="margin-top:8px"><button data-opendraft="' + esc(x.file) + '">Open in editing</button><button class="i" data-revealdraft="' + esc(x.file) + '" title="Show in ' + FILEMGR + '"><i class="ti ti-folder-open"></i></button><button class="i" data-deldraft="' + esc(x.file) + '" title="Delete this version"><i class="ti ti-trash"></i></button></div></div></div>'; }).join('') + '</div>';
+  el.innerHTML = '<div class="galgrid">' + d.map((x, i) => { const u = '/projects/' + cur.id + '/drafts/' + encodeURIComponent(x.file) + '?v=' + x.v; return '<div class="gc"><video src="' + u + '#t=1" preload="metadata" controls playsinline></video><div class="gb"><b>V' + (i + 1) + (i === d.length - 1 ? ' · latest' : '') + (/^final/i.test(x.file) ? ' · final' : '') + '</b><small>' + esc(x.file) + '</small><small>' + new Date(x.v).toLocaleString() + (x.size ? ' · ' + (x.size / 1e6).toFixed(1) + ' MB' : '') + '</small>' + versionInfo(x.v) + '<div class="r" style="margin-top:8px"><button data-opendraft="' + esc(x.file) + '">Open in editing</button><button class="i" data-revealdraft="' + esc(x.file) + '" title="Show in ' + FILEMGR + '"><i class="ti ti-folder-open"></i></button><button class="i" data-drivedraft="' + esc(x.file) + '" title="Upload to Drive: opens Drive and shows the file" aria-label="Upload to Drive"><i class="ti ti-cloud-upload"></i></button><button class="i" data-deldraft="' + esc(x.file) + '" title="Delete this version"><i class="ti ti-trash"></i></button></div></div></div>'; }).join('') + '</div>';
 }
 function paintRun() {
   const el = $('#run'); if (!el) return;
@@ -744,11 +766,11 @@ function draw(cur2) {
   });
 }
 // in-page replacement for prompt(): the browser's own box can't be centred on the page, this one can
-function askText(label) {
+function askText(label, title = 'Write on the frame', ph = 'Type what you want to show here', yes = 'Add text') {
   return new Promise((ok) => {
     const m = document.createElement('div'); m.className = 'modal'; m.style.zIndex = 40;
-    m.innerHTML = '<div class="c" style="max-width:420px"><p style="margin:0 0 2px;font-weight:800;font-size:1.05rem">Write on the frame</p><p class="mut" style="margin:0 0 12px"></p><input type="text" placeholder="Type what you want to show here" style="width:100%;box-sizing:border-box;margin:0 0 14px"><div class="r" style="justify-content:flex-end"><button data-n>Never mind</button><button class="a" data-y>Add text</button></div></div>';
-    m.querySelector('.mut').textContent = label; const inp = m.querySelector('input');
+    m.innerHTML = '<div class="c" style="max-width:420px"><p class="tt" style="margin:0 0 2px;font-weight:800;font-size:1.05rem"></p><p class="mut" style="margin:0 0 12px"></p><input type="text" style="width:100%;box-sizing:border-box;margin:0 0 14px"><div class="r" style="justify-content:flex-end"><button data-n>Never mind</button><button class="a" data-y>Add text</button></div></div>';
+    m.querySelector('.mut').textContent = label; m.querySelector('.tt').textContent = title; m.querySelector('[data-y]').textContent = yes; const inp = m.querySelector('input'); inp.placeholder = ph;
     const done = (v) => { m.remove(); ok(v); };
     m.querySelector('[data-y]').onclick = () => done(inp.value.trim()); m.querySelector('[data-n]').onclick = () => done('');
     inp.onkeydown = (e) => { if (e.key === 'Enter') done(inp.value.trim()); else if (e.key === 'Escape') done(''); };
@@ -1022,15 +1044,15 @@ function bindScriptVideo(vid = 'v') {
   const key = (e) => { const x = e.target.closest('[data-k]'); return x ? +x.dataset.k : null; };
   const span = (a, b) => S.keys.filter((k) => k >= Math.min(a, b) && k <= Math.max(a, b));
   el.addEventListener('pointerdown', (e) => {
-    const k = key(e); if (k === null) return; el.focus();
+    const k = key(e); if (k === null || !S) return; el.focus();
     if (e.shiftKey && S.anchor !== null) S.sel = new Set(span(S.anchor, k));
     else if (e.ctrlKey || e.metaKey) { S.sel.has(k) ? S.sel.delete(k) : S.sel.add(k); S.anchor = k; }
     else { S.sel = new Set([k]); S.anchor = k; S.drag = true; const w = S.words[Math.floor(k)], vv = $('#' + vid); if (vv && w) vv.currentTime = k % 1 ? w.end : w.start; }
     paintScript(); syncPick();
   });
-  el.addEventListener('pointerover', (e) => { if (!S.drag || !(e.buttons & 1)) return; const k = key(e); if (k !== null) { S.sel = new Set(span(S.anchor, k)); paintScript(); syncPick(); } });
+  el.addEventListener('pointerover', (e) => { if (!S || !S.drag || !(e.buttons & 1)) return; const k = key(e); if (k !== null) { S.sel = new Set(span(S.anchor, k)); paintScript(); syncPick(); } });
   el.addEventListener('dblclick', (e) => {
-    const k = key(e); if (k === null) return; const W = S.words, end = (i) => /[.?!]["')]?$/.test(W[i].text);
+    const k = key(e); if (k === null || !S) return; const W = S.words, end = (i) => /[.?!]["')]?$/.test(W[i].text);
     let a = Math.floor(k), b = a; while (a > 0 && !end(a - 1)) a--; while (b < W.length - 1 && !end(b)) b++;
     S.sel = new Set(span(a, b)); S.anchor = a; paintScript(); syncPick();
   });
@@ -1171,8 +1193,8 @@ function magicPrompt() {
   return 'Magic Edit: do the whole edit yourself, with no review step — there is no Script-step cleanup and no frame approval for this project.\nProject: "' + p.name + '"' + (rawVideoLine(p) || '\nNo raw video: this is audio-only, build it from the voiceover.') + '\nStyle: ' + styName(p.styleId) + (p.styleId ? '' : ' (apply no style: keep the video exactly as it is)') + (guide ? ' (read its guide first: ' + guide + ')' : '') + voiceoverLine(p) + refLine(p) + (p.brief ? '\n\nMy instruction:\n' + p.brief : '') + '\n\nFirst remove dead air, filler words and stutters using your own judgement. Check every cut against the transcript\'s word timestamps so a cut never lands inside a word or clips off part of it — cut only at a word boundary. I gave no instruction on audio polish, music or sound effects either — use your own judgement: clean up the voice (noise, hum, uneven volume) only if it actually needs it, add subtle background music under the voice if it fits the style (ducked so every word stays clear), and add subtle sound effects on transitions or graphic pop-ins if they fit, always quieter than the voice — generate the music and sound effects with the ElevenLabs MCP, falling back to my-sounds/ (or simple FFmpeg effects for the sfx) only if the ElevenLabs connector is not connected. Then apply the style end to end, using your best judgement for pacing and structure since I gave no instruction. Render the result straight to ' + (API ? 'projects/' + p.id + '/drafts/' : 'outbox/') + ' as draft-v1, then also save a handful of still frames from it into ' + (API ? 'projects/' + p.id + '/frames/' : 'the frames') + ' (same convention as the usual frame step: frame-001_t03.5.jpg), so they are ready to view immediately. Skip the frame-preview stage entirely — there is nothing to approve here.';
 }
 function buildPrompt() {
-  const p = cur, lines = p.notes.slice().sort((a, b) => a.t - b.t).map((n, i) => `${i + 1}. ${fmt(n.t)}: ${n.text || (n.img ? '(see the drawing)' : n.refLink ? 'copy the style from the link' : n.quote ? '(see the exact words below)' : (n.broll || []).length ? '(cut in the B-roll below)' : '(see the attached image)')}${n.img ? (API ? ' [annotated snapshot: {{img:note-' + (i + 1) + '}}]' : ' [snapshot attached]') : ''}${(n.refs || []).map((r, j) => API ? ' [reference image or logo to add: {{img:ref-' + (i + 1) + '-' + (j + 1) + '}}]' : ' [reference image attached]').join('')}${(n.broll || []).length ? ` [cut in this B-roll footage ${n.range === 'Custom' ? 'across ' + rangeLabel(n) : n.range.toLowerCase()}, over the original audio (keep the voice playing): ${n.broll.map((f) => (API ? 'projects/' + p.id + '/broll/' : 'broll/') + f).join(', ')}]` : ''}${n.quote ? ` [exact words: "${n.quote}", ${rangeLabel(n)}]` : ''}${n.styleId ? ` [use ${styName(n.styleId)}, ${n.range === 'Custom' ? 'from ' + fmtp(n.rangeStart) + ' to ' + fmtp(n.rangeEnd) : n.range.toLowerCase()}]` : ''}${n.refLink ? ` [copy the editing style of ${n.refLink}, ${n.range.toLowerCase()}${n.text ? ', as the note says' : ', the whole look'}: download it with yt-dlp${API ? ' into projects/' + p.id + '/reference/' : ''}, study it, and copy only its style, never its footage, music, voice or logos]` : ''}`);
-  return `${!viewLabel ? (p.rawName ? 'Edit the raw video' + rawVideoLine(p).replace(/^\nRaw video: /, ' ') : 'Build this edit from the voiceover; there is no raw video') + ' of the project "' + p.name + '"' + (p.brief ? '. Overall instruction: ' + p.brief : '') + '. Change only what the notes ask and leave the rest untouched' + voiceoverLine(p) + refLine(p) + optsLine(p) : 'Revise the draft of the project "' + p.name + '"'} (project style: ${styName(p.styleId)}).\nApply all ${p.notes.length} notes below in one pass, then ${cur.phase === 'frames' ? 'update the still frames in ' + (API ? 'projects/' + p.id + '/frames/' : 'the frames') + ' only. Do not render the full video until I approve the frames.' : 'render a new draft to ' + (API ? 'projects/' + p.id + '/drafts/' : 'outbox/') + '.'}\n\n${lines.join('\n')}`;
+  const p = cur, lines = p.notes.slice().sort((a, b) => a.t - b.t).map((n, i) => `${i + 1}. ${fmtp(n.t)}: ${n.text || (n.img ? '(see the drawing)' : n.refLink ? 'copy the style from the link' : n.quote ? '(see the exact words below)' : (n.broll || []).length ? '(cut in the B-roll below)' : '(see the attached image)')}${n.img ? (API ? ' [annotated snapshot: {{img:note-' + (i + 1) + '}}]' : ' [snapshot attached]') : ''}${(n.refs || []).map((r, j) => API ? ' [logo or image to show on screen ' + spanText(n) + ' (unless the note says it is only a look reference): {{img:ref-' + (i + 1) + '-' + (j + 1) + '}}. Keep its transparency and aspect ratio; place it where the note says, otherwise in a top corner at about 20% of the width, clear of captions]' : ' [reference image attached]').join('')}${(n.broll || []).length ? ` [B-roll: cut to this footage ${spanText(n)}, full screen, over the original audio (keep the voice playing); trim the clip to fit the window and convert it to SDR 1080p first if it is 4K or HDR: ${n.broll.map((f) => '"' + (API ? 'projects/' + p.id + '/broll/' : 'broll/') + f + '"').join(', ')}]` : ''}${n.quote ? ` [exact words: "${n.quote}", ${rangeLabel(n)}]` : ''}${n.styleId ? ` [use ${styName(n.styleId)}, ${n.range === 'Custom' ? 'from ' + fmtp(n.rangeStart) + ' to ' + fmtp(n.rangeEnd) : n.range.toLowerCase()}]` : ''}${n.refLink ? ` [copy the editing style of ${n.refLink}, ${n.range.toLowerCase()}${n.text ? ', as the note says' : ', the whole look'}: download it with yt-dlp${API ? ' into projects/' + p.id + '/reference/' : ''}, study it, and copy only its style, never its footage, music, voice or logos]` : ''}`);
+  return `${!viewLabel ? (p.rawName ? 'Edit the raw video' + rawVideoLine(p).replace(/^\nRaw video: /, ' ') : 'Build this edit from the voiceover; there is no raw video') + ' of the project "' + p.name + '"' + (p.brief ? '. Overall instruction: ' + p.brief : '') + '. Change only what the notes ask and leave the rest untouched' + voiceoverLine(p) + refLine(p) + optsLine(p) : 'Revise the draft of the project "' + p.name + '"'} (project style: ${styName(p.styleId)}).\nApply all ${p.notes.length} notes below in one pass, then ${cur.phase === 'frames' ? 'update the still frames in ' + (API ? 'projects/' + p.id + '/frames/' : 'the frames') + ' only. Do not render the full video until I approve the frames.' : 'render a new draft to ' + (API ? 'projects/' + p.id + '/drafts/' : 'outbox/') + '.'}\n\nTimes below are positions in ${viewFile ? (API ? 'projects/' + p.id + '/drafts/' : '') + viewFile + ' (the version I was watching)' : cur.phase === 'frames' ? 'the edit, as in the still frames\' file names (frame-NNN_t<seconds>.jpg)' : 'the raw video'}; map them onto whatever you edit.\n\n${lines.join('\n')}${p.notes.some((n) => (n.broll || []).length || (n.refs || []).length) ? '\n\nBefore you finish: grab a still from the new render in the middle of every B-roll and logo window above and check that the footage or logo is really on screen there. If one is missing or in the wrong place, fix it and render again.' : ''}`;
 }
 
 // ---- events
@@ -1187,6 +1209,30 @@ document.addEventListener('click', async (e) => {
   }
   if ((x = q('[data-revealdraft]'))) {
     try { await jf('POST', '/api/projects/' + cur.id + '/reveal?file=' + encodeURIComponent(x.dataset.revealdraft)); toast('Opened in ' + FILEMGR); } catch (err) { toast('Could not open the folder: ' + err.message); }
+    return;
+  }
+  if ((x = q('[data-drivedraft]'))) { // upload straight into the Drive folder whose link was pasted once (rclone does the upload; Google sign-in once)
+    const idOf = (u) => (new RegExp('folders/([A-Za-z0-9_-]{10,})').exec(u) || [])[1];
+    let dest = ''; try { dest = localStorage.getItem('drive-folder') || ''; } catch {}
+    if (!dest || !idOf(dest) || e.shiftKey) {
+      const v = await askText('In Google Drive, open the folder where uploads should go, then paste its link here. You only do this once (Shift-click the upload button to change it later).', 'Where should uploads go?', 'https://drive.google.com/drive/folders/…', 'Save folder');
+      if (!v) return;
+      if (!idOf(v)) return toast('That link has no Drive folder in it. Open the folder in Drive and copy the address from the browser.');
+      dest = v; try { localStorage.setItem('drive-folder', dest); } catch {}
+    }
+    const up = () => jf('POST', '/api/projects/' + cur.id + '/drive?file=' + encodeURIComponent(x.dataset.drivedraft) + '&folder=' + idOf(dest));
+    const tab = window.open('about:blank', '_blank'); // opened now (while the click still counts), pointed at the folder once the upload is done
+    try {
+      toast('Uploading to your Drive folder…');
+      try { await up(); } catch (err) {
+        if (err.message !== 'NEEDS_CONNECT') throw err;
+        if (!(await askConfirm('Connect Google Drive once: a browser window opens, you sign in to Google and allow access. After that, uploads happen by themselves.', 'Connect', 'Cancel'))) return;
+        toast('Waiting for you to allow access in the browser…');
+        await jf('POST', '/api/drive/connect'); toast('Connected. Uploading…'); await up();
+      }
+      toast('Uploaded to your Drive folder');
+      if (tab) tab.location.href = dest; else window.open(dest, '_blank'); // show the folder so the new file is right there
+    } catch (err) { if (tab) tab.close(); toast(err.message === 'NEEDS_RCLONE' ? 'The upload tool (rclone) is not installed on this computer yet.' : 'Could not upload: ' + err.message); }
     return;
   }
   if ((x = q('[data-deldraft]'))) {
@@ -1353,11 +1399,12 @@ document.addEventListener('click', async (e) => {
     i.onchange = async () => {
       if (!API) return toast('Adding B-roll needs the studio server running');
       for (const f of i.files) {
-        toast('Saving ' + f.name + '…');
+        toast('Saving ' + f.name + '…'); attaching++;
         try { const r = await fetch('/api/projects/' + cur.id + '/broll?name=' + encodeURIComponent(f.name), {method: 'PUT', headers: H, body: f}); if (!r.ok) throw 0; pendingBroll.push((await r.json()).name); }
         catch { toast('Upload failed: ' + f.name); }
+        finally { attaching--; }
       }
-      paintBroll();
+      paintBroll(); toast(pendingBroll.length ? 'B-roll ready. Add the note to attach it.' : 'No B-roll was saved');
     };
     return i.click();
   }
@@ -1398,8 +1445,9 @@ document.addEventListener('click', async (e) => {
   if (a === 'addnote') {
     if (isLive()) pauseGrab(); // a note belongs to the frame it was written on, so stop on the current one first
     const text = $('#ntext').value.trim(), byLink = $('#nsty').value === '__link', refLink = byLink ? $('#nlink').value.trim() : '';
-    if (byLink && !/^https?:\/\/\S+$/i.test(refLink)) return toast('Paste a full link that starts with https://');
-    if (!text && !snap && !pendingRefs.length && !pendingBroll.length && !refLink && !scriptPick) return toast('Type a note, annotate a frame, add an image or B-roll, or select a phrase in Script first');
+    if (byLink && !/^https?:\/\/\S+$/i.test(refLink)) { flagErr('#nlink'); return toast('Paste a full link that starts with https://'); }
+    if (attaching > 0) return toast('Still saving your B-roll or image, wait a moment and press Add note again');
+    if (!text && !snap && !pendingRefs.length && !pendingBroll.length && !refLink && !scriptPick) { flagErr('#ntext').focus(); return toast('Type a note, annotate a frame, add an image or B-roll, or select a phrase in Script first'); }
     let range = $('#nrange').value;
     if (range === 'Custom' && !scriptPick) return toast('Select a phrase in Script to use Custom');
     const t = scriptPick ? scriptPick.start : snap ? snap.t : v ? v.currentTime : 0, styleId = byLink ? '' : $('#nsty').value;
@@ -1408,6 +1456,7 @@ document.addEventListener('click', async (e) => {
     const keep = !!(snap && annotating); // in the floating canvas: stay open so more notes can go on the same frame
     cur._t = t; cur.notes.push(note); pendingRefs = []; pendingBroll = []; paintBroll(); scriptPick = null; paintPick(); save();
     if (keep) { notesDirty = true; shapes = []; $('#ntext').value = ''; paintRefs(); draw(); notesHtml(); return toast('Note added (' + cur.notes.length + ' total). Add another, or press Close.'); }
+    $('#ntext').value = ''; // project() keeps typed text across re-renders, so clear what this note just used
     if (history.state && history.state.annot) { snap = null; history.back(); } snap = null; return project();
   }
   if (a === 'send') { if (!cur.notes.length) return toast('Add at least one note first'); $('#mtitle').textContent = 'Revision request'; $('#prompt').textContent = buildPrompt(); $('#modal').hidden = false; return; }
@@ -1425,7 +1474,16 @@ document.addEventListener('change', (e) => {
     save(); project(); return toast('Link saved. BOSS will copy its editing style.');
   }
   if (e.target.id === 'nsty') { $('#nlinkrow').hidden = e.target.value !== '__link'; if (!$('#nlinkrow').hidden) $('#nlink').focus(); return; }
-  if (e.target.dataset.opt && cur) { cur.opts = {...optsOf(cur), [e.target.dataset.opt]: e.target.checked}; return save(); } if (e.target.id === 'psty') return restyle(e.target.value); if (e.target.id === 'pformat') { keepNewFormText(); draftNew.format = e.target.value; draftNew.formatTouched = true; return; }
+  if (e.target.dataset.opt && cur) {
+    const k = e.target.dataset.opt, on = e.target.checked;
+    cur.opts = {...optsOf(cur), [k]: on};
+    // once frames or a draft exist the first instruction is already sent, so a changed option goes to BOSS as a note on the next revision
+    const o = OPTS.find((x) => x[0] === k), id = 'opt-' + k;
+    cur.notes = cur.notes.filter((n) => n.id !== id);
+    if (on && o && cur.reached >= 2) cur.notes.push({id, t: 0, text: o[3], styleId: '', refLink: '', range: 'Custom', rangeStart: 0, rangeEnd: (v && v.duration) || 0, img: '', full: '', refs: [], broll: []});
+    save();
+    return cur.reached >= 2 ? toast(on ? o[1] + ' added as a note. Apply it from Editing.' : o[1] + ' removed from the notes.') : undefined;
+  } if (e.target.id === 'psty') return restyle(e.target.value); if (e.target.id === 'pformat') { keepNewFormText(); draftNew.format = e.target.value; draftNew.formatTouched = true; return; }
   if (e.target.id === 'filemedia') { keepNewFormText(); handleMediaFiles(e.target.files); }
 });
 // shared by the file picker (#filemedia change) and dragging files onto #dropmedia

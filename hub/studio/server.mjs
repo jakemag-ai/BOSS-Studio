@@ -32,8 +32,9 @@ function trashProject(id) { // move a deleted project's folder to projects/.tras
 }
 const runs = new Map(); // project id -> { running, text, tool, error, code, child }
 function findClaude() {
-  const dirs = [...(process.env.PATH || '').split(';'), join(homedir(), '.local', 'bin')];
-  for (const d of dirs) for (const n of ['claude.exe', 'claude.cmd']) if (d && existsSync(join(d, n))) return join(d, n);
+  const dirs = [...(process.env.PATH || '').split(';'), join(homedir(), '.local', 'bin')].filter(Boolean);
+  // Node refuses to start a .cmd file directly (spawn EINVAL), so look for a real claude.exe in every folder before falling back to the .cmd shim.
+  for (const n of ['claude.exe', 'claude.cmd']) for (const d of dirs) if (existsSync(join(d, n))) return join(d, n);
   return null;
 }
 const PREFACE = (id) => {
@@ -61,6 +62,12 @@ How to edit: use the bossstudio pipeline in this repo, not Remotion and not a cu
 - Cuts: the kit's cut-silences and cut-mistakes scripts.
 - Motion graphics and rendering: HyperFrames (the kit's hyperframes, hyperframes-video-beats and hyperframes-cli skills; render with npx hyperframes render from kit/). Take the look (colours, fonts, timing, layouts) from the style guide; the Remotion code in remotion/src/ is only a visual reference.
 - Frames for review: hyperframes snapshot, saved to frames/ as above.
+Rendering rules (important, they stop duplicate renders and slow renders):
+- Never run \`npx hyperframes render\` directly. Always start it through the guard, in the background: \`node tools/render-guard.mjs kit/video-projects/${id} -- npx hyperframes render -o renders/<name>.mp4 -q draft --crf 24\`. The guard refuses to start a second render for the same project, and it writes progress to kit/video-projects/${id}/renders/render.log.
+- Never run a render in the foreground. A tool time-out does NOT stop a render: it keeps running unseen, and starting it again makes two renders that slow each other down. If a command with a render in it times out, assume the render is still running and check \`node tools/render-guard.mjs kit/video-projects/${id} --status\` before doing anything else.
+- If the guard says a render is already running, do NOT start another one. Wait, and check with \`node tools/render-guard.mjs kit/video-projects/${id} --status\` every 2 to 3 minutes.
+- A long render (HDR footage, lots of B-roll) can take 30 to 60+ minutes and print nothing for a long time. Silence is normal, not a failure. Only call a render stuck when --status says it is no longer running and no video file was produced.
+- Speed: iPhone or other HDR clips (ffprobe shows color_transfer arib-std-b67 or smpte2084) push the renderer onto its slow 16-bit HDR path. Before you build the composition, convert such a clip, and every B-roll clip, to SDR bt709 with ffmpeg (zscale tonemap) and use that copy. Keep B-roll clips short and small.
 Reply briefly when done.\n\n`;
 };
 function startRun(id, prompt) {
@@ -71,7 +78,9 @@ function startRun(id, prompt) {
   const p = readProject(id) || {};
   const args = ['-p', '--output-format', 'stream-json', '--verbose', '--model', 'claude-opus-5-5', '--effort', 'medium', '--permission-mode', 'acceptEdits', '--allowedTools', 'Bash,PowerShell,Read,Write,Edit,Glob,Grep,Skill,mcp__ElevenLabs__text_to_speech,mcp__ElevenLabs__search_voices,mcp__ElevenLabs__text_to_voice'];
   if (p.session) args.push('--resume', p.session);
-  const child = spawn(exe, args, { cwd: ROOT, windowsHide: true });
+  let child; // a failed launch must not leave the project stuck as "running"
+  try { child = /\.(cmd|bat)$/i.test(exe) ? spawn('"' + exe + '"', args, { cwd: ROOT, windowsHide: true, shell: true }) : spawn(exe, args, { cwd: ROOT, windowsHide: true }); }
+  catch (e) { st.running = false; st.error = 'Could not start Claude Code: ' + e.message; return st; }
   st.child = child;
   let buf = '';
   child.stdout.on('data', (d) => {
@@ -177,10 +186,35 @@ async function thumbOf(q) {
 }
 const dataUrl = (u) => { const m = /^data:image\/(jpeg|png);base64,(.+)$/.exec(u || ''); return m ? { buf: Buffer.from(m[2], 'base64'), ext: m[1] === 'png' ? 'png' : 'jpg' } : null; };
 
+// ---- Upload to Drive with rclone: one Google sign-in, then renders go straight into the Drive folder the user pasted
+const DRIVE_REMOTE = 'bossdrive';
+const exec = (bin, args, ms = 180000) => new Promise((ok) => {
+  let out = '', err = '';
+  const c = spawn(bin, args, { windowsHide: true });
+  const t = setTimeout(() => c.kill(), ms);
+  c.stdout.on('data', (d) => (out += d)); c.stderr.on('data', (d) => (err += d));
+  c.on('error', (e) => { clearTimeout(t); ok({ code: -1, out, err: String(e.message) }); });
+  c.on('close', (code) => { clearTimeout(t); ok({ code, out, err }); });
+});
+let rcloneBin;
+const findRclone = async () => {
+  if (rcloneBin) return rcloneBin;
+  const c = ['rclone'];
+  const base = join(process.env.LOCALAPPDATA || '', 'Microsoft', 'WinGet', 'Packages'); // winget installs it here before the PATH reaches an already-running server
+  try { for (const d of readdirSync(base)) if (/^Rclone.Rclone/.test(d)) for (const s of readdirSync(join(base, d))) c.push(join(base, d, s, 'rclone.exe')); } catch {}
+  for (const b of c) if ((await exec(b, ['version'], 15000)).code === 0) return (rcloneBin = b);
+  return '';
+};
+
 // ---- API
 async function api(req, res, url) {
   const parts = url.pathname.split('/').filter(Boolean).slice(1); // after /api
   const [a, id, b] = parts;
+  if (a === 'drive' && id === 'connect' && req.method === 'POST') { // opens the Google sign-in in the browser; waits until it is allowed
+    const bin = await findRclone(); if (!bin) return send(res, 409, { error: 'NEEDS_RCLONE' });
+    const r = await exec(bin, ['config', 'create', DRIVE_REMOTE, 'drive', 'scope', 'drive'], 300000);
+    return r.code === 0 ? send(res, 200, { ok: true }) : send(res, 500, { error: 'Google sign-in did not finish: ' + r.err.trim().split(/\r?\n/).pop() });
+  }
   if (a === 'ping') return send(res, 200, { ok: true, maintainer: existsSync(join(ROOT, '.maintainer')) });
   if (a === 'style-proposals') {
     const dir = pendingDir(id);
@@ -252,7 +286,9 @@ async function api(req, res, url) {
     Object.assign(p, { rawName: out, struck: [], cuts: [], cutFile: '' }); writeProject(p); return send(res, 200, p);
   }
   if (b === 'broll' && req.method === 'PUT') { // extra footage a revision note asks BOSS to cut in
-    const name = safeName(url.searchParams.get('name')); mkdirSync(join(pdir(id), 'broll'), { recursive: true });
+    let name = safeName(url.searchParams.get('name')); mkdirSync(join(pdir(id), 'broll'), { recursive: true });
+    // phones name every clip IMG_0001.MOV and so on: never let a new clip overwrite one an earlier note points at
+    for (let n = 2, stem = name.replace(/(\.[^.]*)?$/, ''), ext = (/\.[^.]*$/.exec(name) || [''])[0]; existsSync(join(pdir(id), 'broll', name)); n++) name = stem + '-' + n + ext;
     const out = createWriteStream(join(pdir(id), 'broll', name));
     req.pipe(out); out.on('finish', () => send(res, 200, { name })); out.on('error', () => send(res, 500, { error: 'could not save' })); return;
   }
@@ -284,6 +320,16 @@ async function api(req, res, url) {
     const front = process.platform === 'win32' ? ['powershell.exe', ['-NoProfile', '-WindowStyle', 'Hidden', '-Command', winFront]] : process.platform === 'darwin' ? ['osascript', ['-e', 'tell application "Finder" to activate']] : null;
     if (front) try { const c = spawn(front[0], front[1], { detached: true, stdio: 'ignore', windowsHide: true, env: { ...process.env, BS_DIR: dirname(src) } }); c.on('error', () => {}); c.unref(); } catch {}
     return send(res, 200, { ok: true });
+  }
+  if (b === 'drive' && req.method === 'POST') { // upload a rendered version into the Drive folder (by its id)
+    const f = safeName(url.searchParams.get('file')), src = join(pdir(id), 'drafts', f), folder = url.searchParams.get('folder') || '';
+    if (!existsSync(src)) return send(res, 404, { error: 'no such file' });
+    if (!/^[A-Za-z0-9_-]{10,}$/.test(folder)) return send(res, 400, { error: 'That Drive folder link has no folder in it' });
+    const bin = await findRclone(); if (!bin) return send(res, 409, { error: 'NEEDS_RCLONE' });
+    if (!(await exec(bin, ['listremotes'], 20000)).out.includes(DRIVE_REMOTE + ':')) return send(res, 409, { error: 'NEEDS_CONNECT' });
+    const name = safeName(p.name) + ' - ' + f;
+    const r = await exec(bin, ['copyto', src, DRIVE_REMOTE + ':' + name, '--drive-root-folder-id=' + folder, '--stats=0'], 900000);
+    return r.code === 0 ? send(res, 200, { ok: true, name }) : send(res, 500, { error: 'Drive upload failed: ' + (r.err.trim().split(/\r?\n/).pop() || 'unknown error') });
   }
   if (b === 'drafts' && req.method === 'DELETE') {
     const f = safeName(url.searchParams.get('file')), src = join(pdir(id), 'drafts', f);
@@ -334,6 +380,7 @@ function serve(req, res, url) {
   const m = /bytes=(\d*)-(\d*)/.exec(req.headers.range || '');
   if (m) {
     const s = m[1] ? +m[1] : Math.max(0, size - +m[2]), e = m[1] && m[2] ? Math.min(+m[2], size - 1) : size - 1;
+    if (!(m[1] || m[2]) || s > e || s >= size) { res.writeHead(416, { 'content-range': `bytes */${size}` }); return res.end(); } // impossible range
     res.writeHead(206, { 'content-type': type, 'accept-ranges': 'bytes', 'content-range': `bytes ${s}-${e}/${size}`, 'content-length': e - s + 1, 'cache-control': 'no-cache' });
     return createReadStream(target, { start: s, end: e }).pipe(res);
   }

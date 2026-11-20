@@ -12,6 +12,9 @@ import { dirname, join, parse, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { parseArgs } from 'node:util';
 
+// Print the reason on one line instead of a stack trace: the Studio shows this script's last output line to the user.
+process.on('uncaughtException', (e) => { console.error(e.message); process.exit(1); });
+
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const { values: opts, positionals: [video] } = parseArgs({
   allowPositionals: true,
@@ -24,6 +27,13 @@ if (!video || !existsSync(video)) {
 }
 try { process.loadEnvFile(join(root, '.env')); } catch {}
 
+// No Groq key but faster-whisper is installed: use it, so the Studio (which never passes --local) still works.
+let useLocal = local;
+if (!useLocal && !process.env.GROQ_API_KEY) {
+  const probe = spawnSync(process.platform === 'win32' ? 'py' : 'python3', ['-c', 'import faster_whisper'], { windowsHide: true });
+  if (!probe.error && probe.status === 0) { console.error('No GROQ_API_KEY set; using local faster-whisper.'); useLocal = true; }
+}
+
 const run = (cmd, cmdArgs) => {
   const r = spawnSync(cmd, cmdArgs, { encoding: 'utf8', maxBuffer: 1 << 28, windowsHide: true });
   if (r.error || r.status !== 0) throw new Error(`${cmd} failed: ${r.error?.message || r.stderr.trim().split('\n').pop()}`);
@@ -35,7 +45,7 @@ const out = join(dir, `${name}.json`);
 const duration = Number(run('ffprobe', ['-v', 'error', '-show_entries', 'format=duration', '-of', 'csv=p=0', video]));
 
 let words;
-if (local) {
+if (useLocal) {
   const py = process.platform === 'win32' ? 'py' : 'python3';
   const json = run(py, [join(root, 'tools', 'transcribe_local.py'), resolve(video), model]);
   words = JSON.parse(json);

@@ -1,0 +1,2806 @@
+{
+  "text": "What if editing a video felt like talking to a friend who is really good at it? You tell them what you want. They do the work. You say, make it a little faster, and it's done. That is Boss Studio. Boss Studio is an editing app powered by AI. You record the video. Boss does the editing, the cuts, the captions, the graphics, and the sound. Think of it as your own video editor who never gets tired and never says, I'm busy. Here is what Boss can do. It cleans up your talking. It finds the ums, the repeats, and the false starts and takes them out. It gives your video a look you pick from a selection of styles. Choosing one is like choosing an outfit. It adds captions that pop, moving words, cards, and graphics. It adds music and sound effects too. And it makes the right shape for where you post, tall for Reels and TikTok, wide for YouTube. The best part? You stay the boss. Nothing is final until you say so. Let's take a quick tour. This is the projects page. Every project gets its own folder on your computer so your videos stay private. Start a project click new project give it a name add your raw video write your first idea in your own words Then pick a style you have two ways to go Press create project to review each step yourself or press magic edit and boss decides everything and shows you the result when it's done Step one script boss listens to your video and writes down every word now You can read your video like a document select any words You don't want and delete them or press suggest cleanup and boss finds the stutters and retakes for you. Press preview edits to watch it with those parts skipped. Your original video is never changed. Step two, instructions. Tell boss what you want in plain words. For example, make it energetic with big captions. You can tick boxes to clean up the sound, add soft music or add sound effects. You can even paste a video you like and Boss will copy its style. Step three, editing. Boss gets to work. A progress bar shows you it's busy. When it's done, you get a fast, small draft to review. Watch the draft. Switch between the script and the frames to jump anywhere in the video. See something to change? Pause and press snapshot. The frame opens big and you can draw right on it. Circle it. Point an arrow at it. Then write a note like, make this word bigger and add a pop sound. Each note sticks to that exact second. Add as many as you want, and when you have your notes, press Render Draft and Boss fixes everything in one go. Step four, Gallery. Every version is saved so you can compare them. Open any of them, show the file in its folder, or send it to Google Drive with one click. Drafts are small, so they're fast. When you love one, press Render Final Version. That makes the full quality video. That's it. Start, Script, Instructions, Editing, Gallery. You don't need to be an editor. You just need to know what you want. Boss Studio, your vision. boss does the editing start creating",
+  "audio_duration_secs": 157.756372,
+  "words": [
+    {
+      "text": "What",
+      "start": 0.02,
+      "end": 0.2
+    },
+    {
+      "text": "if",
+      "start": 0.2,
+      "end": 0.34
+    },
+    {
+      "text": "editing",
+      "start": 0.34,
+      "end": 0.64
+    },
+    {
+      "text": "a",
+      "start": 0.64,
+      "end": 0.8
+    },
+    {
+      "text": "video",
+      "start": 0.8,
+      "end": 1
+    },
+    {
+      "text": "felt",
+      "start": 1,
+      "end": 1.24
+    },
+    {
+      "text": "like",
+      "start": 1.24,
+      "end": 1.4
+    },
+    {
+      "text": "talking",
+      "start": 1.4,
+      "end": 1.7
+    },
+    {
+      "text": "to",
+      "start": 1.7,
+      "end": 1.84
+    },
+    {
+      "text": "a",
+      "start": 1.84,
+      "end": 1.98
+    },
+    {
+      "text": "friend",
+      "start": 1.98,
+      "end": 2.12
+    },
+    {
+      "text": "who",
+      "start": 2.12,
+      "end": 2.26
+    },
+    {
+      "text": "is",
+      "start": 2.26,
+      "end": 2.36
+    },
+    {
+      "text": "really",
+      "start": 2.36,
+      "end": 2.54
+    },
+    {
+      "text": "good",
+      "start": 2.54,
+      "end": 2.72
+    },
+    {
+      "text": "at",
+      "start": 2.72,
+      "end": 2.86
+    },
+    {
+      "text": "it?",
+      "start": 2.86,
+      "end": 3.32
+    },
+    {
+      "text": "You",
+      "start": 3.3,
+      "end": 3.42
+    },
+    {
+      "text": "tell",
+      "start": 3.42,
+      "end": 3.58
+    },
+    {
+      "text": "them",
+      "start": 3.58,
+      "end": 3.74
+    },
+    {
+      "text": "what",
+      "start": 3.74,
+      "end": 3.86
+    },
+    {
+      "text": "you",
+      "start": 3.86,
+      "end": 3.98
+    },
+    {
+      "text": "want.",
+      "start": 3.98,
+      "end": 4.56
+    },
+    {
+      "text": "They",
+      "start": 4.54,
+      "end": 4.66
+    },
+    {
+      "text": "do",
+      "start": 4.66,
+      "end": 4.78
+    },
+    {
+      "text": "the",
+      "start": 4.78,
+      "end": 4.9
+    },
+    {
+      "text": "work.",
+      "start": 4.9,
+      "end": 5.62
+    },
+    {
+      "text": "You",
+      "start": 5.18,
+      "end": 5.32
+    },
+    {
+      "text": "say,",
+      "start": 5.32,
+      "end": 5.48
+    },
+    {
+      "text": "make",
+      "start": 5.48,
+      "end": 5.72
+    },
+    {
+      "text": "it",
+      "start": 5.72,
+      "end": 5.86
+    },
+    {
+      "text": "a",
+      "start": 5.86,
+      "end": 5.96
+    },
+    {
+      "text": "little",
+      "start": 5.96,
+      "end": 6.1
+    },
+    {
+      "text": "faster,",
+      "start": 6.1,
+      "end": 6.58
+    },
+    {
+      "text": "and",
+      "start": 6.58,
+      "end": 6.9
+    },
+    {
+      "text": "it's",
+      "start": 6.9,
+      "end": 7.06
+    },
+    {
+      "text": "done.",
+      "start": 7.06,
+      "end": 7.76
+    },
+    {
+      "text": "That",
+      "start": 7.62,
+      "end": 7.78
+    },
+    {
+      "text": "is",
+      "start": 7.78,
+      "end": 8.04
+    },
+    {
+      "text": "Boss",
+      "start": 8.04,
+      "end": 8.44
+    },
+    {
+      "text": "Studio.",
+      "start": 8.44,
+      "end": 9.38
+    },
+    {
+      "text": "Boss",
+      "start": 9.48,
+      "end": 9.66
+    },
+    {
+      "text": "Studio",
+      "start": 9.66,
+      "end": 9.96
+    },
+    {
+      "text": "is",
+      "start": 9.96,
+      "end": 10.24
+    },
+    {
+      "text": "an",
+      "start": 10.24,
+      "end": 10.42
+    },
+    {
+      "text": "editing",
+      "start": 10.42,
+      "end": 10.74
+    },
+    {
+      "text": "app",
+      "start": 10.74,
+      "end": 11
+    },
+    {
+      "text": "powered",
+      "start": 11,
+      "end": 11.3
+    },
+    {
+      "text": "by",
+      "start": 11.3,
+      "end": 11.54
+    },
+    {
+      "text": "AI.",
+      "start": 11.54,
+      "end": 12.32
+    },
+    {
+      "text": "You",
+      "start": 12.22,
+      "end": 12.32
+    },
+    {
+      "text": "record",
+      "start": 12.32,
+      "end": 12.68
+    },
+    {
+      "text": "the",
+      "start": 12.68,
+      "end": 12.8
+    },
+    {
+      "text": "video.",
+      "start": 12.8,
+      "end": 13.58
+    },
+    {
+      "text": "Boss",
+      "start": 13.88,
+      "end": 13.96
+    },
+    {
+      "text": "does",
+      "start": 13.96,
+      "end": 14.26
+    },
+    {
+      "text": "the",
+      "start": 14.26,
+      "end": 14.42
+    },
+    {
+      "text": "editing,",
+      "start": 14.42,
+      "end": 14.96
+    },
+    {
+      "text": "the",
+      "start": 14.96,
+      "end": 15.08
+    },
+    {
+      "text": "cuts,",
+      "start": 15.08,
+      "end": 15.62
+    },
+    {
+      "text": "the",
+      "start": 15.62,
+      "end": 15.72
+    },
+    {
+      "text": "captions,",
+      "start": 15.72,
+      "end": 16.22
+    },
+    {
+      "text": "the",
+      "start": 16.22,
+      "end": 16.3
+    },
+    {
+      "text": "graphics,",
+      "start": 16.3,
+      "end": 16.68
+    },
+    {
+      "text": "and",
+      "start": 16.68,
+      "end": 16.96
+    },
+    {
+      "text": "the",
+      "start": 16.96,
+      "end": 17.08
+    },
+    {
+      "text": "sound.",
+      "start": 17.08,
+      "end": 17.84
+    },
+    {
+      "text": "Think",
+      "start": 17.84,
+      "end": 17.98
+    },
+    {
+      "text": "of",
+      "start": 17.98,
+      "end": 18.08
+    },
+    {
+      "text": "it",
+      "start": 18.08,
+      "end": 18.18
+    },
+    {
+      "text": "as",
+      "start": 18.18,
+      "end": 18.32
+    },
+    {
+      "text": "your",
+      "start": 18.32,
+      "end": 18.42
+    },
+    {
+      "text": "own",
+      "start": 18.42,
+      "end": 18.56
+    },
+    {
+      "text": "video",
+      "start": 18.56,
+      "end": 18.86
+    },
+    {
+      "text": "editor",
+      "start": 18.86,
+      "end": 19.06
+    },
+    {
+      "text": "who",
+      "start": 19.06,
+      "end": 19.22
+    },
+    {
+      "text": "never",
+      "start": 19.22,
+      "end": 19.56
+    },
+    {
+      "text": "gets",
+      "start": 19.56,
+      "end": 19.84
+    },
+    {
+      "text": "tired",
+      "start": 19.84,
+      "end": 20.1
+    },
+    {
+      "text": "and",
+      "start": 20.1,
+      "end": 20.22
+    },
+    {
+      "text": "never",
+      "start": 20.22,
+      "end": 20.42
+    },
+    {
+      "text": "says,",
+      "start": 20.42,
+      "end": 21.22
+    },
+    {
+      "text": "I'm",
+      "start": 21.22,
+      "end": 21.34
+    },
+    {
+      "text": "busy.",
+      "start": 21.34,
+      "end": 22.1
+    },
+    {
+      "text": "Here",
+      "start": 22.04,
+      "end": 22.28
+    },
+    {
+      "text": "is",
+      "start": 22.28,
+      "end": 22.38
+    },
+    {
+      "text": "what",
+      "start": 22.38,
+      "end": 22.56
+    },
+    {
+      "text": "Boss",
+      "start": 22.56,
+      "end": 22.86
+    },
+    {
+      "text": "can",
+      "start": 22.86,
+      "end": 23.02
+    },
+    {
+      "text": "do.",
+      "start": 23.02,
+      "end": 23.76
+    },
+    {
+      "text": "It",
+      "start": 23.6,
+      "end": 23.7
+    },
+    {
+      "text": "cleans",
+      "start": 23.7,
+      "end": 24.06
+    },
+    {
+      "text": "up",
+      "start": 24.06,
+      "end": 24.24
+    },
+    {
+      "text": "your",
+      "start": 24.24,
+      "end": 24.36
+    },
+    {
+      "text": "talking.",
+      "start": 24.36,
+      "end": 25.2
+    },
+    {
+      "text": "It",
+      "start": 25.14,
+      "end": 25.24
+    },
+    {
+      "text": "finds",
+      "start": 25.24,
+      "end": 25.6
+    },
+    {
+      "text": "the",
+      "start": 25.6,
+      "end": 25.86
+    },
+    {
+      "text": "ums,",
+      "start": 25.86,
+      "end": 26.52
+    },
+    {
+      "text": "the",
+      "start": 26.52,
+      "end": 26.64
+    },
+    {
+      "text": "repeats,",
+      "start": 26.64,
+      "end": 27.2
+    },
+    {
+      "text": "and",
+      "start": 27.2,
+      "end": 27.32
+    },
+    {
+      "text": "the",
+      "start": 27.32,
+      "end": 27.42
+    },
+    {
+      "text": "false",
+      "start": 27.42,
+      "end": 27.68
+    },
+    {
+      "text": "starts",
+      "start": 27.68,
+      "end": 28.16
+    },
+    {
+      "text": "and",
+      "start": 28.16,
+      "end": 28.36
+    },
+    {
+      "text": "takes",
+      "start": 28.36,
+      "end": 28.62
+    },
+    {
+      "text": "them",
+      "start": 28.62,
+      "end": 28.8
+    },
+    {
+      "text": "out.",
+      "start": 28.8,
+      "end": 29.48
+    },
+    {
+      "text": "It",
+      "start": 29,
+      "end": 29.32
+    },
+    {
+      "text": "gives",
+      "start": 29.32,
+      "end": 29.5
+    },
+    {
+      "text": "your",
+      "start": 29.5,
+      "end": 29.62
+    },
+    {
+      "text": "video",
+      "start": 29.62,
+      "end": 29.96
+    },
+    {
+      "text": "a",
+      "start": 29.96,
+      "end": 30.18
+    },
+    {
+      "text": "look",
+      "start": 30.18,
+      "end": 30.42
+    },
+    {
+      "text": "you",
+      "start": 30.42,
+      "end": 30.76
+    },
+    {
+      "text": "pick",
+      "start": 30.76,
+      "end": 31.02
+    },
+    {
+      "text": "from",
+      "start": 31.02,
+      "end": 31.2
+    },
+    {
+      "text": "a",
+      "start": 31.2,
+      "end": 31.32
+    },
+    {
+      "text": "selection",
+      "start": 31.32,
+      "end": 31.68
+    },
+    {
+      "text": "of",
+      "start": 31.68,
+      "end": 31.86
+    },
+    {
+      "text": "styles.",
+      "start": 31.86,
+      "end": 32.78
+    },
+    {
+      "text": "Choosing",
+      "start": 32.86,
+      "end": 32.92
+    },
+    {
+      "text": "one",
+      "start": 32.92,
+      "end": 33.2
+    },
+    {
+      "text": "is",
+      "start": 33.2,
+      "end": 33.36
+    },
+    {
+      "text": "like",
+      "start": 33.36,
+      "end": 33.52
+    },
+    {
+      "text": "choosing",
+      "start": 33.52,
+      "end": 33.86
+    },
+    {
+      "text": "an",
+      "start": 33.86,
+      "end": 34.04
+    },
+    {
+      "text": "outfit.",
+      "start": 34.04,
+      "end": 34.82
+    },
+    {
+      "text": "It",
+      "start": 34.72,
+      "end": 34.8
+    },
+    {
+      "text": "adds",
+      "start": 34.8,
+      "end": 35.08
+    },
+    {
+      "text": "captions",
+      "start": 35.08,
+      "end": 35.64
+    },
+    {
+      "text": "that",
+      "start": 35.64,
+      "end": 35.86
+    },
+    {
+      "text": "pop,",
+      "start": 35.86,
+      "end": 36.28
+    },
+    {
+      "text": "moving",
+      "start": 36.28,
+      "end": 36.68
+    },
+    {
+      "text": "words,",
+      "start": 36.68,
+      "end": 37.14
+    },
+    {
+      "text": "cards,",
+      "start": 37.14,
+      "end": 37.44
+    },
+    {
+      "text": "and",
+      "start": 37.44,
+      "end": 37.62
+    },
+    {
+      "text": "graphics.",
+      "start": 37.62,
+      "end": 38.48
+    },
+    {
+      "text": "It",
+      "start": 38.58,
+      "end": 38.7
+    },
+    {
+      "text": "adds",
+      "start": 38.7,
+      "end": 39
+    },
+    {
+      "text": "music",
+      "start": 39,
+      "end": 39.4
+    },
+    {
+      "text": "and",
+      "start": 39.4,
+      "end": 39.58
+    },
+    {
+      "text": "sound",
+      "start": 39.58,
+      "end": 39.9
+    },
+    {
+      "text": "effects",
+      "start": 39.9,
+      "end": 40.14
+    },
+    {
+      "text": "too.",
+      "start": 40.14,
+      "end": 40.88
+    },
+    {
+      "text": "And",
+      "start": 40.9,
+      "end": 41.04
+    },
+    {
+      "text": "it",
+      "start": 41.04,
+      "end": 41.12
+    },
+    {
+      "text": "makes",
+      "start": 41.12,
+      "end": 41.34
+    },
+    {
+      "text": "the",
+      "start": 41.34,
+      "end": 41.52
+    },
+    {
+      "text": "right",
+      "start": 41.52,
+      "end": 41.72
+    },
+    {
+      "text": "shape",
+      "start": 41.72,
+      "end": 42
+    },
+    {
+      "text": "for",
+      "start": 42,
+      "end": 42.14
+    },
+    {
+      "text": "where",
+      "start": 42.14,
+      "end": 42.26
+    },
+    {
+      "text": "you",
+      "start": 42.26,
+      "end": 42.4
+    },
+    {
+      "text": "post,",
+      "start": 42.4,
+      "end": 42.98
+    },
+    {
+      "text": "tall",
+      "start": 42.98,
+      "end": 43.2
+    },
+    {
+      "text": "for",
+      "start": 43.2,
+      "end": 43.4
+    },
+    {
+      "text": "Reels",
+      "start": 43.4,
+      "end": 43.56
+    },
+    {
+      "text": "and",
+      "start": 43.56,
+      "end": 43.68
+    },
+    {
+      "text": "TikTok,",
+      "start": 43.68,
+      "end": 44.36
+    },
+    {
+      "text": "wide",
+      "start": 44.36,
+      "end": 44.54
+    },
+    {
+      "text": "for",
+      "start": 44.54,
+      "end": 44.74
+    },
+    {
+      "text": "YouTube.",
+      "start": 44.32,
+      "end": 45.5
+    },
+    {
+      "text": "The",
+      "start": 45.42,
+      "end": 45.58
+    },
+    {
+      "text": "best",
+      "start": 45.58,
+      "end": 45.78
+    },
+    {
+      "text": "part?",
+      "start": 45.78,
+      "end": 46.36
+    },
+    {
+      "text": "You",
+      "start": 46.32,
+      "end": 46.42
+    },
+    {
+      "text": "stay",
+      "start": 46.42,
+      "end": 46.62
+    },
+    {
+      "text": "the",
+      "start": 46.62,
+      "end": 46.76
+    },
+    {
+      "text": "boss.",
+      "start": 46.76,
+      "end": 47.5
+    },
+    {
+      "text": "Nothing",
+      "start": 47.4,
+      "end": 47.64
+    },
+    {
+      "text": "is",
+      "start": 47.64,
+      "end": 47.84
+    },
+    {
+      "text": "final",
+      "start": 47.84,
+      "end": 48.1
+    },
+    {
+      "text": "until",
+      "start": 48.1,
+      "end": 48.32
+    },
+    {
+      "text": "you",
+      "start": 48.32,
+      "end": 48.44
+    },
+    {
+      "text": "say",
+      "start": 48.44,
+      "end": 48.6
+    },
+    {
+      "text": "so.",
+      "start": 48.6,
+      "end": 49.28
+    },
+    {
+      "text": "Let's",
+      "start": 49.14,
+      "end": 49.34
+    },
+    {
+      "text": "take",
+      "start": 49.34,
+      "end": 49.48
+    },
+    {
+      "text": "a",
+      "start": 49.48,
+      "end": 49.62
+    },
+    {
+      "text": "quick",
+      "start": 49.62,
+      "end": 49.74
+    },
+    {
+      "text": "tour.",
+      "start": 49.74,
+      "end": 50.46
+    },
+    {
+      "text": "This",
+      "start": 50.3,
+      "end": 50.44
+    },
+    {
+      "text": "is",
+      "start": 50.44,
+      "end": 50.56
+    },
+    {
+      "text": "the",
+      "start": 50.56,
+      "end": 50.7
+    },
+    {
+      "text": "projects",
+      "start": 50.7,
+      "end": 50.98
+    },
+    {
+      "text": "page.",
+      "start": 50.98,
+      "end": 51.8
+    },
+    {
+      "text": "Every",
+      "start": 51.78,
+      "end": 51.96
+    },
+    {
+      "text": "project",
+      "start": 51.96,
+      "end": 52.3
+    },
+    {
+      "text": "gets",
+      "start": 52.3,
+      "end": 52.52
+    },
+    {
+      "text": "its",
+      "start": 52.52,
+      "end": 52.64
+    },
+    {
+      "text": "own",
+      "start": 52.64,
+      "end": 52.94
+    },
+    {
+      "text": "folder",
+      "start": 52.94,
+      "end": 53.24
+    },
+    {
+      "text": "on",
+      "start": 53.24,
+      "end": 53.4
+    },
+    {
+      "text": "your",
+      "start": 53.4,
+      "end": 53.5
+    },
+    {
+      "text": "computer",
+      "start": 53.5,
+      "end": 53.92
+    },
+    {
+      "text": "so",
+      "start": 53.92,
+      "end": 54.22
+    },
+    {
+      "text": "your",
+      "start": 54.22,
+      "end": 54.38
+    },
+    {
+      "text": "videos",
+      "start": 54.38,
+      "end": 54.7
+    },
+    {
+      "text": "stay",
+      "start": 54.7,
+      "end": 54.9
+    },
+    {
+      "text": "private.",
+      "start": 54.9,
+      "end": 55.7
+    },
+    {
+      "text": "Start",
+      "start": 55.22,
+      "end": 55.64
+    },
+    {
+      "text": "a",
+      "start": 55.64,
+      "end": 55.8
+    },
+    {
+      "text": "project",
+      "start": 55.8,
+      "end": 56.16
+    },
+    {
+      "text": "click",
+      "start": 56.16,
+      "end": 56.58
+    },
+    {
+      "text": "new",
+      "start": 56.58,
+      "end": 56.74
+    },
+    {
+      "text": "project",
+      "start": 56.74,
+      "end": 57.16
+    },
+    {
+      "text": "give",
+      "start": 57.16,
+      "end": 57.46
+    },
+    {
+      "text": "it",
+      "start": 57.46,
+      "end": 57.56
+    },
+    {
+      "text": "a",
+      "start": 57.56,
+      "end": 57.68
+    },
+    {
+      "text": "name",
+      "start": 57.68,
+      "end": 57.9
+    },
+    {
+      "text": "add",
+      "start": 57.9,
+      "end": 58.3
+    },
+    {
+      "text": "your",
+      "start": 58.3,
+      "end": 58.46
+    },
+    {
+      "text": "raw",
+      "start": 58.46,
+      "end": 58.64
+    },
+    {
+      "text": "video",
+      "start": 58.64,
+      "end": 59.02
+    },
+    {
+      "text": "write",
+      "start": 59.02,
+      "end": 59.32
+    },
+    {
+      "text": "your",
+      "start": 59.32,
+      "end": 59.46
+    },
+    {
+      "text": "first",
+      "start": 59.46,
+      "end": 59.82
+    },
+    {
+      "text": "idea",
+      "start": 59.82,
+      "end": 60.08
+    },
+    {
+      "text": "in",
+      "start": 60.08,
+      "end": 60.24
+    },
+    {
+      "text": "your",
+      "start": 60.24,
+      "end": 60.3
+    },
+    {
+      "text": "own",
+      "start": 60.3,
+      "end": 60.44
+    },
+    {
+      "text": "words",
+      "start": 60.44,
+      "end": 60.66
+    },
+    {
+      "text": "Then",
+      "start": 60.72,
+      "end": 61.06
+    },
+    {
+      "text": "pick",
+      "start": 61.06,
+      "end": 61.32
+    },
+    {
+      "text": "a",
+      "start": 61.32,
+      "end": 61.54
+    },
+    {
+      "text": "style",
+      "start": 61.54,
+      "end": 61.78
+    },
+    {
+      "text": "you",
+      "start": 61.78,
+      "end": 62.02
+    },
+    {
+      "text": "have",
+      "start": 62.02,
+      "end": 62.18
+    },
+    {
+      "text": "two",
+      "start": 62.18,
+      "end": 62.38
+    },
+    {
+      "text": "ways",
+      "start": 62.38,
+      "end": 62.54
+    },
+    {
+      "text": "to",
+      "start": 62.54,
+      "end": 62.68
+    },
+    {
+      "text": "go",
+      "start": 62.68,
+      "end": 63
+    },
+    {
+      "text": "Press",
+      "start": 63.04,
+      "end": 63.3
+    },
+    {
+      "text": "create",
+      "start": 63.3,
+      "end": 63.6
+    },
+    {
+      "text": "project",
+      "start": 63.6,
+      "end": 63.96
+    },
+    {
+      "text": "to",
+      "start": 63.96,
+      "end": 64.16
+    },
+    {
+      "text": "review",
+      "start": 64.16,
+      "end": 64.42
+    },
+    {
+      "text": "each",
+      "start": 64.42,
+      "end": 64.82
+    },
+    {
+      "text": "step",
+      "start": 64.82,
+      "end": 65.06
+    },
+    {
+      "text": "yourself",
+      "start": 65.06,
+      "end": 65.46
+    },
+    {
+      "text": "or",
+      "start": 65.46,
+      "end": 65.86
+    },
+    {
+      "text": "press",
+      "start": 65.86,
+      "end": 66.24
+    },
+    {
+      "text": "magic",
+      "start": 66.24,
+      "end": 66.62
+    },
+    {
+      "text": "edit",
+      "start": 66.62,
+      "end": 66.84
+    },
+    {
+      "text": "and",
+      "start": 66.84,
+      "end": 67.14
+    },
+    {
+      "text": "boss",
+      "start": 67.14,
+      "end": 67.46
+    },
+    {
+      "text": "decides",
+      "start": 67.46,
+      "end": 67.84
+    },
+    {
+      "text": "everything",
+      "start": 67.84,
+      "end": 68.36
+    },
+    {
+      "text": "and",
+      "start": 68.36,
+      "end": 68.6
+    },
+    {
+      "text": "shows",
+      "start": 68.6,
+      "end": 68.78
+    },
+    {
+      "text": "you",
+      "start": 68.78,
+      "end": 68.86
+    },
+    {
+      "text": "the",
+      "start": 68.86,
+      "end": 69.02
+    },
+    {
+      "text": "result",
+      "start": 69.02,
+      "end": 69.24
+    },
+    {
+      "text": "when",
+      "start": 69.24,
+      "end": 69.4
+    },
+    {
+      "text": "it's",
+      "start": 69.4,
+      "end": 69.54
+    },
+    {
+      "text": "done",
+      "start": 69.54,
+      "end": 70.08
+    },
+    {
+      "text": "Step",
+      "start": 70.18,
+      "end": 70.48
+    },
+    {
+      "text": "one",
+      "start": 70.48,
+      "end": 71
+    },
+    {
+      "text": "script",
+      "start": 71,
+      "end": 71.62
+    },
+    {
+      "text": "boss",
+      "start": 71.62,
+      "end": 72.24
+    },
+    {
+      "text": "listens",
+      "start": 72.24,
+      "end": 72.52
+    },
+    {
+      "text": "to",
+      "start": 72.52,
+      "end": 72.72
+    },
+    {
+      "text": "your",
+      "start": 72.72,
+      "end": 72.84
+    },
+    {
+      "text": "video",
+      "start": 72.84,
+      "end": 73.22
+    },
+    {
+      "text": "and",
+      "start": 73.22,
+      "end": 73.4
+    },
+    {
+      "text": "writes",
+      "start": 73.4,
+      "end": 73.6
+    },
+    {
+      "text": "down",
+      "start": 73.6,
+      "end": 73.82
+    },
+    {
+      "text": "every",
+      "start": 73.82,
+      "end": 74.2
+    },
+    {
+      "text": "word",
+      "start": 74.2,
+      "end": 74.58
+    },
+    {
+      "text": "now",
+      "start": 74.58,
+      "end": 74.94
+    },
+    {
+      "text": "You",
+      "start": 74.84,
+      "end": 75.06
+    },
+    {
+      "text": "can",
+      "start": 75.06,
+      "end": 75.24
+    },
+    {
+      "text": "read",
+      "start": 75.24,
+      "end": 75.38
+    },
+    {
+      "text": "your",
+      "start": 75.38,
+      "end": 75.52
+    },
+    {
+      "text": "video",
+      "start": 75.52,
+      "end": 75.72
+    },
+    {
+      "text": "like",
+      "start": 75.72,
+      "end": 75.88
+    },
+    {
+      "text": "a",
+      "start": 75.88,
+      "end": 76
+    },
+    {
+      "text": "document",
+      "start": 76,
+      "end": 76.42
+    },
+    {
+      "text": "select",
+      "start": 76.42,
+      "end": 76.84
+    },
+    {
+      "text": "any",
+      "start": 76.84,
+      "end": 77.16
+    },
+    {
+      "text": "words",
+      "start": 77.16,
+      "end": 77.4
+    },
+    {
+      "text": "You",
+      "start": 76.98,
+      "end": 77.44
+    },
+    {
+      "text": "don't",
+      "start": 77.44,
+      "end": 77.72
+    },
+    {
+      "text": "want",
+      "start": 77.72,
+      "end": 77.98
+    },
+    {
+      "text": "and",
+      "start": 77.91819,
+      "end": 78.15819
+    },
+    {
+      "text": "delete",
+      "start": 77.718185,
+      "end": 78.49819
+    },
+    {
+      "text": "them",
+      "start": 78.49819,
+      "end": 78.87819
+    },
+    {
+      "text": "or",
+      "start": 78.87819,
+      "end": 79.19819
+    },
+    {
+      "text": "press",
+      "start": 79.19819,
+      "end": 79.73819
+    },
+    {
+      "text": "suggest",
+      "start": 79.73819,
+      "end": 80.27819
+    },
+    {
+      "text": "cleanup",
+      "start": 80.27819,
+      "end": 80.69819
+    },
+    {
+      "text": "and",
+      "start": 80.69819,
+      "end": 81.03819
+    },
+    {
+      "text": "boss",
+      "start": 81.03819,
+      "end": 81.29819
+    },
+    {
+      "text": "finds",
+      "start": 81.29819,
+      "end": 81.55819
+    },
+    {
+      "text": "the",
+      "start": 81.55819,
+      "end": 81.75819
+    },
+    {
+      "text": "stutters",
+      "start": 81.75819,
+      "end": 82.01819
+    },
+    {
+      "text": "and",
+      "start": 82.01819,
+      "end": 82.23819
+    },
+    {
+      "text": "retakes",
+      "start": 82.23819,
+      "end": 82.53819
+    },
+    {
+      "text": "for",
+      "start": 82.53819,
+      "end": 82.73819
+    },
+    {
+      "text": "you.",
+      "start": 82.73819,
+      "end": 83.29819
+    },
+    {
+      "text": "Press",
+      "start": 83.29819,
+      "end": 83.39819
+    },
+    {
+      "text": "preview",
+      "start": 83.31819,
+      "end": 83.858185
+    },
+    {
+      "text": "edits",
+      "start": 83.858185,
+      "end": 84.17819
+    },
+    {
+      "text": "to",
+      "start": 84.17819,
+      "end": 84.33819
+    },
+    {
+      "text": "watch",
+      "start": 84.33819,
+      "end": 84.67819
+    },
+    {
+      "text": "it",
+      "start": 84.67819,
+      "end": 84.79819
+    },
+    {
+      "text": "with",
+      "start": 84.79819,
+      "end": 84.93819
+    },
+    {
+      "text": "those",
+      "start": 84.93819,
+      "end": 85.15819
+    },
+    {
+      "text": "parts",
+      "start": 85.15819,
+      "end": 85.41819
+    },
+    {
+      "text": "skipped.",
+      "start": 85.41819,
+      "end": 86.15819
+    },
+    {
+      "text": "Your",
+      "start": 86.15819,
+      "end": 86.25819
+    },
+    {
+      "text": "original",
+      "start": 86.25819,
+      "end": 86.63819
+    },
+    {
+      "text": "video",
+      "start": 86.63819,
+      "end": 86.95819
+    },
+    {
+      "text": "is",
+      "start": 86.95819,
+      "end": 87.15819
+    },
+    {
+      "text": "never",
+      "start": 87.15819,
+      "end": 87.29819
+    },
+    {
+      "text": "changed.",
+      "start": 87.29819,
+      "end": 88.11819
+    },
+    {
+      "text": "Step",
+      "start": 88.13819,
+      "end": 88.23819
+    },
+    {
+      "text": "two,",
+      "start": 88.23819,
+      "end": 88.718185
+    },
+    {
+      "text": "instructions.",
+      "start": 88.718185,
+      "end": 89.87819
+    },
+    {
+      "text": "Tell",
+      "start": 89.87819,
+      "end": 89.97819
+    },
+    {
+      "text": "boss",
+      "start": 89.97819,
+      "end": 90.358185
+    },
+    {
+      "text": "what",
+      "start": 90.358185,
+      "end": 90.49819
+    },
+    {
+      "text": "you",
+      "start": 90.49819,
+      "end": 90.61819
+    },
+    {
+      "text": "want",
+      "start": 90.61819,
+      "end": 90.81819
+    },
+    {
+      "text": "in",
+      "start": 90.81819,
+      "end": 90.95819
+    },
+    {
+      "text": "plain",
+      "start": 90.95819,
+      "end": 91.23819
+    },
+    {
+      "text": "words.",
+      "start": 91.23819,
+      "end": 91.83819
+    },
+    {
+      "text": "For",
+      "start": 91.83819,
+      "end": 91.93819
+    },
+    {
+      "text": "example,",
+      "start": 91.93819,
+      "end": 92.25819
+    },
+    {
+      "text": "make",
+      "start": 92.25819,
+      "end": 92.65819
+    },
+    {
+      "text": "it",
+      "start": 92.65819,
+      "end": 92.77819
+    },
+    {
+      "text": "energetic",
+      "start": 92.77819,
+      "end": 93.078186
+    },
+    {
+      "text": "with",
+      "start": 92.79819,
+      "end": 93.43819
+    },
+    {
+      "text": "big",
+      "start": 93.43819,
+      "end": 93.63819
+    },
+    {
+      "text": "captions.",
+      "start": 93.63819,
+      "end": 94.59819
+    },
+    {
+      "text": "You",
+      "start": 94.59819,
+      "end": 94.65819
+    },
+    {
+      "text": "can",
+      "start": 94.65819,
+      "end": 94.81819
+    },
+    {
+      "text": "tick",
+      "start": 94.81819,
+      "end": 95.01819
+    },
+    {
+      "text": "boxes",
+      "start": 95.01819,
+      "end": 95.31819
+    },
+    {
+      "text": "to",
+      "start": 95.31819,
+      "end": 95.55819
+    },
+    {
+      "text": "clean",
+      "start": 95.55819,
+      "end": 95.77819
+    },
+    {
+      "text": "up",
+      "start": 95.77819,
+      "end": 95.858185
+    },
+    {
+      "text": "the",
+      "start": 95.858185,
+      "end": 95.97819
+    },
+    {
+      "text": "sound,",
+      "start": 95.97819,
+      "end": 96.718185
+    },
+    {
+      "text": "add",
+      "start": 96.718185,
+      "end": 96.83819
+    },
+    {
+      "text": "soft",
+      "start": 96.83819,
+      "end": 97.17819
+    },
+    {
+      "text": "music",
+      "start": 97.17819,
+      "end": 97.51819
+    },
+    {
+      "text": "or",
+      "start": 97.51819,
+      "end": 97.83819
+    },
+    {
+      "text": "add",
+      "start": 97.83819,
+      "end": 98.11819
+    },
+    {
+      "text": "sound",
+      "start": 98.11819,
+      "end": 98.39819
+    },
+    {
+      "text": "effects.",
+      "start": 98.39819,
+      "end": 99.15819
+    },
+    {
+      "text": "You",
+      "start": 98.67819,
+      "end": 99.09819
+    },
+    {
+      "text": "can",
+      "start": 99.09819,
+      "end": 99.25819
+    },
+    {
+      "text": "even",
+      "start": 99.25819,
+      "end": 99.47819
+    },
+    {
+      "text": "paste",
+      "start": 99.47819,
+      "end": 99.75819
+    },
+    {
+      "text": "a",
+      "start": 99.75819,
+      "end": 99.89819
+    },
+    {
+      "text": "video",
+      "start": 99.89819,
+      "end": 100.09819
+    },
+    {
+      "text": "you",
+      "start": 100.09819,
+      "end": 100.25819
+    },
+    {
+      "text": "like",
+      "start": 100.25819,
+      "end": 100.51819
+    },
+    {
+      "text": "and",
+      "start": 100.51819,
+      "end": 100.79819
+    },
+    {
+      "text": "Boss",
+      "start": 100.79819,
+      "end": 101.05819
+    },
+    {
+      "text": "will",
+      "start": 101.05819,
+      "end": 101.23819
+    },
+    {
+      "text": "copy",
+      "start": 101.23819,
+      "end": 101.55819
+    },
+    {
+      "text": "its",
+      "start": 101.55819,
+      "end": 101.718185
+    },
+    {
+      "text": "style.",
+      "start": 101.718185,
+      "end": 102.49819
+    },
+    {
+      "text": "Step",
+      "start": 102.59819,
+      "end": 102.67819
+    },
+    {
+      "text": "three,",
+      "start": 102.67819,
+      "end": 103.33819
+    },
+    {
+      "text": "editing.",
+      "start": 103.33819,
+      "end": 104.078186
+    },
+    {
+      "text": "Boss",
+      "start": 103.99819,
+      "end": 104.218185
+    },
+    {
+      "text": "gets",
+      "start": 104.218185,
+      "end": 104.39819
+    },
+    {
+      "text": "to",
+      "start": 104.39819,
+      "end": 104.59819
+    },
+    {
+      "text": "work.",
+      "start": 104.59819,
+      "end": 105.11819
+    },
+    {
+      "text": "A",
+      "start": 105.078186,
+      "end": 105.17819
+    },
+    {
+      "text": "progress",
+      "start": 105.17819,
+      "end": 105.55819
+    },
+    {
+      "text": "bar",
+      "start": 105.55819,
+      "end": 105.79819
+    },
+    {
+      "text": "shows",
+      "start": 105.79819,
+      "end": 106.118195
+    },
+    {
+      "text": "you",
+      "start": 106.118195,
+      "end": 106.27819
+    },
+    {
+      "text": "it's",
+      "start": 106.27819,
+      "end": 106.39819
+    },
+    {
+      "text": "busy.",
+      "start": 106.39819,
+      "end": 107.15819
+    },
+    {
+      "text": "When",
+      "start": 107.05819,
+      "end": 107.15819
+    },
+    {
+      "text": "it's",
+      "start": 107.15819,
+      "end": 107.358185
+    },
+    {
+      "text": "done,",
+      "start": 107.358185,
+      "end": 107.73819
+    },
+    {
+      "text": "you",
+      "start": 107.73819,
+      "end": 107.81819
+    },
+    {
+      "text": "get",
+      "start": 107.81819,
+      "end": 107.95819
+    },
+    {
+      "text": "a",
+      "start": 107.95819,
+      "end": 108.078186
+    },
+    {
+      "text": "fast,",
+      "start": 108.078186,
+      "end": 108.858185
+    },
+    {
+      "text": "small",
+      "start": 108.858185,
+      "end": 109.05819
+    },
+    {
+      "text": "draft",
+      "start": 109.05819,
+      "end": 109.37819
+    },
+    {
+      "text": "to",
+      "start": 109.37819,
+      "end": 109.53819
+    },
+    {
+      "text": "review.",
+      "start": 109.53819,
+      "end": 110.27819
+    },
+    {
+      "text": "Watch",
+      "start": 110.17819,
+      "end": 110.43819
+    },
+    {
+      "text": "the",
+      "start": 110.43819,
+      "end": 110.618195
+    },
+    {
+      "text": "draft.",
+      "start": 110.618195,
+      "end": 111.39819
+    },
+    {
+      "text": "Switch",
+      "start": 111.29819,
+      "end": 111.45819
+    },
+    {
+      "text": "between",
+      "start": 111.45819,
+      "end": 111.758194
+    },
+    {
+      "text": "the",
+      "start": 111.758194,
+      "end": 111.93819
+    },
+    {
+      "text": "script",
+      "start": 111.93819,
+      "end": 112.13818
+    },
+    {
+      "text": "and",
+      "start": 112.13818,
+      "end": 112.27819
+    },
+    {
+      "text": "the",
+      "start": 112.27819,
+      "end": 112.39819
+    },
+    {
+      "text": "frames",
+      "start": 112.39819,
+      "end": 112.578186
+    },
+    {
+      "text": "to",
+      "start": 112.578186,
+      "end": 112.73819
+    },
+    {
+      "text": "jump",
+      "start": 112.73819,
+      "end": 113.01819
+    },
+    {
+      "text": "anywhere",
+      "start": 113.01819,
+      "end": 113.498184
+    },
+    {
+      "text": "in",
+      "start": 113.498184,
+      "end": 113.858185
+    },
+    {
+      "text": "the",
+      "start": 113.858185,
+      "end": 113.97819
+    },
+    {
+      "text": "video.",
+      "start": 113.97819,
+      "end": 114.69819
+    },
+    {
+      "text": "See",
+      "start": 114.55819,
+      "end": 114.69819
+    },
+    {
+      "text": "something",
+      "start": 114.69819,
+      "end": 114.97819
+    },
+    {
+      "text": "to",
+      "start": 114.97819,
+      "end": 115.13818
+    },
+    {
+      "text": "change?",
+      "start": 115.13818,
+      "end": 115.73819
+    },
+    {
+      "text": "Pause",
+      "start": 115.79819,
+      "end": 116.03819
+    },
+    {
+      "text": "and",
+      "start": 116.03819,
+      "end": 116.19819
+    },
+    {
+      "text": "press",
+      "start": 116.19819,
+      "end": 116.498184
+    },
+    {
+      "text": "snapshot.",
+      "start": 116.498184,
+      "end": 117.13818
+    },
+    {
+      "text": "The",
+      "start": 117.078186,
+      "end": 117.218185
+    },
+    {
+      "text": "frame",
+      "start": 117.218185,
+      "end": 117.45819
+    },
+    {
+      "text": "opens",
+      "start": 117.45819,
+      "end": 117.83819
+    },
+    {
+      "text": "big",
+      "start": 117.83819,
+      "end": 118.118195
+    },
+    {
+      "text": "and",
+      "start": 118.118195,
+      "end": 118.29819
+    },
+    {
+      "text": "you",
+      "start": 118.29819,
+      "end": 118.41819
+    },
+    {
+      "text": "can",
+      "start": 118.41819,
+      "end": 118.55819
+    },
+    {
+      "text": "draw",
+      "start": 118.55819,
+      "end": 118.758194
+    },
+    {
+      "text": "right",
+      "start": 118.758194,
+      "end": 119.03819
+    },
+    {
+      "text": "on",
+      "start": 119.03819,
+      "end": 119.258194
+    },
+    {
+      "text": "it.",
+      "start": 119.258194,
+      "end": 119.858185
+    },
+    {
+      "text": "Circle",
+      "start": 119.77819,
+      "end": 119.91819
+    },
+    {
+      "text": "it.",
+      "start": 119.91819,
+      "end": 120.37819
+    },
+    {
+      "text": "Point",
+      "start": 120.39819,
+      "end": 120.55819
+    },
+    {
+      "text": "an",
+      "start": 120.55819,
+      "end": 120.718185
+    },
+    {
+      "text": "arrow",
+      "start": 120.718185,
+      "end": 120.858185
+    },
+    {
+      "text": "at",
+      "start": 120.858185,
+      "end": 121.03819
+    },
+    {
+      "text": "it.",
+      "start": 121.03819,
+      "end": 121.65819
+    },
+    {
+      "text": "Then",
+      "start": 121.53819,
+      "end": 121.69819
+    },
+    {
+      "text": "write",
+      "start": 121.69819,
+      "end": 121.81819
+    },
+    {
+      "text": "a",
+      "start": 121.81819,
+      "end": 121.93819
+    },
+    {
+      "text": "note",
+      "start": 121.93819,
+      "end": 122.118195
+    },
+    {
+      "text": "like,",
+      "start": 122.118195,
+      "end": 122.77819
+    },
+    {
+      "text": "make",
+      "start": 122.77819,
+      "end": 122.858185
+    },
+    {
+      "text": "this",
+      "start": 122.858185,
+      "end": 123.078186
+    },
+    {
+      "text": "word",
+      "start": 123.078186,
+      "end": 123.29819
+    },
+    {
+      "text": "bigger",
+      "start": 123.29819,
+      "end": 123.578186
+    },
+    {
+      "text": "and",
+      "start": 123.578186,
+      "end": 124.01819
+    },
+    {
+      "text": "add",
+      "start": 124.01819,
+      "end": 124.37819
+    },
+    {
+      "text": "a",
+      "start": 124.37819,
+      "end": 124.618195
+    },
+    {
+      "text": "pop",
+      "start": 124.618195,
+      "end": 124.89819
+    },
+    {
+      "text": "sound.",
+      "start": 124.89819,
+      "end": 125.65819
+    },
+    {
+      "text": "Each",
+      "start": 125.59819,
+      "end": 125.81819
+    },
+    {
+      "text": "note",
+      "start": 125.81819,
+      "end": 126.118195
+    },
+    {
+      "text": "sticks",
+      "start": 126.118195,
+      "end": 126.43819
+    },
+    {
+      "text": "to",
+      "start": 126.43819,
+      "end": 126.618195
+    },
+    {
+      "text": "that",
+      "start": 126.618195,
+      "end": 126.758194
+    },
+    {
+      "text": "exact",
+      "start": 126.758194,
+      "end": 127.13818
+    },
+    {
+      "text": "second.",
+      "start": 127.13818,
+      "end": 127.93819
+    },
+    {
+      "text": "Add",
+      "start": 127.87819,
+      "end": 128.01819
+    },
+    {
+      "text": "as",
+      "start": 128.01819,
+      "end": 128.19818
+    },
+    {
+      "text": "many",
+      "start": 128.19818,
+      "end": 128.37819
+    },
+    {
+      "text": "as",
+      "start": 128.37819,
+      "end": 128.5382
+    },
+    {
+      "text": "you",
+      "start": 128.5382,
+      "end": 128.63818
+    },
+    {
+      "text": "want,",
+      "start": 128.63818,
+      "end": 129.0382
+    },
+    {
+      "text": "and",
+      "start": 129.0382,
+      "end": 129.1182
+    },
+    {
+      "text": "when",
+      "start": 129.1182,
+      "end": 129.23819
+    },
+    {
+      "text": "you",
+      "start": 129.23819,
+      "end": 129.35818
+    },
+    {
+      "text": "have",
+      "start": 129.35818,
+      "end": 129.5582
+    },
+    {
+      "text": "your",
+      "start": 129.5582,
+      "end": 129.67819
+    },
+    {
+      "text": "notes,",
+      "start": 129.67819,
+      "end": 130.15819
+    },
+    {
+      "text": "press",
+      "start": 130.07819,
+      "end": 130.3382
+    },
+    {
+      "text": "Render",
+      "start": 130.3382,
+      "end": 130.69818
+    },
+    {
+      "text": "Draft",
+      "start": 130.69818,
+      "end": 131.01819
+    },
+    {
+      "text": "and",
+      "start": 131.01819,
+      "end": 131.23819
+    },
+    {
+      "text": "Boss",
+      "start": 131.23819,
+      "end": 131.5582
+    },
+    {
+      "text": "fixes",
+      "start": 131.5582,
+      "end": 131.85818
+    },
+    {
+      "text": "everything",
+      "start": 131.85818,
+      "end": 132.3982
+    },
+    {
+      "text": "in",
+      "start": 132.3982,
+      "end": 132.57819
+    },
+    {
+      "text": "one",
+      "start": 132.57819,
+      "end": 132.7782
+    },
+    {
+      "text": "go.",
+      "start": 132.7782,
+      "end": 133.31819
+    },
+    {
+      "text": "Step",
+      "start": 133.37819,
+      "end": 133.51819
+    },
+    {
+      "text": "four,",
+      "start": 133.51819,
+      "end": 134.1182
+    },
+    {
+      "text": "Gallery.",
+      "start": 134.1182,
+      "end": 134.85818
+    },
+    {
+      "text": "Every",
+      "start": 134.95819,
+      "end": 135.17819
+    },
+    {
+      "text": "version",
+      "start": 135.17819,
+      "end": 135.45819
+    },
+    {
+      "text": "is",
+      "start": 135.45819,
+      "end": 135.65819
+    },
+    {
+      "text": "saved",
+      "start": 135.65819,
+      "end": 135.95819
+    },
+    {
+      "text": "so",
+      "start": 135.95819,
+      "end": 136.09819
+    },
+    {
+      "text": "you",
+      "start": 136.09819,
+      "end": 136.21819
+    },
+    {
+      "text": "can",
+      "start": 136.21819,
+      "end": 136.35818
+    },
+    {
+      "text": "compare",
+      "start": 136.35818,
+      "end": 136.65819
+    },
+    {
+      "text": "them.",
+      "start": 136.65819,
+      "end": 137.31819
+    },
+    {
+      "text": "Open",
+      "start": 137.31819,
+      "end": 137.45819
+    },
+    {
+      "text": "any",
+      "start": 137.45819,
+      "end": 137.71819
+    },
+    {
+      "text": "of",
+      "start": 137.71819,
+      "end": 137.85818
+    },
+    {
+      "text": "them,",
+      "start": 137.85818,
+      "end": 138.15819
+    },
+    {
+      "text": "show",
+      "start": 138.15819,
+      "end": 138.29819
+    },
+    {
+      "text": "the",
+      "start": 138.29819,
+      "end": 138.43819
+    },
+    {
+      "text": "file",
+      "start": 138.43819,
+      "end": 138.67819
+    },
+    {
+      "text": "in",
+      "start": 138.67819,
+      "end": 138.81819
+    },
+    {
+      "text": "its",
+      "start": 138.81819,
+      "end": 138.93819
+    },
+    {
+      "text": "folder,",
+      "start": 138.93819,
+      "end": 139.63818
+    },
+    {
+      "text": "or",
+      "start": 139.5582,
+      "end": 139.8382
+    },
+    {
+      "text": "send",
+      "start": 139.8382,
+      "end": 140.07819
+    },
+    {
+      "text": "it",
+      "start": 140.07819,
+      "end": 140.19818
+    },
+    {
+      "text": "to",
+      "start": 140.19818,
+      "end": 140.31819
+    },
+    {
+      "text": "Google",
+      "start": 140.31819,
+      "end": 140.63818
+    },
+    {
+      "text": "Drive",
+      "start": 140.63818,
+      "end": 140.85818
+    },
+    {
+      "text": "with",
+      "start": 140.85818,
+      "end": 141.1182
+    },
+    {
+      "text": "one",
+      "start": 141.1182,
+      "end": 141.3382
+    },
+    {
+      "text": "click.",
+      "start": 141.3382,
+      "end": 142.09819
+    },
+    {
+      "text": "Drafts",
+      "start": 142.13818,
+      "end": 142.3382
+    },
+    {
+      "text": "are",
+      "start": 142.3382,
+      "end": 142.43819
+    },
+    {
+      "text": "small,",
+      "start": 142.43819,
+      "end": 142.81819
+    },
+    {
+      "text": "so",
+      "start": 142.81819,
+      "end": 143.09819
+    },
+    {
+      "text": "they're",
+      "start": 143.09819,
+      "end": 143.25818
+    },
+    {
+      "text": "fast.",
+      "start": 143.25818,
+      "end": 144.1182
+    },
+    {
+      "text": "When",
+      "start": 143.91818,
+      "end": 144.07819
+    },
+    {
+      "text": "you",
+      "start": 144.07819,
+      "end": 144.21819
+    },
+    {
+      "text": "love",
+      "start": 144.21819,
+      "end": 144.43819
+    },
+    {
+      "text": "one,",
+      "start": 144.43819,
+      "end": 144.73819
+    },
+    {
+      "text": "press",
+      "start": 144.73819,
+      "end": 145.01819
+    },
+    {
+      "text": "Render",
+      "start": 145.01819,
+      "end": 145.45819
+    },
+    {
+      "text": "Final",
+      "start": 145.45819,
+      "end": 145.7782
+    },
+    {
+      "text": "Version.",
+      "start": 145.7782,
+      "end": 146.5582
+    },
+    {
+      "text": "That",
+      "start": 146.29819,
+      "end": 146.43819
+    },
+    {
+      "text": "makes",
+      "start": 146.43819,
+      "end": 146.63818
+    },
+    {
+      "text": "the",
+      "start": 146.63818,
+      "end": 146.79819
+    },
+    {
+      "text": "full",
+      "start": 146.79819,
+      "end": 146.95819
+    },
+    {
+      "text": "quality",
+      "start": 146.95819,
+      "end": 147.31819
+    },
+    {
+      "text": "video.",
+      "start": 147.31819,
+      "end": 148.13818
+    },
+    {
+      "text": "That's",
+      "start": 147.29819,
+      "end": 148.07819
+    },
+    {
+      "text": "it.",
+      "start": 148.07819,
+      "end": 148.21819
+    },
+    {
+      "text": "Start,",
+      "start": 148.45819,
+      "end": 148.9982
+    },
+    {
+      "text": "Script,",
+      "start": 148.9982,
+      "end": 149.59819
+    },
+    {
+      "text": "Instructions,",
+      "start": 149.59819,
+      "end": 150.31819
+    },
+    {
+      "text": "Editing,",
+      "start": 150.31819,
+      "end": 150.7782
+    },
+    {
+      "text": "Gallery.",
+      "start": 150.7782,
+      "end": 151.57819
+    },
+    {
+      "text": "You",
+      "start": 151.51819,
+      "end": 151.59819
+    },
+    {
+      "text": "don't",
+      "start": 151.59819,
+      "end": 151.7782
+    },
+    {
+      "text": "need",
+      "start": 151.7782,
+      "end": 151.91818
+    },
+    {
+      "text": "to",
+      "start": 151.91818,
+      "end": 152.0382
+    },
+    {
+      "text": "be",
+      "start": 152.0382,
+      "end": 152.15819
+    },
+    {
+      "text": "an",
+      "start": 152.15819,
+      "end": 152.29819
+    },
+    {
+      "text": "editor.",
+      "start": 152.29819,
+      "end": 152.69818
+    },
+    {
+      "text": "You",
+      "start": 152.59819,
+      "end": 152.67819
+    },
+    {
+      "text": "just",
+      "start": 152.67819,
+      "end": 152.8982
+    },
+    {
+      "text": "need",
+      "start": 152.8982,
+      "end": 153.0382
+    },
+    {
+      "text": "to",
+      "start": 153.0382,
+      "end": 153.15819
+    },
+    {
+      "text": "know",
+      "start": 153.15819,
+      "end": 153.2782
+    },
+    {
+      "text": "what",
+      "start": 153.2782,
+      "end": 153.43819
+    },
+    {
+      "text": "you",
+      "start": 153.43819,
+      "end": 153.5582
+    },
+    {
+      "text": "want.",
+      "start": 153.5582,
+      "end": 154.25818
+    },
+    {
+      "text": "Boss",
+      "start": 154.23819,
+      "end": 154.45819
+    },
+    {
+      "text": "Studio,",
+      "start": 154.45819,
+      "end": 155.15819
+    },
+    {
+      "text": "your",
+      "start": 155.15819,
+      "end": 155.2782
+    },
+    {
+      "text": "vision.",
+      "start": 155.2782,
+      "end": 156.0582
+    },
+    {
+      "text": "boss",
+      "start": 155.57819,
+      "end": 156.01819
+    },
+    {
+      "text": "does",
+      "start": 156.01819,
+      "end": 156.25818
+    },
+    {
+      "text": "the",
+      "start": 156.25818,
+      "end": 156.3982
+    },
+    {
+      "text": "editing",
+      "start": 156.3982,
+      "end": 156.67819
+    },
+    {
+      "text": "start",
+      "start": 156.67819,
+      "end": 157.13818
+    },
+    {
+      "text": "creating",
+      "start": 157.13818,
+      "end": 157.57819
+    }
+  ]
+}

@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>BOSS Studio · Scheduling (mockup)</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700;800&family=Playfair+Display:ital,wght@1,700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F6F3EC;--card:#fff;--ink:#14110F;--muted:#6B645C;--line:#E1DACD;--accent:#DC2E0A;--tint:#EDE6D9;--green:#1E9E5A;--shadow:0 10px 30px rgba(20,17,15,.10)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:500 15px/1.5 Montserrat,system-ui,sans-serif}
+h1,h2,h3{margin:0;line-height:1.1;letter-spacing:-.02em}
+h1{font-weight:800;font-size:clamp(1.8rem,3.4vw,2.8rem)}
+h1 i{font-family:'Playfair Display',serif;color:var(--accent);font-weight:700}
+.top{display:flex;align-items:center;gap:16px;padding:12px clamp(16px,3vw,40px);border-bottom:1px solid var(--line);flex-wrap:wrap;position:sticky;top:0;background:color-mix(in srgb,var(--bg) 90%,transparent);backdrop-filter:blur(10px);z-index:5}
+.brand{font-weight:800;display:flex;align-items:center;gap:10px;letter-spacing:-.02em;cursor:pointer}
+.brand i{font-family:'Playfair Display',serif;color:var(--accent)}
+.dot{width:12px;height:12px;border-radius:50%;background:var(--accent)}
+.badge{font:700 .66rem 'JetBrains Mono',monospace;letter-spacing:.1em;text-transform:uppercase;background:var(--tint);color:var(--muted);padding:4px 10px;border-radius:999px}
+.sp{flex:1}
+main{max-width:1280px;margin:0 auto;padding:clamp(16px,2.5vw,32px) clamp(16px,3vw,40px) 60px}
+.eb{font:700 .72rem 'JetBrains Mono',monospace;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.sub{color:var(--muted);margin:6px 0 20px}
+.hero{text-align:center;margin:10px auto 34px;max-width:820px}
+.hero h1{font-size:clamp(2.6rem,7vw,5rem)}
+.hero.proj h1{font-size:clamp(1.5rem,3.2vw,2.4rem);line-height:1.15}
+.hero .eb{font-size:.82rem}
+.hero .sub{font-size:1.2rem;margin:12px auto 0}
+.c{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:16px 18px;box-shadow:var(--shadow)}
+.h{font:700 .72rem 'JetBrains Mono',monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin:0 0 10px;display:flex;align-items:center;gap:8px}
+.h i{color:var(--accent);font-size:18px}
+.r{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+button,.b{font:700 .82rem Montserrat,sans-serif;padding:9px 15px;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px;display:inline-flex;align-items:center;gap:6px;cursor:pointer;text-decoration:none}
+button:hover{border-color:var(--ink)}
+button.p{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+button.a{background:var(--accent);color:#fff;border-color:var(--accent)}
+button.i{padding:9px 11px}
+.gb .r{gap:5px;flex-wrap:nowrap}.gb .r button.i{padding:9px 8px}.gb .r button:not(.i){padding-left:11px;padding-right:11px;white-space:nowrap}
+button.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+button i{font-size:16px}
+button:disabled{opacity:.4;cursor:not-allowed}
+input[type=text],select,textarea{font:500 .9rem Montserrat,sans-serif;color:var(--ink);background:#fff;border:1px solid var(--line);border-radius:14px;padding:10px 12px;width:100%}
+textarea{resize:vertical;min-height:62px}
+label.l{display:block;font:700 .72rem 'JetBrains Mono',monospace;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:14px 0 6px}
+.mut{font-size:.8rem;color:var(--muted);margin:8px 0 0}
+.steps{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:0 0 22px}
+.steps span[data-step]:hover{outline:2px solid var(--ink)}
+.steps span{font:700 .72rem 'JetBrains Mono',monospace;letter-spacing:.08em;text-transform:uppercase;padding:6px 12px;border-radius:999px;background:var(--tint);color:var(--muted)}
+.steps .on{background:var(--ink);color:var(--bg)}.steps .done{background:var(--green);color:#fff}
+button i{font-size:16px}
+/* only the scheduling page's own bits, built from the app's tokens */
+.sty{cursor:pointer;border:2px solid var(--line);border-radius:16px;background:#fff;text-align:center;padding:16px 10px;font-weight:700;font-size:.85rem;position:relative}
+.sty i{font-size:30px;display:block;margin-bottom:4px}.sty.on{border-color:var(--accent)}
+.sty.on::after{content:"✓";position:absolute;top:8px;right:8px;background:var(--accent);color:#fff;border-radius:50%;width:20px;height:20px;font-size:.7rem;display:grid;place-items:center}
+.plats{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px}
+.vid{display:flex;gap:14px;align-items:center}.vid .th{width:96px;aspect-ratio:9/16;border-radius:14px;background:var(--tint);display:grid;place-items:center;color:var(--muted);font-size:30px;flex:none}
+.when{display:grid;grid-template-columns:1fr 1fr;gap:20px}@media(max-width:640px){.when{grid-template-columns:1fr}}
+.cal{border:1px solid var(--line);border-radius:18px;padding:12px;background:#fff}
+.cal .hd{display:flex;justify-content:space-between;align-items:center;font-weight:800;margin-bottom:8px}
+.cg{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;text-align:center}
+.cg span{font:700 .66rem 'JetBrains Mono',monospace;color:var(--muted)}
+.cg button{border:0;background:none;border-radius:10px;padding:8px 0;justify-content:center}
+.cg button:hover{background:var(--tint)}.cg button.sel{background:var(--accent);color:#fff}
+.cg button:disabled{opacity:.3}
+input[type=time]{font:500 .9rem Montserrat,sans-serif;color:var(--ink);background:#fff;border:1px solid var(--line);border-radius:14px;padding:10px 12px;width:100%}
+.sum{background:var(--tint);border-radius:14px;padding:12px 14px;margin-top:12px;font-size:.9rem}
+.dim{opacity:.4;pointer-events:none}
+.ok{display:flex;gap:8px;align-items:center;background:#E7F6EE;color:#14663A;border-radius:14px;padding:9px 14px;font-size:.8rem;font-weight:700;margin:0 0 16px}
+.stack{display:flex;flex-direction:column;gap:16px;max-width:860px;margin:0 auto}
+.bar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:flex-end}.bar .left{margin-right:auto}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:12px 20px;border-radius:14px;font-weight:700;display:none;z-index:9}
+</style></head><body>
+<header class="top"><span class="brand"><span class="dot"></span>BOSS <i>Studio</i></span><span class="badge">Mockup · nothing is saved or posted</span></header>
+<main>
+<div class="hero proj" style="margin-bottom:18px"><div class="eb">Scheduling</div><h1>Magic Edit Test 2</h1></div>
+<div class="steps"><span class="done">1 · Cutting</span><span class="done">2 · Instructions</span><span class="done">3 · Editing &amp; Revision</span><span class="done">4 · Gallery</span><span class="on">5 · Scheduling</span></div>
+
+<div class="stack">
+<div class="ok"><i class="ti ti-plug-connected"></i>Mashore Method is connected, so BOSS can post for you.</div>
+
+<section class="c"><p class="h"><i class="ti ti-movie"></i>Your video</p>
+  <div class="vid"><div class="th"><i class="ti ti-player-play"></i></div><div><b>V3 · latest</b><p class="mut" style="margin:2px 0 8px">0:42 · vertical · 18.4 MB. This is the video that will be posted.</p><button><i class="ti ti-switch-horizontal"></i>Pick a different version</button></div></div></section>
+
+<section class="c"><p class="h"><i class="ti ti-share"></i>Where should it go?</p><p class="mut" style="margin:-4px 0 12px">Tap the apps you want. You can pick more than one.</p>
+  <div class="plats" id="plats">
+    <div class="sty on" data-p="Instagram"><i class="ti ti-brand-instagram"></i>Instagram</div>
+    <div class="sty on" data-p="Facebook"><i class="ti ti-brand-facebook"></i>Facebook</div>
+    <div class="sty" data-p="YouTube"><i class="ti ti-brand-youtube"></i>YouTube</div>
+    <div class="sty" data-p="TikTok"><i class="ti ti-brand-tiktok"></i>TikTok</div>
+    <div class="sty" data-p="LinkedIn"><i class="ti ti-brand-linkedin"></i>LinkedIn</div>
+  </div></section>
+
+<section class="c"><p class="h"><i class="ti ti-pencil"></i>Write your post</p>
+  <label class="l" style="margin-top:0">Title <span id="tc" style="float:right">0 / 100</span></label>
+  <input type="text" id="title" maxlength="100" placeholder="Example: 3 tips to get more reviews this week">
+  <label class="l">Description <span id="dc" style="float:right">0 / 2200</span></label>
+  <textarea id="desc" rows="5" maxlength="2200" placeholder="Example: Here is a quick tip you can use today. Follow for more! #smallbusiness"></textarea></section>
+
+<section class="c"><p class="h"><i class="ti ti-calendar"></i>When should it go live?</p>
+  <div class="r" style="margin-bottom:14px"><button id="bnow">Post now</button><button id="blater" class="on">Pick a day and time</button></div>
+  <div class="when" id="when">
+    <div class="cal"><div class="hd"><button class="i" id="pm">‹</button><span id="mn"></span><button class="i" id="nm">›</button></div><div class="cg" id="cg"></div></div>
+    <div><label class="l" style="margin-top:0">What time?</label><input type="time" id="time" value="09:00">
+      <div class="sum"><i class="ti ti-calendar-event"></i> <b id="sumtxt">Pick a day on the calendar</b></div></div>
+  </div></section>
+
+<section class="c" style="border:2px solid var(--green)"><div class="bar"><span class="mut left" id="left" style="margin:0 auto 0 0">Pick at least one app and add a title.</span>
+  <button id="draft"><i class="ti ti-device-floppy"></i>Save as draft</button>
+  <button class="a" id="go"><i class="ti ti-send"></i><span id="golbl">Schedule post</span></button></div></section>
+</div></main><div class="toast" id="toast"></div>
+<script>
+const $=s=>document.querySelector(s); let now=false, sel=null, view=new Date(); view.setDate(1);
+const today=new Date(); today.setHours(0,0,0,0);
+const plats=()=>[...document.querySelectorAll('.sty.on')].map(b=>b.dataset.p);
+function cal(){
+  $('#mn').textContent=view.toLocaleString('en',{month:'long',year:'numeric'});
+  let h='SMTWTFS'.split('').map(d=>'<span>'+d+'</span>').join(''); const first=view.getDay(), n=new Date(view.getFullYear(),view.getMonth()+1,0).getDate();
+  for(let i=0;i<first;i++)h+='<i></i>';
+  for(let d=1;d<=n;d++){const dt=new Date(view.getFullYear(),view.getMonth(),d); h+='<button data-d="'+d+'"'+(dt<today?' disabled':'')+(sel&&+sel===+dt?' class="sel"':'')+'>'+d+'</button>'}
+  $('#cg').innerHTML=h;
+}
+function upd(){
+  const p=plats(), ok=p.length&&$('#title').value.trim()&&(now||sel);
+  $('#when').classList.toggle('dim',now); $('#bnow').classList.toggle('on',now); $('#blater').classList.toggle('on',!now);
+  $('#golbl').textContent=now?'Publish now':'Schedule post';
+  const ok2=ok; $('#go').disabled=!ok2; $('#draft').disabled=!($('#title').value.trim()||$('#desc').value.trim());
+  $('#sumtxt').textContent=sel?sel.toLocaleDateString('en',{weekday:'long',month:'long',day:'numeric'})+' at '+new Date('2000-01-01T'+($('#time').value||'09:00')).toLocaleTimeString('en',{hour:'numeric',minute:'2-digit'}):'Pick a day on the calendar';
+  $('#left').textContent=!p.length?'Pick at least one app.':!$('#title').value.trim()?'Add a title to continue.':(!now&&!sel)?'Pick a day on the calendar.':(now?'Ready! It will post right away to ':'Ready! It will post on '+sel.toLocaleDateString('en',{month:'short',day:'numeric'})+' to ')+p.join(', ')+'.';
+  $('#tc').textContent=$('#title').value.length+' / 100'; $('#dc').textContent=$('#desc').value.length+' / 2200';
+}
+const toast=m=>{const t=$('#toast');t.textContent=m;t.style.display='block';clearTimeout(toast.h);toast.h=setTimeout(()=>t.style.display='none',2600)};
+document.addEventListener('click',e=>{
+  const t=e.target.closest('.sty'); if(t)t.classList.toggle('on');
+  const b=e.target.closest('button'); if(b){
+  if(b.id==='bnow')now=true; if(b.id==='blater')now=false;
+  if(b.dataset.d){sel=new Date(view.getFullYear(),view.getMonth(),+b.dataset.d)}
+  if(b.id==='pm'){view.setMonth(view.getMonth()-1)} if(b.id==='nm'){view.setMonth(view.getMonth()+1)}
+  if(b.id==='draft')toast('Saved as a draft (mockup)'); if(b.id==='go')toast((now?'Publishing now to ':'Scheduled for '+$('#sumtxt').textContent+' on ')+plats().join(', ')+' (mockup)');}
+  cal(); upd();
+});
+document.addEventListener('input',upd); cal(); upd();
+</script></body></html>

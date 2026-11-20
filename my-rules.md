@@ -16,7 +16,7 @@ Lasting rules from my notes. These beat `my-style.md`.
   - My words: "make sure that no texts are cut out. resize when necessary" (2026-11-11)
 - Cards, rounded boxes and chips must have clear contrast from the background. A white card on a near-white background looks over-exposed, so use a slightly darker warm background, a visible border and a stronger shadow.
   - My words: "when revealing small cards, or rounded boxes, make sure there's contrast from the background... it looks like its over exposed" (2026-11-11)
-- Sound: no whoosh or swish sound effects. Use soft clicks or a clean high-tech ding instead.
+- Sound (BOSS Motion Graphics - 01 / Type & Wipe and its split-cutout version only): no whoosh or swish sound effects. Use soft clicks or a clean high-tech ding instead. Other styles keep whooshes if their guide uses them, and clicks only where the style has a click.
   - My words: "I don't like the woosh sound effect, replace with clicks or hightech ding" (2026-11-11)
 - Named style: "BOSS Motion Graphics - 01 + Split Cutout" is BOSS Motion Graphics - 01 plus the presenter split: the talking head in a rounded box at the bottom with a cut-out of her head popping out over the graphics, used only in some scenes. When I say "use BOSS Motion Graphics - 01 + Split Cutout", follow sections 1 to 8 of `my-style-presets/motion-graphics-reels/type-and-wipe/Type-and-Wipe_style-guide.md`. Always bake the presenter into frame images before rendering.
   - My words: "update the style with this new skill of having a split screen and cutout video. maybe add a suffix about that new feature" (2026-11-11)
@@ -44,7 +44,17 @@ Lasting rules from my notes. These beat `my-style.md`.
   - My words: "dont render video yet" and "do all frames and let's see first" (2026-11-12)
 - Sound: typing effects use a soft, deep, mechanical "creamy" keyboard thock and stay quiet under the voice. Mouse clicks are a normal mouse click. Background music is corporate upbeat, never funk, and subtle.
   - My words: "use a mechanical creamy sound. and lower the volume down" and "change to corporate upbeat" (2026-11-12)
+- Music is always new: choosing a style never carries over the music or sound bed that came with it (its sample video, guide or a reference). Every new project gets music pulled for that video from the style's sound kit (`_sound-kit.md` in the style folder, real licensed tracks, a different one each time), rendered into the video. Use ElevenLabs music or effects only if I ask, because they sound too AI.
+  - My words: "when selecting the styles, it should not carry over the sound music that was in the style but BOSS should pull unique music for new projects.... always have new music rendered in" (2026-11-18)
 - Voice: no "ah/uh" fillers or breath and mouth blips between words.
   - My words: "i can hear ah's .... fix that" and "theres a glitch after the word stranger. like a half ah" (2026-11-12)
+- Text (headlines, captions, stamps, pills) never covers the speaker's head or face, in any frame of any video. Give the face shot headroom (push the video down) and keep punch-ins small enough that the head stays clear.
+  - My words: "Make sure that in all frames in all video... the text doesn't cover the head or the face... you can push down the video so there's more headroom" (2026-11-18)
+- When the speaker introduces herself, hide the word captions and put her name and details (company) in the caption spot instead.
+  - My words: "remove the captions from this section when she's... introducing herself and then put her name and the other details... where the captions are originally" (2026-11-18)
 - When the speaker tells a story (what happened to someone), show B-roll that follows the story behind her instead of graphic illustrations. She stays in the speaker box with her head popping out, and the B-roll fills the stage behind her.
   - My words: "I need some Brolls about what happened behind her still.... follow the story of what happen with broll instead of graphic illustrations on this section" and "change the scene to a b-roll videos relating to the script on this part forward" (2026-11-13)
+- Styles follow their video samples exactly as they are. Never add Krista's photos, cut-outs or stock people to a style. The only person on screen is the one in the project's own video, shown the way the style's sample shows it.
+  - My words: "remove the rule about using Krista's images on the style. From now on, each style we build will follow the video samples as they are" and "we will follow the same rule for videos that only use the video and not Krista" (2026-11-19)
+- A style built on video of a person (a talking-head style, "faceless" is false in the hub) cannot be used when the project has only an MP3 and no video. The studio blocks it with a message ("pick a motion-graphics style or add a video"). BOSS also refuses it and does not invent footage or use stock people.
+  - My words: "if the raw file is only an MP3 without a video, our original rule about styles with video will not be used, and it will prompt or have a message that you cannot use the style" (2026-11-19)

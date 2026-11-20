@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vertical Editing Styles</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f6f1e9;--ink:#141414;--mut:#6b655c;--acc:#ff4a1c;--card:#fff;--line:#e4ddd1;--screen:#1b1b1f}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#121212;--ink:#f3eee6;--mut:#a39d92;--card:#1c1c1c;--line:#2e2e2e}}
+*{box-sizing:border-box;margin:0}
+body{background:var(--bg);color:var(--ink);font:500 16px/1.5 Montserrat,system-ui,sans-serif}
+header{max-width:1200px;margin:0 auto;padding:64px 16px 24px}
+header small{color:var(--acc);font-weight:800;letter-spacing:.14em;text-transform:uppercase;font-size:12px}
+h1{font-size:clamp(34px,6vw,64px);line-height:1.02;font-weight:900;margin:10px 0 14px;letter-spacing:-.02em}
+header p{color:var(--mut);max-width:640px}
+.filters{max-width:1200px;margin:0 auto;padding:8px 16px 0;display:flex;gap:8px;flex-wrap:wrap}
+.filters button{font:700 13px Montserrat;border:1.5px solid var(--line);background:var(--card);color:var(--ink);padding:8px 14px;border-radius:99px;cursor:pointer}
+.filters button[aria-pressed=true]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.grid{max-width:1200px;margin:0 auto;padding:24px 16px 80px;display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:20px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:22px;display:flex;flex-direction:column;gap:16px}
+.card h2{font-size:22px;font-weight:800;letter-spacing:-.01em}
+.card .tag{font-size:11px;font-weight:800;color:var(--acc);letter-spacing:.12em;text-transform:uppercase}
+.card p{color:var(--mut);font-size:14.5px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chips span{font-size:12px;font-weight:700;background:var(--bg);border:1px solid var(--line);padding:4px 10px;border-radius:99px}
+.best{font-size:13px}.best b{color:var(--acc)}
+/* phone */
+.phone{width:190px;aspect-ratio:9/16;margin:0 auto;background:var(--screen);border-radius:26px;border:6px solid #0a0a0a;position:relative;overflow:hidden;box-shadow:0 14px 30px #0003;font-family:Montserrat}
+.phone *{position:absolute}
+.bro{background:linear-gradient(135deg,#3a5a8c,#8c5a7a 55%,#d98a4a);inset:0}
+.bro2{background:linear-gradient(160deg,#1f6f5c,#2c3e7a);inset:0}
+.hd{width:46%;left:27%;bottom:0;aspect-ratio:1;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='34' r='19' fill='%23d5d9e0'/%3E%3Cpath d='M10 100C10 68 28 60 50 60s40 8 40 40z' fill='%23d5d9e0'/%3E%3C/svg%3E") bottom/100% no-repeat}
+.av{background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='34' r='19' fill='%23d5d9e0'/%3E%3Cpath d='M10 100C10 68 28 60 50 60s40 8 40 40z' fill='%23d5d9e0'/%3E%3C/svg%3E") #5b616e bottom/84% no-repeat}
+.hd.big{width:78%;left:11%}
+.cap{left:8%;right:8%;text-align:center;color:#fff;font-weight:900;font-size:15px;line-height:1.1;text-shadow:0 2px 0 #000a}
+.cap em{font-style:normal;color:#ffd23f;position:static}
+.safe .phone::after{content:"";position:absolute;inset:0;pointer-events:none;z-index:9;background:linear-gradient(#ff4a1c33,#ff4a1c33) bottom/100% 24% no-repeat,linear-gradient(#ff4a1c33,#ff4a1c33) right/14% 100% no-repeat,linear-gradient(#ff4a1c33,#ff4a1c33) top/100% 8% no-repeat}
+.safe .phone::before{content:"UI zone";position:absolute;z-index:9;bottom:6px;left:0;right:0;text-align:center;font:800 8px Montserrat;color:#fff}
+.ff{inset:0;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='34' r='19' fill='%23d5d9e0'/%3E%3Cpath d='M10 100C10 68 28 60 50 60s40 8 40 40z' fill='%23d5d9e0'/%3E%3C/svg%3E") center bottom -8%/175% no-repeat,linear-gradient(#4a5163,#2c303b)}
+.scrim{left:0;right:0;bottom:0;height:45%;background:linear-gradient(#0000,#000b)}
+.kw{background:#ffd23f;color:#141414;font-weight:900;font-size:10px;padding:3px 7px;border-radius:5px}
+.bar2{background:#fff;color:#141414;font-weight:900;text-align:center;font-size:11px;line-height:1.15;padding:8px 6px;left:0;right:0}
+.bub{font-weight:700;font-size:9px;padding:6px 9px;border-radius:12px;max-width:68%}
+.pill{background:var(--acc);color:#fff;font-weight:800;font-size:9px;padding:4px 8px;border-radius:7px;white-space:nowrap}
+.cardw{background:#fff;color:#141414;font-weight:800;font-size:9px;padding:7px 9px;border-radius:9px;box-shadow:0 4px 10px #0004}
+@keyframes pop{0%,10%{transform:scale(0) rotate(-6deg);opacity:0}18%,80%{transform:scale(1) rotate(-3deg);opacity:1}90%,100%{transform:scale(0);opacity:0}}
+@keyframes slide{0%,10%{transform:translateX(-120%)}22%,80%{transform:translateX(0)}92%,100%{transform:translateX(-120%)}}
+@keyframes rise{0%,8%{transform:translateY(40px);opacity:0}20%,85%{transform:none;opacity:1}95%,100%{transform:translateY(-20px);opacity:0}}
+@keyframes zoom{from{transform:scale(1)}to{transform:scale(1.18)}}
+@keyframes hl{0%,100%{color:#fff}30%,50%{color:#ffd23f;transform:scale(1.15)}}
+@keyframes wave{0%,100%{height:6px}50%{height:22px}}
+@keyframes wipe{0%,8%{clip-path:inset(0 100% 0 0)}25%,85%{clip-path:inset(0)}95%,100%{clip-path:inset(0 0 0 100%)}}
+.a-pop{animation:pop 5s infinite}.a-slide{animation:slide 5s infinite}.a-rise{animation:rise 5s infinite}.a-zoom{animation:zoom 6s ease-in-out infinite alternate}.a-wipe{animation:wipe 5s infinite}
+.d1{animation-delay:.4s}.d2{animation-delay:1s}.d3{animation-delay:1.6s}
+.bar{width:5px;background:var(--acc);border-radius:3px;animation:wave .9s ease-in-out infinite}
+footer{text-align:center;color:var(--mut);font-size:13px;padding:0 16px 48px}
+</style>
+</head>
+<body>
+<header>
+  <small>BOSS Studio · Style library</small>
+  <h1>Vertical editing styles</h1>
+  <p>The layouts people use for Reels, Shorts and TikTok. Each phone shows where the speaker sits, what's behind or around them, and what animates in. Placeholders stand in for real footage.</p>
+</header>
+<div class="filters" id="filters"></div>
+<div class="grid" id="grid"></div>
+<footer>Next: horizontal / YouTube styles. Tell me which vertical style to build a real template for.</footer>
+<script>
+const P = {
+callouts: `<div class="bro a-zoom"></div><div class="cardw a-pop" style="left:6%;top:12%">💸 $10k/mo</div><div class="cardw a-pop d1" style="right:6%;top:26%">📈 +312%</div><div class="pill a-pop d2" style="left:10%;top:40%">STEP 1</div><div class="hd"></div><div class="cap" style="bottom:6%">So <em>here's</em> the trick</div>`,
+broll: `<div class="bro2 a-zoom"></div><div class="cap a-rise" style="top:14%;font-size:24px">NOBODY<br>TELLS YOU</div><div class="cap a-rise d1" style="top:46%;font-size:17px"><em>this part</em></div><div class="pill" style="left:8%;bottom:10%">B-ROLL</div>`,
+split: `<div class="bro" style="bottom:46%"></div><div style="left:0;right:0;bottom:0;height:46%;background:#2b2b31"></div><div class="hd" style="width:38%;left:31%;bottom:0"></div><div class="cap" style="top:38%;font-size:13px">watch this ↑</div><div class="pill a-pop" style="right:8%;top:10%">SCREEN</div>`,
+captions: `<div class="bro2"></div><div class="hd big"></div><div class="cap" style="bottom:22%;font-size:22px"><span style="position:static;display:inline-block;animation:hl 2s infinite">THIS</span> <span style="position:static;display:inline-block;animation:hl 2s .5s infinite">IS</span> <span style="position:static;display:inline-block;animation:hl 2s 1s infinite">HUGE</span></div>`,
+motion: `<div style="inset:0;background:#f6f1e9"></div><div class="a-wipe" style="left:8%;top:12%;font-weight:900;font-size:26px;line-height:1;color:#141414">3 WAYS<br><span style="color:#ff4a1c">TO GROW</span></div><div class="a-slide d1" style="left:8%;top:52%;width:70%;height:12px;background:#ff4a1c;border-radius:6px"></div><div class="a-slide d2" style="left:8%;top:60%;width:50%;height:12px;background:#141414;border-radius:6px"></div><div class="a-pop d3" style="right:10%;bottom:12%;width:44px;height:44px;border-radius:50%;background:#ff4a1c"></div>`,
+cutout: `<div style="inset:0;background:#ff4a1c"></div><div class="a-wipe" style="left:0;right:0;top:14%;text-align:center;font-weight:900;font-size:44px;color:#141414;letter-spacing:-.03em">BOSS</div><div class="a-wipe d1" style="left:0;right:0;top:34%;text-align:center;font-weight:900;font-size:44px;color:#fff">MODE</div><div class="hd big" style="bottom:-4%"></div>`,
+screen: `<div style="inset:0;background:#e9eef5"></div><div style="left:6%;right:6%;top:8%;height:62%;background:#fff;border-radius:8px;box-shadow:0 4px 12px #0002"></div><div style="left:10%;top:13%;width:50%;height:6px;background:#ccd;border-radius:3px"></div><div class="a-pop" style="left:30%;top:34%;width:22px;height:22px;border:3px solid var(--acc);border-radius:50%"></div><div class="a-zoom" style="right:6%;bottom:6%;width:62px;height:62px;border-radius:50%;border:3px solid #fff" class="av"></div><div class="cap" style="left:6%;right:6%;bottom:30%;color:#141414;text-shadow:none;font-size:12px">click here, then export</div>`,
+list: `<div class="bro"></div><div style="inset:0;background:#0007"></div><div class="cardw a-slide" style="left:8%;top:14%;right:30%;font-size:11px"><b style="color:#ff4a1c">1</b> Hook first</div><div class="cardw a-slide d1" style="left:8%;top:30%;right:20%;font-size:11px"><b style="color:#ff4a1c">2</b> Cut the pauses</div><div class="cardw a-slide d2" style="left:8%;top:46%;right:26%;font-size:11px"><b style="color:#ff4a1c">3</b> Add proof</div><div class="hd" style="width:34%;left:33%"></div>`,
+podcast: `<div style="inset:0;background:#18181c"></div><div style="left:0;right:0;top:0;height:42%;background:linear-gradient(#5a6e8c,#33405a)"></div><div style="left:0;right:0;top:42%;height:42%;background:linear-gradient(#8c6a5a,#5a3a33)"></div><div style="left:38%;top:12%;width:24%;aspect-ratio:1;border-radius:50%;" class="av"></div><div style="left:38%;top:54%;width:24%;aspect-ratio:1;border-radius:50%;" class="av"></div><div style="left:0;right:0;bottom:4%;height:24px;display:flex;gap:4px;justify-content:center;align-items:flex-end;position:absolute">${[0,.2,.4,.1,.3,.5,.15].map(d=>`<i class="bar" style="position:static;animation-delay:${d}s"></i>`).join('')}</div><div class="cap" style="top:40%;font-size:11px;background:#000b;padding:4px;left:14%;right:14%;border-radius:6px">"...and that changed everything"</div>`
+,
+topbar: `<div class="bro2"></div><div class="bar2" style="top:0;padding-top:14px">POV: you finally learn how to edit like this</div><div class="hd" style="width:40%;left:30%"></div><div class="cap" style="bottom:12%;font-size:12px">(no one: )</div>`,
+blurfit: `<div class="bro a-zoom" style="filter:blur(8px) brightness(.6);transform:scale(1.4)"></div><div class="bro2" style="top:28%;bottom:28%"></div><div class="hd" style="width:30%;left:35%;bottom:28%;height:30%"></div><div class="cap a-rise" style="top:8%;font-size:15px">WATCH<br>THIS <em>CLIP</em></div><div class="cap" style="bottom:8%;font-size:10px">source: landscape video</div>`,
+pip: `<div class="bro a-zoom"></div><div style="right:8%;top:10%;width:56px;height:56px;border-radius:50%;border:3px solid #fff" class="av"></div><div class="cap" style="bottom:20%;font-size:14px">the <em>real</em> reason</div>`,
+lower: `<div class="bro2"></div><div class="hd big" style="bottom:-6%"></div><div class="a-slide" style="left:0;bottom:22%;background:var(--acc);color:#fff;padding:5px 9px;font-weight:900;font-size:10px">JANE DOE<br><span style="font-weight:600;font-size:8px">Founder, Acme</span></div>`,
+ba: `<div style="inset:0 0 50% 0;background:linear-gradient(135deg,#555,#888)"></div><div style="inset:50% 0 0 0;background:linear-gradient(135deg,#2a9d6f,#9de0b8)"></div><div class="pill" style="left:8%;top:8%;background:#000a">BEFORE</div><div class="pill" style="left:8%;top:54%">AFTER</div><div class="a-wipe" style="left:0;right:0;top:49%;height:3px;background:#fff"></div>`,
+chat: `<div class="bro2" style="filter:brightness(.5)"></div><div class="bub a-slide" style="left:6%;top:14%;background:#e5e5ea;color:#111">wait, you edit this in 10 min?</div><div class="bub a-slide d1" style="right:6%;top:32%;background:#2b7fff;color:#fff">yep. here's how</div><div class="bub a-slide d2" style="left:6%;top:50%;background:#e5e5ea;color:#111">😳 show me</div>`,
+product: `<div style="inset:0;background:#efe7da"></div><div style="left:32%;top:24%;width:36%;height:46%;border-radius:10px;background:linear-gradient(#ff4a1c,#b3260a)"></div><div class="cardw a-pop" style="left:4%;top:18%">✔ waterproof</div><div class="cardw a-pop d1" style="right:4%;top:40%">✔ 2 yr warranty</div><div class="pill a-pop d2" style="left:34%;top:76%;font-size:11px">$49</div><div style="left:24%;top:24%;width:12px;height:2px;background:#141414"></div>`,
+reply: `<div class="bro"></div><div class="cardw a-pop" style="left:8%;right:8%;top:12%;font-size:9px;border-radius:14px;text-align:left"><span style="position:static;color:#888;font-weight:700">@sam replied:</span><br>"how do you edit this fast??"</div><div class="hd" style="width:40%;left:30%"></div><div class="cap" style="bottom:6%;font-size:12px">great question</div>`,
+punch: `<div style="inset:0;background:#141414"></div><div class="a-pop" style="left:0;right:0;top:34%;text-align:center;font-weight:900;font-size:40px;color:#ffd23f;letter-spacing:-.03em">WAIT.</div>`,
+grid: `<div style="left:0;top:0;width:50%;height:50%;background:#3a5a8c"></div><div style="left:50%;top:0;width:50%;height:50%;background:#8c5a7a"></div><div style="left:0;top:50%;width:50%;height:50%;background:#d98a4a"></div><div style="left:50%;top:50%;width:50%;height:50%;background:#1f6f5c"></div><div class="cap" style="top:42%;font-size:13px;background:#000a;padding:3px;left:20%;right:20%;border-radius:6px">4 ways</div>`,
+quote: `<div class="bro" style="filter:blur(10px) brightness(.5);transform:scale(1.3)"></div><div class="cap a-wipe" style="top:24%;font-size:14px;line-height:1.25">“Best money<br>I ever spent.”</div><div class="cap" style="top:62%;font-size:9px;color:#ffd23f">★★★★★ — Maria T.</div>`,
+timer: `<div class="bro2"></div><div style="left:6%;right:6%;top:4%;height:4px;background:#fff4;border-radius:3px"><i class="a-wipe" style="inset:0 40% 0 0;background:var(--acc);border-radius:3px"></i></div><div class="pill" style="left:6%;top:10%">TIP 2 / 5</div><div class="hd"></div><div class="cap" style="bottom:20%;font-size:13px">trim <em>dead air</em></div>`,
+over: `<div style="inset:0;background:#fff"></div><div style="left:8%;right:8%;top:10%;height:42%;background:#e9eef5;border-radius:8px;border:2px solid #ccd"></div><div class="a-pop" style="left:30%;top:24%;width:40px;height:40px;border:3px solid var(--acc);border-radius:50%"></div><div class="hd" style="width:46%;left:27%;bottom:0"></div>`,
+ffcap: `<div class="ff"></div><div class="scrim"></div><div class="cap" style="bottom:26%;font-size:17px">I tried it for <em>30 days</em></div>`,
+ffmid: `<div class="ff"></div><div class="cap" style="top:42%;font-size:22px;-webkit-text-stroke:1px #000">NEVER<br><em>DO THIS</em></div>`,
+ffhook: `<div class="ff"></div><div class="a-rise" style="left:8%;right:8%;top:8%;text-align:center"><span class="kw" style="position:static;font-size:12px;padding:5px 8px;display:inline-block">STOP SCROLLING 👇</span></div><div class="scrim"></div><div class="cap" style="bottom:24%;font-size:14px">here's why</div>`,
+ffzoom: `<div class="ff a-zoom" style="animation-duration:2.5s"></div><div class="scrim"></div><div class="cap" style="bottom:24%;font-size:15px">jump cut <em>+ punch-in</em></div>`,
+ffemoji: `<div class="ff"></div><div class="a-pop" style="left:10%;top:26%;font-size:26px">🤯</div><div class="a-pop d1" style="right:12%;top:38%;font-size:24px">🔥</div><div class="a-pop d2" style="left:14%;top:50%;font-size:22px">💰</div><div class="scrim"></div><div class="cap" style="bottom:22%;font-size:14px">and then it <em>blew up</em></div>`,
+ffcut: `<div class="ff"></div><div class="bro2 a-wipe" style="left:10%;right:10%;top:14%;bottom:46%;border-radius:10px;border:2px solid #fff"></div><div class="scrim"></div><div class="cap" style="bottom:20%;font-size:13px">quick <em>b-roll cutaway</em></div>`,
+ffpoints: `<div class="ff"></div><div class="cardw a-slide" style="left:6%;top:14%;font-size:9px">✔ Hook</div><div class="cardw a-slide d1" style="left:6%;top:24%;font-size:9px">✔ Proof</div><div class="cardw a-slide d2" style="left:6%;top:34%;font-size:9px">✔ CTA</div><div class="scrim"></div><div class="cap" style="bottom:22%;font-size:13px">three parts</div>`,
+fflower: `<div class="ff"></div><div class="scrim"></div><div class="a-slide" style="left:0;bottom:30%;background:var(--acc);color:#fff;padding:5px 9px;font-weight:900;font-size:10px">DR. SMITH<br><span style="font-weight:600;font-size:8px">Cardiologist</span></div><div class="cap" style="bottom:14%;font-size:11px">captions sit below the strip</div>`,
+ffcta: `<div class="ff"></div><div class="scrim"></div><div class="cap" style="bottom:30%;font-size:14px">that's it for today</div><div class="pill a-pop d1" style="left:30%;right:30%;bottom:18%;text-align:center;font-size:10px;padding:6px">FOLLOW ＋</div><div style="left:6%;right:6%;top:4%;height:4px;background:#fff4;border-radius:3px"><i class="a-wipe" style="inset:0 8% 0 0;background:var(--acc);border-radius:3px"></i></div>`,
+ffpip: `<div class="ff"></div><div class="bro a-pop" style="right:6%;top:10%;width:36%;height:22%;border-radius:8px;border:2px solid #fff"></div><div class="pill" style="right:8%;top:34%">SCREEN</div><div class="scrim"></div><div class="cap" style="bottom:22%;font-size:13px">face + <em>corner inset</em></div>`
+};
+const S = [
+ {n:'Head + callouts behind',g:'Talking head',p:'callouts',d:'Speaker sits at the bottom of frame. Behind them, sticker cards, stats and step labels pop in on the beat of what they say.',c:['Bottom-third head','Pop-up stickers','Zoom push-ins','Word captions'],b:'Educators, coaches, hooks with numbers'},
+ {n:'B-roll + kinetic text',g:'B-roll',p:'broll',d:'The speaker becomes a voiceover. Full-frame b-roll runs slowly while big headline words slam in, rise and swap.',c:['Full-frame b-roll','Kinetic type','Slow push-in','VO only'],b:'Storytelling, tips, product teasers'},
+ {n:'Split screen',g:'Talking head',p:'split',d:'Speaker on the bottom half, the thing they are talking about (clip, screen, product) on the top half.',c:['50/50 stack','Reaction framing','Arrow / label hints'],b:'Reactions, breakdowns, news takes'},
+ {n:'Captions-first',g:'Captions',p:'captions',d:'Big centered word-by-word captions with the active word highlighted. Face fills the frame; the text is the star.',c:['Word-by-word pop','Highlight colour','Tight jump cuts','Zoom punches'],b:'Fast talkers, opinion shorts'},
+ {n:'Motion graphics explainer',g:'Motion graphics',p:'motion',d:'No footage of the speaker at all. Type, shapes, bars and icons wipe and slide on a clean brand background.',c:['Type + wipes','Shape animation','Brand colours','VO / music'],b:'Listicles, data, how it works'},
+ {n:'Cut-out over giant type',g:'Talking head',p:'cutout',d:'Speaker is cut out and placed in front of huge animated words on a flat colour field, so they look pulled out of the frame.',c:['Background removal','Layered type','Flat colour','Pop entrance'],b:'Brand intros, bold statements'},
+ {n:'Screen walkthrough + face bubble',g:'Tutorial',p:'screen',d:'Screen recording fills the frame with click rings and zoom-ins; the speaker lives in a small circle in the corner.',c:['Screen recording','Click highlights','Zoom to detail','Face bubble'],b:'Software demos, how-tos'},
+ {n:'Numbered list cards',g:'Motion graphics',p:'list',d:'Dimmed footage behind with numbered cards sliding in one after another, each tied to a point the speaker makes.',c:['Numbered cards','Slide-ins','Dim overlay','Speaker bottom'],b:'Top-3 tips, checklists'},
+ {n:'Podcast clip',g:'Podcast',p:'podcast',d:'Two speakers stacked, an audio waveform, and a quoted caption. Cuts jump to whoever is talking.',c:['Stacked speakers','Waveform','Quote caption','Speaker cuts'],b:'Interview and podcast repurposing'}
+,
+ {n:'Top caption bar (POV / meme)',g:'Captions',p:'topbar',d:'White bar at the top with a bold setup line; clip runs underneath. The classic POV, meme and reaction format.',c:['Top text bar','Black on white','Clip below','Punchline caption'],b:'Memes, POVs, relatable skits'},
+ {n:'Blurred-fill landscape clip',g:'Split & stack',p:'blurfit',d:'A horizontal clip sits centered, the same clip blurred and scaled fills the frame, with headline above and caption below.',c:['Blurred bg copy','Centered 16:9','Headline above','Caption below'],b:'Repurposing YouTube, news, reactions'},
+ {n:'Face bubble over b-roll',g:'B-roll',p:'pip',d:'Full-frame b-roll with the speaker in a small circle at the top corner, and lower-middle captions.',c:['Circle PiP','Full b-roll','Lower captions'],b:'Commentary, storytime'},
+ {n:'Lower-third interview',g:'Talking head',p:'lower',d:'Face fills the frame with a slide-in name and title strip at the lower third, above the platform UI zone.',c:['Full-frame face','Name strip','Slide-in'],b:'Interviews, testimonials, authority clips'},
+ {n:'Before / after stack',g:'Split & stack',p:'ba',d:'Two states stacked, labelled BEFORE and AFTER, with a wipe line revealing the change.',c:['Top / bottom stack','Labels','Wipe reveal'],b:'Transformations, edits, results'},
+ {n:'Chat bubbles',g:'Cards & callouts',p:'chat',d:'Fake text-message bubbles slide in alternately over dimmed footage to tell a story or dialogue.',c:['Left / right bubbles','Dimmed bg','Sequenced slide-in'],b:'Story-time, dialogues, hooks'},
+ {n:'Product callouts',g:'Cards & callouts',p:'product',d:'Product centered with feature cards left and right and a price tag below, each popping in on cue.',c:['Centered product','Side feature cards','Price pill'],b:'E-commerce, UGC ads, unboxing'},
+ {n:'Reply-to-comment card',g:'Cards & callouts',p:'reply',d:'A comment card pinned at the top, the speaker answering below it.',c:['Comment sticker','Head at bottom','Short caption'],b:'Q&A, community content'},
+ {n:'Giant word punch',g:'Motion graphics',p:'punch',d:'One huge word on a flat frame, a single beat that resets attention between sections.',c:['Single word','Flat bg','Beat-synced pop'],b:'Pattern interrupts, transitions'},
+ {n:'2×2 grid collage',g:'Split & stack',p:'grid',d:'Four tiles with a center label, great for lists, comparisons and montages.',c:['Four tiles','Center label','Montage cuts'],b:'Listicles, compilations'},
+ {n:'Testimonial quote card',g:'Cards & callouts',p:'quote',d:'Blurred footage behind a centered quote with a star rating and attribution.',c:['Blurred bg','Centered quote','Stars + name'],b:'Social proof, reviews'},
+ {n:'Progress bar countdown',g:'Talking head',p:'timer',d:'Thin progress bar at the top with a TIP 2 / 5 pill, so viewers know how far in they are.',c:['Top progress bar','Step pill','Head + caption'],b:'Multi-step tips, retention'},
+ {n:'Head over screenshot',g:'Tutorial',p:'over',d:'A white page with a framed screenshot above, and the speaker cut out in front pointing at it.',c:['Framed screenshot','Cut-out presenter','Highlight ring'],b:'Explaining articles, posts, dashboards'},
+ {n:'Clean full-frame + lower captions',g:'Full-screen face',p:'ffcap',d:'Speaker fills the frame, a dark gradient at the bottom, and word-by-word captions sitting above the UI zone. The default talking-head look.',c:['Full-bleed face','Bottom scrim','Captions at 25% up'],b:'Everyday talking-head shorts'},
+ {n:'Center-screen caption',g:'Full-screen face',p:'ffmid',d:'Big outlined caption in the middle of the frame, over the chest area, one to three words at a time.',c:['Mid-frame text','Outlined bold type','1-3 words per beat'],b:'High-energy opinions, fast talkers'},
+ {n:'Hook sticker on top',g:'Full-screen face',p:'ffhook',d:'A highlighted hook line or sticker above the head for the first seconds, then regular captions below.',c:['Top hook tag','Face full-frame','Lower captions'],b:'Stopping the scroll in 3 seconds'},
+ {n:'Jump cuts + punch-in zooms',g:'Full-screen face',p:'ffzoom',d:'No overlays beyond captions. Cuts alternate between wide and tight crops of the same take to keep pace.',c:['Cut dead air','105-125% punch-ins','Scale alternation'],b:'Solo creators, any niche'},
+ {n:'Emoji / sticker reactions',g:'Full-screen face',p:'ffemoji',d:'Emojis and stickers pop around the face on key words, leaving the face and mouth clear.',c:['Pop stickers','Beside the face','Beat-synced'],b:'Entertainment, lifestyle, casual tone'},
+ {n:'B-roll cutaway window',g:'Full-screen face',p:'ffcut',d:'Face stays full-frame while a framed b-roll window wipes in over the upper half, or the b-roll takes over fully for a beat.',c:['Framed b-roll','Wipe in/out','Audio stays on speaker'],b:'Stories with examples'},
+ {n:'Key-points list on the side',g:'Full-screen face',p:'ffpoints',d:'Small checklist cards stack down the left side as each point is spoken, away from the mouth.',c:['Left-aligned cards','Slide-ins','Keeps face visible'],b:'Quick frameworks and summaries'},
+ {n:'Lower-third authority strip',g:'Full-screen face',p:'fflower',d:'Name and credential strip slides in above the caption line for the first seconds.',c:['Name strip','Credential line','Captions below it'],b:'Experts, doctors, founders'},
+ {n:'End-card CTA',g:'Full-screen face',p:'ffcta',d:'Progress bar at the top and a Follow button pill near the end, over the same full-frame face.',c:['Progress bar','CTA pill','Closing line'],b:'Growing a following'},
+ {n:'Face + corner inset',g:'Full-screen face',p:'ffpip',d:'Face fills the screen with a small inset clip, screenshot or product in the top-right corner.',c:['Corner inset','Label pill','Bottom captions'],b:'Referencing a source while staying on camera'}
+];
+const groups=['All',...new Set(S.map(s=>s.g))];
+let cur='All',safe=false;
+function render(){
+  filters.innerHTML=groups.map(g=>`<button aria-pressed="${g===cur}" data-g="${g}">${g}</button>`).join('')+`<button aria-pressed="${safe}" data-safe="1" style="margin-left:auto">Show safe zones</button>`;
+  grid.classList.toggle('safe',safe);
+  grid.innerHTML=S.filter(s=>cur==='All'||s.g===cur).map(s=>`<article class="card"><div class="phone">${P[s.p]}</div><div><div class="tag">${s.g}</div><h2>${s.n}</h2></div><p>${s.d}</p><div class="chips">${s.c.map(x=>`<span>${x}</span>`).join('')}</div><div class="best"><b>Best for:</b> ${s.b}</div></article>`).join('');
+}
+filters.onclick=e=>{const d=e.target.dataset;if(d.safe)safe=!safe;else if(d.g)cur=d.g;else return;render()};
+render();
+</script>
+</body>
+</html>

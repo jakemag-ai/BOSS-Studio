@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>BOSS Mascot Loop</title>
+<style>
+  :root { --bg: #0e0f14; }
+  html, body { margin: 0; height: 100%; background: var(--bg); }
+  body { display: grid; place-items: center; }
+  body.light { --bg: #f4f1ea; }
+  body.check { --bg: #888; background-image: linear-gradient(45deg,#777 25%,transparent 25%,transparent 75%,#777 75%),linear-gradient(45deg,#777 25%,transparent 25%,transparent 75%,#777 75%); background-size: 40px 40px; background-position: 0 0, 20px 20px; }
+  canvas { width: min(96vw, 96vh * 1312 / 1199); height: auto; }
+  button { position: fixed; top: 10px; right: 10px; font: 12px system-ui; padding: 6px 10px; opacity: .6; }
+</style>
+</head>
+<body>
+<canvas id="c" width="1312" height="1199"></canvas>
+<button id="bg">background</button>
+<script>
+// ---- BOSS mascot loop: one source image, cut into pieces, every motion is a whole-number
+// ---- harmonic of the loop so the last frame flows straight into the first.
+const W = 1312, H = 1199, T = 6;            // loop length in seconds
+const TAU = Math.PI * 2;
+const DEBUG = location.hash.includes('debug');
+const cv = document.getElementById('c'), ctx = cv.getContext('2d');
+
+// regions in source-image pixels (poly = [x,y,x,y,...])
+const R = {
+  ai:       [0, 415, 272, 415, 272, 672, 0, 672],
+  clapper:  [40, 655, 289, 655, 289, 935, 40, 935],
+  clapTop:  [40, 655, 289, 655, 289, 778, 40, 778],
+  head:     [500, 14, 1165, 14, 1165, 360, 1000, 560, 940, 560, 560, 560, 495, 520],
+  earL:     [520, 8, 705, 8, 705, 290, 520, 290],
+  earR:     [985, 95, 1165, 95, 1165, 350, 985, 350],
+  camera:   [98, 50, 500, 50, 500, 575, 330, 580, 98, 575],
+  hand:     [940, 480, 1120, 480, 1120, 690, 940, 690],
+  tongue:   [670, 470, 800, 470, 800, 545, 670, 545],
+  legA:     [282, 770, 610, 770, 610, 1100, 282, 1100],
+  legB:     [572, 925, 790, 925, 790, 1190, 572, 1190],
+  screen:   [165, 78, 400, 78, 400, 190, 165, 190],
+};
+// pivots
+const PV = { body:[790,1000], head:[790,560], earL:[650,235], earR:[1030,305], camera:[445,585],
+  hand:[955,655], tongue:[735,478], legA:[605,795], legB:[720,935], clapTop:[52,770] };
+const EYES = [ {x:668, y:305, rx:50, ry:44}, {x:872, y:350, rx:52, ry:46} ];
+
+const mk = () => { const c = document.createElement('canvas'); c.width = W; c.height = H; return c; };
+const path = (g, p) => { g.beginPath(); g.moveTo(p[0], p[1]); for (let i = 2; i < p.length; i += 2) g.lineTo(p[i], p[i+1]); g.closePath(); };
+// copy of src kept only inside poly (feathered so moved pieces blend into what is under them)
+function cut(src, poly, feather = 0) {
+  const c = mk(), g = c.getContext('2d'); g.drawImage(src, 0, 0);
+  const m = mk(), mg = m.getContext('2d'); mg.fillStyle = '#fff'; if (feather) mg.filter = `blur(${feather}px)`;
+  path(mg, poly); mg.fill();
+  g.globalCompositeOperation = 'destination-in'; g.drawImage(m, 0, 0); return c;
+}
+function without(src, poly) { const c = mk(), g = c.getContext('2d'); g.drawImage(src, 0, 0); g.globalCompositeOperation = 'destination-out'; path(g, poly); g.fill(); return c; }
+
+const S = {};   // sprites
+const img = new Image(); img.src = 'mascot.webp';
+img.onload = () => {
+  // 1) split the picture into separate floating pieces (alpha connected components at half res)
+  const w = W >> 1, h = H >> 1, t = document.createElement('canvas'); t.width = w; t.height = h;
+  const tg = t.getContext('2d'); tg.drawImage(img, 0, 0, w, h);
+  const d = tg.getImageData(0, 0, w, h).data, m = new Uint8Array(w * h);
+  for (let i = 0; i < w * h; i++) m[i] = d[i*4+3] > 20;
+  const D = new Uint8Array(w * h);   // 1px dilate so anti-aliased edges stay in their own piece
+  for (let y = 1; y < h-1; y++) for (let x = 1; x < w-1; x++) { const i = y*w+x; D[i] = m[i]|m[i-1]|m[i+1]|m[i-w]|m[i+w]|m[i-w-1]|m[i-w+1]|m[i+w-1]|m[i+w+1]; }
+  const L = new Int32Array(w * h), box = [null]; let n = 0;
+  for (let i = 0; i < w*h; i++) if (D[i] && !L[i]) {
+    n++; L[i] = n; const b = [w, h, 0, 0, 0], st = [i];
+    while (st.length) { const p = st.pop(), px = p % w, py = (p / w) | 0;
+      if (m[p]) { b[0] = Math.min(b[0], px); b[1] = Math.min(b[1], py); b[2] = Math.max(b[2], px); b[3] = Math.max(b[3], py); b[4]++; }
+      if (px > 0   && D[p-1] && !L[p-1]) { L[p-1] = n; st.push(p-1); }
+      if (px < w-1 && D[p+1] && !L[p+1]) { L[p+1] = n; st.push(p+1); }
+      if (py > 0   && D[p-w] && !L[p-w]) { L[p-w] = n; st.push(p-w); }
+      if (py < h-1 && D[p+w] && !L[p+w]) { L[p+w] = n; st.push(p+w); } }
+    box.push(b);
+  }
+  const piece = id => { const c = mk(), g = c.getContext('2d'); g.drawImage(img, 0, 0);
+    const im = g.getImageData(0, 0, W, H), a = im.data;
+    for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) if (L[(y>>1)*w + (x>>1)] !== id) a[(y*W+x)*4+3] = 0;
+    g.putImageData(im, 0, 0); return c; };
+  // find each piece by where its box sits (in source px)
+  const near = (x, y) => { let best = 0, bd = 1e9; box.forEach((b, i) => { if (!i || b[4] < 300) return;
+    const dd = Math.hypot((b[0]+b[2]) - x, (b[1]+b[3]) - y); if (dd < bd) { bd = dd; best = i; } }); return best; };
+  let mainId = 1; box.forEach((b, i) => { if (i && b[4] > box[mainId][4]) mainId = i; });
+  const main = piece(mainId);
+  S.sweepTop = piece(near(460, 120)); S.film = piece(near(1190, 380)); S.spark = piece(near(94, 380));
+  S.play = piece(near(1185, 570));    S.cube = piece(near(320, 660)); S.sweepR = piece(near(1155, 664));
+  S.tablet = piece(near(1115, 805));  S.sweepB = piece(near(1050, 970));
+  // 2) cut the props that touch the mascot out of the main piece
+  S.ai = cut(main, R.ai); S.clapper = cut(main, R.clapper);
+  const rest = without(without(main, R.ai), R.clapper);
+  S.clapTop = cut(S.clapper, R.clapTop, 1.5);
+  // clapper body keeps its dark face behind the bar so it can open without a hole
+  const cb = without(S.clapper, R.clapTop); { const g = cb.getContext('2d'); g.globalCompositeOperation = 'destination-over';
+    g.fillStyle = '#1b2030'; g.beginPath(); g.moveTo(52, 760); g.lineTo(285, 748); g.lineTo(289, 790); g.lineTo(52, 800); g.fill(); }
+  S.clapBody = cb;
+  // 3) mascot parts that move on top of the intact mascot
+  S.base = rest;
+  S.head = cut(rest, R.head, 5); S.earL = cut(rest, R.earL, 4); S.earR = cut(rest, R.earR, 4);
+  S.camera = cut(rest, R.camera, 4); S.hand = cut(rest, R.hand, 4); S.tongue = cut(rest, R.tongue, 3);
+  S.legA = cut(rest, R.legA, 4); S.legB = cut(rest, R.legB, 4);
+  // fur colour sampled next to each eye for the blink lids
+  const sg = rest.getContext('2d'); const px = (x, y) => sg.getImageData(x, y, 1, 1).data;
+  EYES.forEach(e => { const a = px(e.x, e.y - e.ry - 14), b = px(e.x, e.y + e.ry + 12);
+    e.top = `rgb(${a[0]},${a[1]},${a[2]})`; e.bot = `rgb(${b[0]},${b[1]},${b[2]})`; });
+  ready = true;
+};
+let ready = false;
+
+// ---------- motion helpers ----------
+const sn = (ph, k, o = 0) => Math.sin(ph * k + o);
+const pulse = (t, at, len) => { const u = ((t - at) % T + T) % T / len; return u > 1 ? 0 : Math.sin(Math.PI * u); };
+function put(sp, pv, o = {}) {   // draw a sprite with a transform around a pivot
+  ctx.save(); ctx.translate(pv[0] + (o.x || 0), pv[1] + (o.y || 0)); ctx.rotate((o.r || 0) * Math.PI / 180);
+  ctx.scale(o.sx ?? o.s ?? 1, o.sy ?? o.s ?? 1); ctx.translate(-pv[0], -pv[1]);
+  if (o.a !== undefined) ctx.globalAlpha = o.a;
+  ctx.drawImage(sp, 0, 0); ctx.restore();
+}
+const prop = (sp, cx, cy, o) => put(sp, [cx, cy], o);
+
+function blinkAmt(t) {  // 0 open .. 1 closed ; two blinks per loop, the second one a double
+  const b = (at, len) => pulse(t, at, len);
+  return Math.min(1, Math.max(b(1.4, .22), b(3.9, .22), b(4.2, .22)));
+}
+
+function render(t) {
+  if (!ready) return;
+  t = ((t % T) + T) % T; const ph = t / T * TAU;
+  ctx.clearRect(0, 0, W, H);
+
+  // ===== swooshes: drift along their arcs and breathe in opacity
+  put(S.sweepTop, [460, 120], { x: 10 * sn(ph, 2), y: -4 * sn(ph, 2), a: .65 + .35 * sn(ph, 1, 0.5) });
+  put(S.sweepR,   [1155, 664], { x: -10 * sn(ph, 2, 1), a: .7 + .3 * sn(ph, 1, 2) });
+  put(S.sweepB,   [1050, 970], { x: 12 * sn(ph, 2, 2), y: 5 * sn(ph, 2, 2), a: .6 + .4 * sn(ph, 1, 4) });
+
+  // ===== props
+  prop(S.film,  1188, 380, { y: 14 * sn(ph, 2, .4), r: 4 * sn(ph, 1, 1), s: 1 + .015 * sn(ph, 3) });
+  prop(S.play,  1185, 570, { y: 12 * sn(ph, 3, 2), r: -6 * sn(ph, 2, 0), s: 1 + .05 * Math.max(0, sn(ph, 3, 2)) });
+  prop(S.cube,  320, 660,  { y: 10 * sn(ph, 2, 3), x: 5 * sn(ph, 1, 1), r: 360 * t / T * 1 });   // one full spin per loop
+  prop(S.spark, 94, 380,   { s: 1 + .28 * sn(ph, 3), r: 90 * Math.sin(ph) / 3 * 2, y: 6 * sn(ph, 2) });
+  prop(S.ai,    135, 548,  { y: 12 * sn(ph, 2, 1.5), r: 5 * sn(ph, 1, 3), s: 1 + .025 * sn(ph, 3, 1) });
+
+  // clapper: floats, and the top bar snaps open/shut like a clap, twice per loop
+  { const fy = 10 * sn(ph, 2, 3.6), fr = -3 * sn(ph, 1, .5);
+    const clap = Math.max(pulse(t, 1.0, .5), pulse(t, 4.0, .5)); // 0 closed .. 1 open
+    prop(S.clapBody, 168, 790, { y: fy, r: fr });
+    ctx.save(); ctx.translate(0, fy); ctx.translate(168, 790); ctx.rotate(fr * Math.PI / 180); ctx.translate(-168, -790);
+    put(S.clapTop, PV.clapTop, { r: -17 * clap }); ctx.restore(); }
+
+  // tablet: floats and a light sweeps across the timeline screen
+  { const y = 10 * sn(ph, 2, 5), r = 2.2 * sn(ph, 1, 5);
+    prop(S.tablet, 1115, 805, { y, r });
+    const sweep = cut(S.tablet, [945, 690, 1285, 690, 1285, 925, 945, 925]);
+    const g = sweep.getContext('2d'); g.globalCompositeOperation = 'source-in';
+    const px = 930 + 400 * ((t / T * 2) % 1);   // two sweeps per loop
+    const gr = g.createLinearGradient(px - 70, 0, px + 70, 0);
+    gr.addColorStop(0, 'rgba(255,255,255,0)'); gr.addColorStop(.5, 'rgba(255,255,255,.55)'); gr.addColorStop(1, 'rgba(255,255,255,0)');
+    g.fillStyle = gr; g.fillRect(0, 0, W, H);
+    ctx.save(); ctx.globalCompositeOperation = 'lighter'; put(sweep, [1115, 805], { y, r }); ctx.restore(); }
+
+  // ===== mascot (whole group floats, tilts and breathes)
+  const hop = -9 * sn(ph, 2, -1.2), tilt = 1.1 * sn(ph, 1, .6);
+  const breath = sn(ph, 3);                  // 3 breaths per loop
+  ctx.save();
+  ctx.translate(790, 1000 + hop); ctx.rotate(tilt * Math.PI / 180);
+  ctx.scale(1 + .006 * breath, 1 + .016 * breath); ctx.translate(-790, -1000);
+
+  ctx.drawImage(S.base, 0, 0);
+  put(S.legA, PV.legA, { r: 3.4 * sn(ph, 2, 0) });
+  put(S.legB, PV.legB, { r: -4 * sn(ph, 2, 1.4) });
+
+  // camera arm: slow pan + the little screen / lens glow
+  { const cr = 2.4 * sn(ph, 1, 1.2), cy = 3 * sn(ph, 2, 2);
+    put(S.camera, PV.camera, { r: cr, y: cy });
+    ctx.save(); ctx.translate(PV.camera[0], PV.camera[1] + cy); ctx.rotate(cr * Math.PI / 180); ctx.translate(-PV.camera[0], -PV.camera[1]);
+    ctx.globalCompositeOperation = 'lighter';
+    const sc = cut(S.camera, R.screen); const g = sc.getContext('2d'); g.globalCompositeOperation = 'source-atop';
+    g.fillStyle = `rgba(150,190,255,${.12 + .18 * (.5 + .5 * sn(ph, 3))})`; g.fillRect(0, 0, W, H);
+    ctx.drawImage(sc, 0, 0);
+    // lens glint that wipes across, once per loop
+    const u = ((t / T) * 2) % 1, gx = 215 + 120 * u, ga = Math.sin(Math.PI * u);
+    const rg = ctx.createRadialGradient(gx, 345 - 30 * u, 0, gx, 345 - 30 * u, 42);
+    rg.addColorStop(0, `rgba(255,255,255,${.85 * ga})`); rg.addColorStop(1, 'rgba(255,255,255,0)');
+    ctx.fillStyle = rg; ctx.beginPath(); ctx.arc(265, 365, 76, 0, TAU); ctx.clip(); ctx.fillRect(150, 250, 250, 220);
+    ctx.restore(); }
+
+  put(S.hand, PV.hand, { r: 7 * sn(ph, 2, .3), x: 4 * sn(ph, 2, 1.3), s: 1 + .035 * Math.max(0, sn(ph, 2, .3)) });
+
+  // head: nods with the breathing, ears flop out of phase, tongue pants, eyes blink
+  { const hr = 1.6 * sn(ph, 1, 1.9), hy = -4 * sn(ph, 3, .6), hx = 3 * sn(ph, 1, .4);
+    ctx.save(); ctx.translate(PV.head[0] + hx, PV.head[1] + hy); ctx.rotate(hr * Math.PI / 180); ctx.translate(-PV.head[0], -PV.head[1]);
+    ctx.drawImage(S.head, 0, 0);
+    put(S.earL, PV.earL, { r: 4 * sn(ph, 2, .8) + 3 * pulse(t, 2.2, .5) });
+    put(S.earR, PV.earR, { r: -4 * sn(ph, 2, 2.2) - 3 * pulse(t, 5.2, .5) });
+    put(S.tongue, PV.tongue, { sy: 1 + .07 * sn(ph, 4), sx: 1 - .02 * sn(ph, 4), y: 1.5 * sn(ph, 4) });
+    const bl = blinkAmt(t);
+    if (bl > .02) EYES.forEach(e => {
+      const hh = e.ry * 1.25 * bl;       // lid height grows from the top
+      const gr = ctx.createLinearGradient(0, e.y - e.ry - 12, 0, e.y + e.ry);
+      gr.addColorStop(0, e.top); gr.addColorStop(1, e.bot);
+      ctx.save(); ctx.fillStyle = gr; ctx.beginPath(); ctx.filter = 'blur(2px)';
+      ctx.ellipse(e.x, e.y - e.ry * 1.25 + hh * 0.5 + 6, e.rx * 1.02, hh * .5 + 14 * bl, 0, 0, TAU);
+      ctx.fill(); ctx.filter = 'none';
+      ctx.strokeStyle = '#2b1a10'; ctx.lineWidth = 5; ctx.lineCap = 'round';   // lash line along the closed lid
+      ctx.beginPath(); ctx.ellipse(e.x, e.y - e.ry * 1.25 + hh + 3, e.rx * .85, 5 + 6 * (1 - bl), 0, .15 * Math.PI, .85 * Math.PI); ctx.stroke();
+      ctx.restore(); });
+    ctx.restore(); }
+  ctx.restore();
+
+  if (DEBUG) { ctx.lineWidth = 3; Object.entries(R).forEach(([k, p], i) => { ctx.strokeStyle = `hsl(${i*47},90%,60%)`; path(ctx, p); ctx.stroke(); ctx.fillStyle = ctx.strokeStyle; ctx.font = '22px sans-serif'; ctx.fillText(k, p[0] + 4, p[1] + 22); });
+    EYES.forEach(e => { ctx.strokeStyle = '#0f0'; ctx.beginPath(); ctx.ellipse(e.x, e.y, e.rx, e.ry, 0, 0, TAU); ctx.stroke(); }); }
+}
+window.renderAt = render; window.isReady = () => ready; window.LOOP = T;
+
+// ---------- playback ----------
+let t0 = performance.now(), frozen = null;
+function loop(now) { if (frozen === null) render((now - t0) / 1000); requestAnimationFrame(loop); }
+requestAnimationFrame(loop);
+window.freeze = v => { frozen = v; if (v !== null) render(v); };
+document.getElementById('bg').onclick = () => { const b = document.body, c = b.classList; c.contains('light') ? (c.remove('light'), c.add('check')) : c.contains('check') ? c.remove('check') : c.add('light'); };
+</script>
+</body>
+</html>

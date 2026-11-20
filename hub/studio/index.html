@@ -1122,7 +1122,7 @@ async function scriptContinue() {
 // editing options on the first instruction: [key, label, hint shown in the window, what BOSS is told]
 const OPTS = [
   ['audio', 'Enhance the audio', 'Clearer voice, less background noise, even volume', 'Enhance the voice: reduce background noise and hum, even out the volume, and normalise loudness to about -14 LUFS.'],
-  ['music', 'Add background music', 'Soft music under the voice', 'Add background music under the voice, ducked so every word stays clear. Generate it with the ElevenLabs MCP (music composition), to fit this edit\'s mood and pacing. If the ElevenLabs connector is not connected, use a track from my-sounds/ instead, and skip it only if neither is available.'],
+  ['music', 'Add background music', 'Soft music under the voice', 'Add background music under the voice, ducked so every word stays clear. Music is always NEW for each project: never reuse music that came with a style, its sample video or a reference video. Generate it with the ElevenLabs MCP (music composition), to fit this edit\'s mood and pacing. If the ElevenLabs connector is not connected, use a my-sounds/ track that no earlier project used (never the style\'s own), and leave music out if there is none.'],
   ['sfx', 'Add sound effects', 'Subtle whooshes and pops on cuts and graphics', 'Add subtle sound effects on transitions and graphic pop-ins, always quieter than the voice. Generate them with the ElevenLabs MCP (sound effects), to fit each moment. If the ElevenLabs connector is not connected, use my-sounds/ instead, or simple ones made with FFmpeg if neither is available.'],
 ];
 const optsOf = (p) => p.opts || {audio: true};

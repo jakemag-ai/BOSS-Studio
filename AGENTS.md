@@ -22,3 +22,9 @@ additions go in separate personal files that updates never touch:
   shared files as usual, and the owner commits them.
 - If the user asks to update ("update BOSS Studio"): commit their changes first, then `git pull`.
   Their projects, footage, `.env` and personal files are git-ignored and stay untouched.
+
+## Launching the studio
+
+When the user says "launch the Boss studio" (or "open the studio", "start the studio"), do it right away, no questions:
+run `cmd /c start "" "<repo>\hub\open-studio.bat"` (Windows; it opens its own window, starts both studios and opens the hub in the browser). Do not wait for it or read it first.
+If both ports 1988 and 1986 already answer, only open `http://localhost:1988/hub/` instead, so a running render is never killed by a restart.
